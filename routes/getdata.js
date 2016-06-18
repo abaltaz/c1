@@ -793,7 +793,7 @@ function obstaclesInterval() {
 		obstaclesData = data.obstacles;
 		hasCurrentUpdate = data.hasCurrentUpdate;
 		console.log("Requesting C1 data...", obstaclesData);
-		setTimeout(obstaclesInterval, 600000);
+		setTimeout(obstaclesInterval, 1800000);
 	});	
 }
 
