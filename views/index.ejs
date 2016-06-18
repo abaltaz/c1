@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link href='/stylesheets/index.css' rel='stylesheet' type='text/css'>
+		<link href='/font-awesome/css/font-awesome.min.css' rel='stylesheet' type='text/css'>
+		<link rel="icon" type="image/png" href="/images/favicon.png">
+		<link href='https://fonts.googleapis.com/css?family=Open+Sans:800,700,600,400,300' rel='stylesheet' type='text/css'>
+		<link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,300,700,100' rel='stylesheet' type='text/css'>
+		<link href="https://file.myfontastic.com/S97T5t2MDqypaprsr3vpQ4/icons.css" rel="stylesheet">
+		<script src="//jashkenas.github.io/underscore/underscore-min.js"></script>
+		<script src="https://code.jquery.com/jquery-1.11.3.js"></script>
+		<meta charset="utf-8">
+		<meta name="robots" content="noindex">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<meta name="description" content="Chicago 1 is a short feed of weather updates, transit delays, large events and other things in Chicago that slow you down.">
+		<meta name="keywords" content="chicago, chicago news, chicago information, chicago weather, chicago transit, chicago events, chicago sports, chicago delays">
+		<title>Chicago 1 - <%= obstacles.numString %></title>
+	</head>
+
+	<body>
+
+
+		<div class="content-wrapper">
+
+		  <div class="header">
+		    <h1>chicago <span>1</span></h1>
+		    <div class="current-weather"><%= currentWeather %></div>
+		  </div>
+
+		  <% if (obstacles.today.events.length === 0) { %>
+			  <div class="all-clear">
+			    <i class="fa fa-check-circle" aria-hidden="true"></i>
+			    <div class="details">
+			      <div class="title">How nice</div>
+			      <div class="msg">No rain, games or train delays to get in your way</div>  
+			    </div>
+			  </div>
+		  <% } %>
+
+		  <ul class="updates">
+			
+		  	<% for (var i=0; i < obstacles.today.events.length; i++ ) { %>
+
+		  		<li class="update <%= obstacles.today.events[i].classNames %>">
+		  			<div class="icon" data-icons="<%- obstacles.today.events[i].icon %>"></div>
+			  		<div class="title"><%= obstacles.today.events[i].title %></div>
+			  		<div class="msg"><%- obstacles.today.events[i].description %></div>
+			  		<% if (typeof obstacles.today.events[i].moreLink != "undefined") { %>
+						<div class="more">
+							<a href="<%= obstacles.today.events[i].moreLink %>" target="_blank">More</a>
+						</div>
+			  		<% } %>	
+		  		</li>
+
+				
+
+		  	<% } %>
+
+		  </ul>
+
+
+		  <% for (var day in obstacles.nextDays) { %>
+
+		  	<% if (obstacles.nextDays[day].events.length > 0) { %>
+
+			  <div class="next-days">
+
+				  <h2 data-date-num="<%= obstacles.nextDays[day].dayNum %>"><%= obstacles.nextDays[day].dayName %></h2>
+
+				  <ul>
+
+				  	<% for (var i=0; i < obstacles.nextDays[day].events.length; i++ ) { %>
+
+				  		<li><%- obstacles.nextDays[day].events[i].title %></li>
+
+				  	<% } %>
+
+				  </ul>
+
+			  </div>
+
+			<% } %>
+
+		  <% } %>
+		  
+		  
+		  <div class="push-footers"></div>
+		</div>
+
+		<div class="hide-button">
+			<div class="icon"></div>
+			<div class="label"></div>
+		</div>
+
+		<div class="footer">
+			<div class="about">
+			  <strong>Chicago 1</strong> is a short feed of things in Chicago that slow you down, whether it's rain, a Cubs game or a train delay.
+			  <div class="close-btn"></div>
+			</div>
+		</div>
+
+		<div class="modal">
+		  <div class="background"></div>
+		  <div class="inner">
+			  <div class="preferences">Suspendisse enim turpis, dictum sed, iaculis a, condimentum nec, nisi. Curabitur at lacus ac velit ornare lobortis. Proin viverra, ligula sit amet ultrices semper, ligula arcu tristique sapien, a accumsan nisi mauris ac eros. Duis leo. Praesent congue erat at massa.
+
+		Praesent vestibulum dapibus nibh. Donec sodales sagittis magna. Donec venenatis vulputate lorem. Fusce vulputate eleifend sapien. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; In ac dui quis mi consectetuer lacinia.
+
+		Nam commodo suscipit quam. Proin magna. Etiam sit amet orci eget eros faucibus tincidunt. Sed magna purus, fermentum eu, tincidunt eu, varius ut, felis. Aliquam lobortis.
+
+		Aenean ut eros et nisl sagittis vestibulum. Suspendisse eu ligula. In consectetuer turpis ut velit. Phasellus leo dolor, tempus non, auctor et, hendrerit quis, nisi. Pellentesque posuere.
+
+		Curabitur suscipit suscipit tellus. Praesent adipiscing. Phasellus volutpat, metus eget egestas mollis, lacus lacus blandit dui, id egestas quam mauris ut lacus.. Suspendisse potenti.</div>
+		  </div>
+		</div>
+
+		<script>
+
+
+			var allClearPhrases = [
+			"How nice",
+			"All good",
+			"A-OK",
+			"No worries"
+			];
+
+			function randomIntFromInterval(min,max)
+			{
+			    return Math.floor(Math.random()*(max-min+1)+min);
+			}
+
+			$(".all-clear .title").html(allClearPhrases[randomIntFromInterval(0,3)])
+
+			$(".footer .close-btn").on("click", function(){
+				$(".footer").remove();
+			})
+
+
+		</script>
+
+	</body>
+</html>
