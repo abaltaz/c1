@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/');
 var users = require('./routes/users');
 var getData = require('./routes/getdata');
+var env = require('./env.js')
 //var mlbSchedule = require('./routes/mlbSchedule');
 
 var app = express();
