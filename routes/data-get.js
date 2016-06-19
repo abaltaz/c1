@@ -51,16 +51,21 @@ var obstaclesData;
 var currentWeather;
 var hasCurrentUpdate;
 
-	var now = moment();
-	var inOneDay = now.clone().add(1, "day").hour(0);
-	var inTwoDays = now.clone().add(2, "day").hour(0);
-	var inThreeDays = now.clone().add(3, "day").hour(0);
+var now;
+var inOneDay;
+var inTwoDays;
+var inThreeDays;
 
-	var obstacles = {};
+var obstacles = {};
 
 
 
 function assembleObstacles() {
+
+	now = moment();
+	inOneDay = now.clone().add(1, "day").hour(0);
+	inTwoDays = now.clone().add(2, "day").hour(0);
+	inThreeDays = now.clone().add(3, "day").hour(0);
 
 	obstacles = {
 		today: {
