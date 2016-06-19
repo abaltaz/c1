@@ -5,6 +5,10 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+//Check if we're using the local environment; if so, load the env file
+if (process.env.NODE_ENV === "local") {
+  var env = require('./env.js')
+}
 
 
 var routes = require('./routes/');
