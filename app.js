@@ -10,10 +10,9 @@ if (process.env.NODE_ENV === "local") {
   var env = require('./env.js')
 }
 
-
 var routes = require('./routes/');
 var users = require('./routes/users');
-var getData = require('./routes/getdata');
+var getData = require('./routes/data-get');
 
 
 

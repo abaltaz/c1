@@ -5,7 +5,12 @@ var GoogleSpreadsheet = require("google-spreadsheet");
 var moment = require('moment');
 var underscore = require('underscore');
 var parseString = require('xml2js').parseString;
+var markdownDeep = require('markdowndeep');
 var Promise = require('promise');
+
+var markdown = new markdownDeep.Markdown();
+markdown.ExtraMode = true;
+markdown.SafeMode = false;
 
 
 var endpoints = {
@@ -46,16 +51,21 @@ var obstaclesData;
 var currentWeather;
 var hasCurrentUpdate;
 
-	var now = moment();
-	var inOneDay = now.clone().add(1, "day").hour(0);
-	var inTwoDays = now.clone().add(2, "day").hour(0);
-	var inThreeDays = now.clone().add(3, "day").hour(0);
+var now;
+var inOneDay;
+var inTwoDays;
+var inThreeDays;
 
-	var obstacles = {};
+var obstacles = {};
 
 
 
 function assembleObstacles() {
+
+	now = moment();
+	inOneDay = now.clone().add(1, "day").hour(0);
+	inTwoDays = now.clone().add(2, "day").hour(0);
+	inThreeDays = now.clone().add(3, "day").hour(0);
 
 	obstacles = {
 		today: {
@@ -213,7 +223,7 @@ function getGoogleSheet() {
 			//console.log( 'pulled in ' + JSON.stringify(row_data) + ' rows');
 			
 			var customUpdates = [];
-			
+
 			underscore.each(row_data, function(row_json, index) {
 				
 				var startDate = moment(row_json.startdate, "YYYY-MM-DD HH:mm:ss")
@@ -226,7 +236,7 @@ function getGoogleSheet() {
 				
 					var customUpdate = {					
 						title: row_json.title,
-						description: row_json.description,
+						description: markdown.Transform(row_json.description),
 						icon: "&#x" + row_json.icon,
 						start: startDate,
 						end: endDate,
@@ -365,7 +375,7 @@ function getGameStatus(teamParams) {
 	          var gameDate = moment(gameDatePretty, "MM/DD/YY hh:mm A");
 			  
 			  //Create a Moment 5 hours after a game's start time
-			  var gameEnd = gameDate.clone().add(5, "hours");
+			  var gameEnd = gameDate.clone().add(3, "hours");
  
 			  
 			  var status = determineEventStatus(gameDate, gameEnd, 3);
@@ -377,7 +387,7 @@ function getGameStatus(teamParams) {
 					status: status.type,
 					start: gameDate,
 					end: gameEnd,
-					title: teamParams.name + " game in Chicago",
+					title: teamParams.name + " game in Chicago " + gameDate.format("MM/DD"),
 					slug: convertToSlug_withDate(teamParams.name, gameDate)
 				};
 
@@ -498,7 +508,8 @@ function getRainStatus() {
 				
 					underscore.each(forecast.alerts, function(alert, index) {
 
-						if (alert.title.indexOf("statement") === -1 && alert.title.indexOf("Statement") === -1) {
+						if (alert.title.indexOf("Air Quality") === -1 && 
+							alert.title.indexOf("Statement") === -1) {
 
 							var startDate = moment(alert.time * 1000);
 							var endDate = moment(alert.expires * 1000);
@@ -614,14 +625,14 @@ function getTraffic() {
 				if (segmentAlertsHtml.length > 0) {
 
 					console.log("SAH1", segmentAlertsHtml.toString());
-					var description = "Traffic in these areas: <ul>" + segmentAlertsHtml.join("") + "</ul>";
+					var description = "<ul>" + segmentAlertsHtml.join("") + "</ul>";
 					var startDate = moment();
 
 					var status = determineEventStatus(startDate, startDate, 1);
 
 					var alert = {
 						description: description,
-						title: route.name,
+						title: "Heavy traffic on " + route.name,
 						start: startDate,
 						end: startDate,
 						inDisplayWindow: status.inDisplayWindow,
@@ -767,17 +778,17 @@ function assignToADay(data) {
 		}
 	
 		if (inOneDay.isSame(event.start, "day") || 
-				 inOneDay.isBetween(event.start, event.end)) {
+			inOneDay.isBetween(event.start, event.end)) {
 			obstacles.nextDays.inOneDay.events.push(event);
 		}
 
 		if (inTwoDays.isSame(event.start, "day") || 
-				 inTwoDays.isBetween(event.start, event.end)) {
+			inTwoDays.isBetween(event.start, event.end)) {
 			obstacles.nextDays.inTwoDays.events.push(event);
 		}
 	
 		if (inThreeDays.isSame(event.start, "day") || 
-				 inThreeDays.isBetween(event.start, event.end)) {
+			inThreeDays.isBetween(event.start, event.end)) {
 			obstacles.nextDays.inThreeDays.events.push(event);
 		}
 

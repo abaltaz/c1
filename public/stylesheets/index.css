@@ -18,7 +18,7 @@ body {
 }
 
 .content-wrapper {
-  margin-bottom: -230px;
+  margin-bottom: -90px;
   min-height: 100%;
 }
 
@@ -129,6 +129,8 @@ b {
   top: 12px;
   right: 17px;
   font-size: 26px;
+  width: 25px;
+  text-align: center;
 }
 
 
@@ -188,6 +190,11 @@ b {
   font-weight: 800;
   font-size: 20px;
   display: block;
+}
+
+.traffic .icon:before {
+  content: "\f018";
+  font-family: FontAwesome;
 }
 
 .transit .icon:before {
@@ -273,7 +280,7 @@ b {
 
 
 .push-footers {
-  height: 230px;
+  height: 90px;
 }
 
 .hide-button {
