@@ -790,6 +790,7 @@ function assignToADay(data) {
 
 function obstaclesInterval() {
 	assembleObstacles().then(function(data){
+		console.log("Running in " + process.env.NODE_ENV + " environment")
 		obstaclesData = data.obstacles;
 		hasCurrentUpdate = data.hasCurrentUpdate;
 		console.log("Requesting C1 data...", obstaclesData);
