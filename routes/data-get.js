@@ -375,7 +375,7 @@ function getGameStatus(teamParams) {
 	          var gameDate = moment(gameDatePretty, "MM/DD/YY hh:mm A");
 			  
 			  //Create a Moment 5 hours after a game's start time
-			  var gameEnd = gameDate.clone().add(5, "hours");
+			  var gameEnd = gameDate.clone().add(3, "hours");
  
 			  
 			  var status = determineEventStatus(gameDate, gameEnd, 3);
@@ -508,7 +508,8 @@ function getRainStatus() {
 				
 					underscore.each(forecast.alerts, function(alert, index) {
 
-						if (alert.title.indexOf("statement") === -1 && alert.title.indexOf("Statement") === -1) {
+						if (alert.title.indexOf("Air Quality") === -1 && 
+							alert.title.indexOf("Statement") === -1) {
 
 							var startDate = moment(alert.time * 1000);
 							var endDate = moment(alert.expires * 1000);
@@ -624,14 +625,14 @@ function getTraffic() {
 				if (segmentAlertsHtml.length > 0) {
 
 					console.log("SAH1", segmentAlertsHtml.toString());
-					var description = "Traffic in these areas: <ul>" + segmentAlertsHtml.join("") + "</ul>";
+					var description = "<ul>" + segmentAlertsHtml.join("") + "</ul>";
 					var startDate = moment();
 
 					var status = determineEventStatus(startDate, startDate, 1);
 
 					var alert = {
 						description: description,
-						title: route.name,
+						title: "Heavy traffic on " + route.name,
 						start: startDate,
 						end: startDate,
 						inDisplayWindow: status.inDisplayWindow,
