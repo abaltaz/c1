@@ -5,7 +5,12 @@ var GoogleSpreadsheet = require("google-spreadsheet");
 var moment = require('moment');
 var underscore = require('underscore');
 var parseString = require('xml2js').parseString;
+var markdownDeep = require('markdowndeep');
 var Promise = require('promise');
+
+var markdown = new markdownDeep.Markdown();
+markdown.ExtraMode = true;
+markdown.SafeMode = false;
 
 
 var endpoints = {
@@ -213,7 +218,7 @@ function getGoogleSheet() {
 			//console.log( 'pulled in ' + JSON.stringify(row_data) + ' rows');
 			
 			var customUpdates = [];
-			
+
 			underscore.each(row_data, function(row_json, index) {
 				
 				var startDate = moment(row_json.startdate, "YYYY-MM-DD HH:mm:ss")
@@ -226,7 +231,7 @@ function getGoogleSheet() {
 				
 					var customUpdate = {					
 						title: row_json.title,
-						description: row_json.description,
+						description: markdown.Transform(row_json.description),
 						icon: "&#x" + row_json.icon,
 						start: startDate,
 						end: endDate,
@@ -377,7 +382,7 @@ function getGameStatus(teamParams) {
 					status: status.type,
 					start: gameDate,
 					end: gameEnd,
-					title: teamParams.name + " game in Chicago",
+					title: teamParams.name + " game in Chicago " + gameDate.format("MM/DD"),
 					slug: convertToSlug_withDate(teamParams.name, gameDate)
 				};
 
@@ -767,17 +772,17 @@ function assignToADay(data) {
 		}
 	
 		if (inOneDay.isSame(event.start, "day") || 
-				 inOneDay.isBetween(event.start, event.end)) {
+			inOneDay.isBetween(event.start, event.end)) {
 			obstacles.nextDays.inOneDay.events.push(event);
 		}
 
 		if (inTwoDays.isSame(event.start, "day") || 
-				 inTwoDays.isBetween(event.start, event.end)) {
+			inTwoDays.isBetween(event.start, event.end)) {
 			obstacles.nextDays.inTwoDays.events.push(event);
 		}
 	
 		if (inThreeDays.isSame(event.start, "day") || 
-				 inThreeDays.isBetween(event.start, event.end)) {
+			inThreeDays.isBetween(event.start, event.end)) {
 			obstacles.nextDays.inThreeDays.events.push(event);
 		}
 
