@@ -18,7 +18,7 @@ body {
 }
 
 .content-wrapper {
-  margin-bottom: -90px;
+  margin-bottom: -200px;
   min-height: 100%;
 }
 
@@ -280,7 +280,7 @@ b {
 
 
 .push-footers {
-  height: 90px;
+  height: 200px;
 }
 
 .hide-button {
@@ -353,6 +353,46 @@ b {
   color: #565656;
   font-weight: 700;
   cursor: pointer;
+}
+
+ul.options {
+  list-style: none;
+  text-align: center;
+  padding: 0;
+  margin: 50px 0 0 0;
+}
+
+ul.options li {
+  display: inline-block;
+  vertical-align: top;
+  margin: 0 10px;
+  width: 130px;
+}
+
+ul.options li i {
+  font-size: 30px;
+  color: #777;
+}
+
+ul.options li i:hover {
+  color: #111;
+}
+
+ul.options li:after {
+  font-size: 10px;
+  display: block;
+  margin: 5px 0 0 0;
+  font-weight: 400
+}
+
+ul.options .op-ideas:after {
+  content: "Got ideas? \A Help make Chicago 1 better";
+  white-space: pre-wrap
+}
+
+ul.options .op-bugs:after {
+  content: "Find a bug? \A Tell us and we'll look into it";
+  white-space: pre-wrap
 }
 
 .footer .close-btn:before {

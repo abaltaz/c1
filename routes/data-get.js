@@ -387,7 +387,7 @@ function getGameStatus(teamParams) {
 					status: status.type,
 					start: gameDate,
 					end: gameEnd,
-					title: teamParams.name + " game in Chicago " + gameDate.format("MM/DD"),
+					title: teamParams.name + " game in Chicago " + gameDate.format("(MM/DD)"),
 					slug: convertToSlug_withDate(teamParams.name, gameDate)
 				};
 
@@ -406,7 +406,7 @@ function getGameStatus(teamParams) {
 				}
 				
 				else if (status.type === "future") {
-					game["title"] = teamParams.name + " at home, starts at " + gameDate.format("MM/DD h:mm A");
+					game["title"] = teamParams.name + " at home, starts at " + gameDate.format("h:mm A (MM/DD)");
 				}
 				  
 				games.push(game);
