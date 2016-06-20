@@ -378,22 +378,24 @@ ul.options li i:hover {
   color: #111;
 }
 
-ul.options li:after {
+ul.options a:link {
+  text-decoration: none;
+  color: #777;
+}
+
+ul.options a:link:hover {
+  color: #111;
+}
+
+ul.options li .text {
   font-size: 10px;
   display: block;
   margin: 5px 0 0 0;
   font-weight: 400
 }
 
-ul.options .op-ideas:after {
-  content: "Got ideas? \A Help make Chicago 1 better";
-  white-space: pre-wrap
-}
 
-ul.options .op-bugs:after {
-  content: "Find a bug? \A Tell us and we'll look into it";
-  white-space: pre-wrap
-}
+
 
 .footer .close-btn:before {
   content: "OK";
