@@ -237,7 +237,6 @@ function getGoogleSheet() {
 					var customUpdate = {					
 						title: row_json.title,
 						description: markdown.Transform(row_json.description),
-						icon: "&#x" + row_json.icon,
 						start: startDate,
 						end: endDate,
 						severity: row_json.severity,
@@ -249,7 +248,8 @@ function getGoogleSheet() {
 
 					customUpdate["classNames"] = "custom-update " + customUpdate.slug;
 
-					if (row_json.morelink !== "") { customUpdate["moreLink"] = row_json.morelink }
+					if (row_json.icon !== "") { customUpdate["icon"] = "&#x" + row_json.icon; } 
+					if (row_json.morelink !== "") { customUpdate["moreLink"] = row_json.morelink; }
 					
 					customUpdates.push(customUpdate);				
 				}
