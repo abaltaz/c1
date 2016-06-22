@@ -282,7 +282,15 @@ function getCtaStatus() {
 					if (parseInt(alert.SeverityScore[0]) > 35) {
 
 						var alertStart = moment(alert.EventStart[0], "YYYYMMDD HH:mm");
-						var alertEnd = moment(alert.EventEnd[0], "YYYYMMDD HH:mm");
+						var alertEnd; 
+
+						if (alert.EventEnd[0] !== "") {
+							alertEnd = moment(alert.EventEnd[0], "YYYYMMDD HH:mm");
+						}
+
+						else {
+							alertEnd = alertStart;
+						}
 
 						var status = determineEventStatus(alertStart, alertEnd, 2);
 

@@ -242,7 +242,7 @@ b {
 }
 
 
-.next-days h2 {
+.next-days h3 {
     font-size: 13px;
     text-transform: uppercase;
     font-weight: 300;
@@ -250,7 +250,7 @@ b {
     display: inline-block;
 }
 
-.next-days h2:before {
+.next-days h3:before {
   content: attr(data-date-num);
   border-left: 1px solid #999;
   border-right: 1px solid #999;
@@ -312,7 +312,7 @@ b {
 }
 
 
-.footer {
+.notifications {
   font-family: Open Sans;
   width: 100%;
   margin: 150px 0 0px;
@@ -325,7 +325,7 @@ b {
   background: rgba(0,0,0,0.85);
 }
 
-.footer .about {
+.notifications .about {
   width: 100%;
   max-width: 600px;
   font-size: 12px;
@@ -335,7 +335,7 @@ b {
   position: relative;
 }
 
-.footer .close-btn {
+.notifications .close-btn {
   position: absolute;
   right: 10px;
   top: 0px;
@@ -355,6 +355,10 @@ b {
   cursor: pointer;
 }
 
+.notifications .close-btn:before {
+  content: "OK";
+}
+
 ul.options {
   list-style: none;
   text-align: center;
@@ -365,8 +369,8 @@ ul.options {
 ul.options li {
   display: inline-block;
   vertical-align: top;
-  margin: 0 10px;
-  width: 130px;
+  margin: 0 25px;
+  width: 80px;
 }
 
 ul.options li i {
@@ -394,11 +398,27 @@ ul.options li .text {
   font-weight: 400
 }
 
+ul.options .op-about .icon-c1-logo {
+  font-size: 24px;
+  margin-bottom: -2px;
+}
 
 
+ul.footer {
+  padding: 0;
+  list-style: none;
+  text-align: center;
+  font-size: 12px;
+  margin: 60px 0 0 0;
+}
 
-.footer .close-btn:before {
-  content: "OK";
+ul.footer li {
+  display: inline-block;
+}
+
+ul.footer li:not(:first-child):before {
+  content: " • ";
+  font-size: 16px;
 }
 
 
