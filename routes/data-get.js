@@ -63,9 +63,9 @@ var obstacles = {};
 function assembleObstacles() {
 
 	now = moment();
-	inOneDay = now.clone().add(1, "day").hour(0);
-	inTwoDays = now.clone().add(2, "day").hour(0);
-	inThreeDays = now.clone().add(3, "day").hour(0);
+	inOneDay = now.clone().add(1, "day").hour(5);
+	inTwoDays = now.clone().add(2, "day").hour(5);
+	inThreeDays = now.clone().add(3, "day").hour(5);
 
 	obstacles = {
 		today: {
@@ -535,8 +535,7 @@ function getRainStatus() {
 										end: endDate,
 										slug: convertToSlug_withDate(alert.title, startDate),
 										title: alert.title,
-										description: "Starts at " + startDate.format("h:mm A on MMMM D")
-											    + " and is expected to end at " + endDate.format("h:mm A on MMMM D"),
+										description: "Expected to end at " + endDate.format("h:mm A on MMMM D"),
 										moreLink: alert.uri
 									};
 
