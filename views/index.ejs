@@ -32,7 +32,7 @@
 		<div class="content-wrapper">
 
 		  <div class="header">
-		    <h1>chicago <span>1</span></h1>
+		    <h1>chicago<span>1</span></h1>
 		    <div class="current-weather"><%= currentWeather %></div>
 		  </div>
 
@@ -129,8 +129,11 @@
 
 		<ul class="footer">
 			<li>About Chicago 1</li>
-			<li>Send ideas for c1</li>
-			<li>Report a bug</li>
+			<li><a href="mailto:ideas@chicago1.org">Send us your ideas</a></li>
+			<li><a href="mailto:bugs@chicago1.org">Report a bug</a></li>
+			<div class="c1built">
+				Chicago 1 is built in Andersonville
+			</div>
 		</ul>
 
 		<div class="notifications">
@@ -172,8 +175,8 @@
 
 			$(".all-clear .title").html(allClearPhrases[randomIntFromInterval(0,3)])
 
-			$(".footer .close-btn").on("click", function(){
-				$(".footer").remove();
+			$(".notifications .close-btn").on("click", function(){
+				$(".notifications").remove();
 			})
 
 

@@ -448,12 +448,7 @@ function getRainStatus() {
 		        var rainStatus = {
 		          rainToday: false,
 		          rainTodayDetails: [],
-		          rainTodayString: function() {
-		            if (rainStatus.rainToday) {
-		              return  rainStatus.rainTodayDetails[0].probablity() + " of rain at " + rainStatus.rainTodayDetails[0].time
-		            }
-		            else return ""
-		          },
+		          rainTodayString: "",
 		      	  rainTodayTitle: forecast.hourly.summary,	
 		          currentWeather: 
 		            Math.round(forecast.currently.temperature) + "° " 
@@ -477,6 +472,7 @@ function getRainStatus() {
 		            //Determine likelihood of rain
 		            if (forecast.precipProbability > 0.24) {
 		              rainStatus.rainToday = true;
+		              rainStatus.rainTodayString = rainStatus.rainTodayDetails[0].probablity() + " of rain at " + rainStatus.rainTodayDetails[0].time;
 		              rainStatus.rainTodayDetails.push({
 		                time: forecastTime.format("ha"), 
 		                intensity: forecast.precipIntensity,
@@ -496,7 +492,7 @@ function getRainStatus() {
 		                    return "Very good chance"
 		                  }
 		                }
-		              }); 
+		              });
             
             
 		            }
@@ -525,6 +521,16 @@ function getRainStatus() {
 
 							if (status && status.inDisplayWindow == true) {
 
+								var endDateString;
+
+								if (moment().isSame(endDate, 'day')) {
+									endDateString = endDate.format("h:mm A");
+								}
+
+								else if (moment().isBefore(endDate, 'day')) {
+									endDateString = endDate.format("h:mm A on MMMM D");
+								}
+
 								var alert = {
 										string: alert.title + ". Starts at " + startDate.format("h:mm A on M/D")
 											    + " and is expected to end at " + endDate.format("h:mm A on M/D"),
@@ -535,7 +541,7 @@ function getRainStatus() {
 										end: endDate,
 										slug: convertToSlug_withDate(alert.title, startDate),
 										title: alert.title,
-										description: "Expected to end at " + endDate.format("h:mm A on MMMM D"),
+										description: "Expected to end at " + endDateString,
 										moreLink: alert.uri
 									};
 
@@ -577,7 +583,6 @@ function getRainStatus() {
 
 				});
 
-				//Remove today's forecast because it's not currently needed
 				dailyForecast.splice(0,1);
 			
 		        resolve({
@@ -780,20 +785,24 @@ function assignToADay(data) {
 
 		obstacles.all.push(event);
 
+		//Rules for displaying an event for Today
 		if (event.status === "current" || event.status === "later") {
 			obstacles.today.events.push(event);
 		}
-	
+		
+		//Rules for displaying an event for 1 day from now
 		if (inOneDay.isSame(event.start, "day") || 
 			inOneDay.isBetween(event.start, event.end)) {
 			obstacles.nextDays.inOneDay.events.push(event);
 		}
 
+		//Rules for displaying an event for 2 days from now
 		if (inTwoDays.isSame(event.start, "day") || 
 			inTwoDays.isBetween(event.start, event.end)) {
 			obstacles.nextDays.inTwoDays.events.push(event);
 		}
 	
+		//Rules for displaying an event for 3 days from now
 		if (inThreeDays.isSame(event.start, "day") || 
 			inThreeDays.isBetween(event.start, event.end)) {
 			obstacles.nextDays.inThreeDays.events.push(event);

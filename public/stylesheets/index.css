@@ -18,7 +18,7 @@ body {
 }
 
 .content-wrapper {
-  margin-bottom: -200px;
+  margin-bottom: -160px;
   min-height: 100%;
 }
 
@@ -43,7 +43,8 @@ h1 {
 }
 
 h1 span {
-  font-size: 26px;
+  font-size: 25px;
+  margin-left: 5px;
 }
 
 .current-weather {
@@ -280,7 +281,7 @@ b {
 
 
 .push-footers {
-  height: 200px;
+  height: 160px;
 }
 
 .hide-button {
@@ -409,18 +410,31 @@ ul.footer {
   list-style: none;
   text-align: center;
   font-size: 12px;
-  margin: 60px 0 0 0;
+  margin: 30px 0 0 0;
+  font-family: Roboto Slab
 }
 
 ul.footer li {
   display: inline-block;
+  color: #777;
+  text-transform: lowercase;
+  font-weight: 400;
 }
 
 ul.footer li:not(:first-child):before {
-  content: " • ";
+  content: " - ";
   font-size: 16px;
 }
 
+ul.footer a:link {
+  text-decoration: none;
+  color: #777;
+}
+
+ul.footer .c1built {
+  margin: 10px 0 0 0;
+  color: #777;
+}
 
 .modal {
   display: none;
