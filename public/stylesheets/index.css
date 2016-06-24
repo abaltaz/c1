@@ -167,6 +167,13 @@ b {
   color: #8585ef;
 }
 
+.updates > li .date-info {
+
+  font-size: 12px;
+  margin: 15px 0 0 0;
+  color: #777;
+}
+
 .weather-alert .icon:before {
   content: "\f06a";
   font-family: FontAwesome;
@@ -432,7 +439,7 @@ ul.footer a:link {
 }
 
 ul.footer .c1built {
-  margin: 10px 0 7px 0;
+  margin: 10px 0 5px 0;
   color: #777;
 }
 

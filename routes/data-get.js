@@ -315,6 +315,18 @@ function getCtaStatus() {
 
 							majorAlert["classNames"] = "cta transit " + majorAlert.slug;
 
+							if (now.isBefore(alertStart)) {
+								majorAlert["dateString"] = "Starts at " + alertStart.format("h:mma")
+							}
+
+							else if (now.isSame(alertEnd, "day")) {
+								majorAlert["dateString"] = "Ends at " + alertEnd.format("h:mma today");
+							}
+
+							else {
+								majorAlert["dateString"] = "Ends at " + alertEnd.format("MMMM D at h:mma");
+							}
+
 							majorAlerts.push(majorAlert);
 							
 							/*

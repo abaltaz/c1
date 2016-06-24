@@ -59,6 +59,9 @@
 							<a href="<%= obstacles.today.events[i].moreLink %>" target="_blank">More</a>
 						</div>
 			  		<% } %>	
+			  		<% if (typeof obstacles.today.events[i].dateString != "undefined") { %>
+						<div class="date-info"><%= obstacles.today.events[i].dateString %></div>
+			  		<% } %>	
 		  		</li>
 
 				
@@ -131,7 +134,7 @@
 			<li>About Chicago 1</li>
 			<li><a href="mailto:ideas@chicago1.org">Send us your ideas</a></li>
 			<li><a href="mailto:bugs@chicago1.org">Report a bug</a></li>
-			<div class="c1built">Chicago 1 is built in some café in Andersonville</div>
+			<div class="c1built">Chicago 1 is built from some café in Andersonville</div>
 			<div class="c1built-icons">
 				<i class="fa fa-laptop" aria-hidden="true"></i>
 				<i class="fa fa-coffee" aria-hidden="true"></i>
