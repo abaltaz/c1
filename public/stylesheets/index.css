@@ -18,7 +18,7 @@ body {
 }
 
 .content-wrapper {
-  margin-bottom: -160px;
+  margin-bottom: -190px;
   min-height: 100%;
 }
 
@@ -281,7 +281,7 @@ b {
 
 
 .push-footers {
-  height: 160px;
+  height: 190px;
 }
 
 .hide-button {
@@ -432,8 +432,33 @@ ul.footer a:link {
 }
 
 ul.footer .c1built {
-  margin: 10px 0 0 0;
+  margin: 10px 0 7px 0;
   color: #777;
+}
+
+ul.footer .c1built-icons i {
+  vertical-align: middle;
+  margin: 0 3px
+}
+
+
+ul.footer .c1built-icons .fa-laptop {
+  color: #f77777;
+  font-size: 18px;
+  position: relative;
+  top: 1px
+}
+
+ul.footer .c1built-icons .fa-coffee {
+  color: #989898;
+  font-size: 16px;
+}
+
+ul.footer .c1built-icons .fa-building {
+  color: #7c7ce6;
+  font-size: 13px;
+  position: relative;
+  top: 1px;
 }
 
 .modal {
