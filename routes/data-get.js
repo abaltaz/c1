@@ -319,12 +319,12 @@ function getCtaStatus() {
 								majorAlert["dateString"] = "Starts at " + alertStart.format("h:mma")
 							}
 
-							else if (now.isSame(alertEnd, "day")) {
-								majorAlert["dateString"] = "Ends at " + alertEnd.format("h:mma today");
+							else if (now.isSame(alertEnd, "day") && alertStart !== alertEnd) {
+								majorAlert["dateString"] = "Ends at " + alertEnd.format("h:mma [today]");
 							}
 
-							else {
-								majorAlert["dateString"] = "Ends at " + alertEnd.format("MMMM D at h:mma");
+							else if (alertStart !== alertEnd) {
+								majorAlert["dateString"] = "Ends on " + alertEnd.format("MMMM D [at] h:mma");
 							}
 
 							majorAlerts.push(majorAlert);
