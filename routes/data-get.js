@@ -105,7 +105,7 @@ function assembleObstacles() {
 
 				obstacles.today.events.push({
 					occurence: data.rainStatus.rainToday,
-					title: data.rainStatus.rainTodayString(),
+					title: data.rainStatus.rainTodayString,
 					category: "weather",
 					type: "rain",
 					classNames: "rain",
@@ -475,47 +475,52 @@ function getRainStatus() {
           
 		          var forecastTime = moment(forecast.time * 1000);
         
+
           
 		          //If the hourly forecast is between now and tomorrow
-		          if (forecastTime.isAfter(currentTime) && 
-		              forecastTime.isBefore(tomorrowDate)) {
+		          if (forecastTime.isAfter(currentTime) && forecastTime.isBefore(tomorrowDate)) {
                       
-            
 		            //Determine likelihood of rain
-		            if (forecast.precipProbability > 0.24) {
+		            if (forecast.precipProbability > 0.25) {
+
+
 		              rainStatus.rainToday = true;
-		              rainStatus.rainTodayString = rainStatus.rainTodayDetails[0].probablity() + " of rain at " + rainStatus.rainTodayDetails[0].time;
+
+		              //function to set string based on probability of rain
+		              var probablity = function() {
+
+			              if (forecast.precipProbability > 0.25 && forecast.precipProbability <= 0.5) {
+			                    return "Slight chance"
+			              }
+			                  
+		                  else if (forecast.precipProbability > 0.5 && forecast.precipProbability <= 0.75) {
+		                    	return "Good chance"
+		                  }
+		                  
+		                  else if (forecast.precipProbability > 0.75 && forecast.precipProbability <= 1) {
+		                    	return "Very good chance"
+		                  }
+		              
+		              }
+
+  		              if (rainStatus.rainTodayString === "") {
+		              	rainStatus.rainTodayString = probablity() + " of rain at " + forecastTime.format("ha");
+		          	  }
+
 		              rainStatus.rainTodayDetails.push({
 		                time: forecastTime.format("ha"), 
 		                intensity: forecast.precipIntensity,
 		                summary: forecast.summary,
-		                probablity: function() {
-		                  rainStatus.rainToday = false;
-		                  if (forecast.precipProbability > 0.25 &&
-		                           forecast.precipProbability < 0.49) {
-		                    return "Slight chance"
-		                  }
-		                  else if (forecast.precipProbability > 0.5 &&
-		                           forecast.precipProbability < 0.74) {
-		                    return "Good chance"
-		                  }
-		                  else if (forecast.precipProbability > 0.75 &&
-		                           forecast.precipProbability <= 1) {
-		                    return "Very good chance"
-		                  }
-		                }
+		                probablity: probablity()
 		              });
             
-            
 		            }
-            
-            
           
 		          }
           
 		        });
 
-
+		        
         	
 				//Get Weather Alerts
 				var weatherAlerts = [];
