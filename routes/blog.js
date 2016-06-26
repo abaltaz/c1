@@ -85,7 +85,7 @@ function convertToSlug_withDate(Text, Date) {
 
 router.get('/', function(req, res, next) {
 	console.log("blog3", blogPosts);
-	res.render('about', {
+	res.render('blog', {
 		blogPosts: blogPosts
 	});
 });
