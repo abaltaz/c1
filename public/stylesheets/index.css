@@ -47,6 +47,14 @@ h1 span {
   margin-left: 5px;
 }
 
+h1 a:link, h1 a:visited, h1 a:active {
+  color: #222;
+}
+
+a {
+  text-decoration: none
+}
+
 .current-weather {
   font-size: 13px;
   color: #777;

@@ -11,8 +11,9 @@ if (process.env.NODE_ENV === "local") {
 }
 
 var routes = require('./routes/');
-var users = require('./routes/users');
+//var users = require('./routes/users');
 var getData = require('./routes/data-get');
+var about = require('./routes/about');
 
 
 
@@ -34,7 +35,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', getData);
-app.use('/users', users);
+app.use('/about', about);
+
+//app.use('/users', users);
 
 
 

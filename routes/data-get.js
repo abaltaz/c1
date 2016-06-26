@@ -218,7 +218,7 @@ function getGoogleSheet() {
 		// spreadsheet key is the long id in the sheets URL 
 		var my_sheet = new GoogleSpreadsheet('1tg5uQadbOIUv-rxrCWhiIgDmwnaGkT7jJrb6rxurkfI');
 	
-		my_sheet.getRows( 1, function(err, row_data){
+		my_sheet.getRows(1, function(err, row_data){
 			
 			//console.log( 'pulled in ' + JSON.stringify(row_data) + ' rows');
 			
@@ -759,11 +759,13 @@ function determineEventStatus(startDate, endDate, futureThreshold) {
       if (now.isBetween(startDate, endDate) ||
          (now.isSame(startDate, 'day') && startDate.isSame(endDate))) {
         status.type = "current";
+    	status.weightTime = 10;
       }
 
         else if (now.isSame(startDate, 'day') &&
                  now.isBefore(startDate)) {
                  status.type = "later";
+             	 status.weightTime = 5;
         }
 
         else if (now.isBefore(startDate, 'day')) {

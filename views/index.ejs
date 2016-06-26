@@ -31,10 +31,7 @@
 
 		<div class="content-wrapper">
 
-		  <div class="header">
-		    <h1>chicago<span>1</span></h1>
-		    <div class="current-weather"><%= currentWeather %></div>
-		  </div>
+		  <%- include partial-header.ejs %>
 
 		  <% if (obstacles.today.events.length === 0) { %>
 			  <div class="all-clear">
@@ -130,17 +127,7 @@
 
 		-->
 
-		<ul class="footer">
-			<li>About Chicago 1</li>
-			<li><a href="mailto:ideas@chicago1.org">Send us your ideas</a></li>
-			<li><a href="mailto:bugs@chicago1.org">Report a bug</a></li>
-			<div class="c1built">Chicago 1 is built from a café in Andersonville</div>
-			<div class="c1built-icons">
-				<i class="fa fa-laptop" aria-hidden="true"></i>
-				<i class="fa fa-coffee" aria-hidden="true"></i>
-				<i class="icon-chicago-star"></i>
-			</div>
-		</ul>
+		<%- include partial-footer.ejs %>		
 
 		<div class="notifications">
 			<div class="about">
