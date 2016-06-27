@@ -83,40 +83,31 @@ function convertToSlug_withDate(Text, Date) {
 
 }
 
-module.exports.blog = function (req, res) {
+var blogRouter = express.Router();
+var blogPostRouter = express.Router();
+
+
+
+blogRouter.get('/blog', function(req, res, next) {
 
 	res.render('blog', {
 		blogPosts: blogPosts
 	});
 
-};
+});
 
-module.exports.blogPost = function (req, res) {
 
+blogPostRouter.get('/blog/:slug', function(req, res, next) {
 
 	var post = underscore.where(blogPosts, {slug: req.params.slug});
 
-	console.log(post);
+	console.log("bpr1", req.params.slug, post);
 
 	res.render('blogpost', { post:post[0] });
 
-	/*
+});
 
-	underscore.where(blogPosts, function(req.params.slug) {
 
-		console.log("URL1", req.params.slug, post.title);
-
-		if (post.slug === req.params.slug) {
-			res.render('blogpost', { post:post });
-		}
-
-		else {
-	      res.render('error');
-	    }
-
-	});
-
-	*/
-
-};
+module.exports.blogRouter = blogRouter;
+module.exports.blogPostRouter = blogPostRouter;
 
