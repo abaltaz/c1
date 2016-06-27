@@ -1,0 +1,10 @@
+<li class="post" id="<%= blogPosts[i].slug %>">
+	<div class="title"><a href="/blog/<%= blogPosts[i].slug %>"><%= blogPosts[i].title %></a></div>
+	<div class="timestamp"><%= blogPosts[i].timestamp %></div>
+	<div class="body"><%- blogPosts[i].body %></div>
+	<div class="shareBtn"><i class="fa fa-share" aria-hidden="true"></i></div>
+	<div class="shareUrl">
+		<strong>Copy and paste to share:</strong><br>
+		<input value="http://alpha.chicago1.org/blog/<%= blogPosts[i].slug %>">
+	</div>
+</li>

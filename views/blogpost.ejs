@@ -50,7 +50,7 @@
 			  background-color: #70a0dc;
 			  text-align: center;
 			  display: block;
-			  margin: 30px auto 0;
+			  margin: 30px auto 0px;
 			  width: 15px;
 			  height: 15px;
 			  border-radius: 50%;
@@ -86,10 +86,6 @@
 				font-size: 18px;
 				margin: 0 0 5px;
 				text-align: center;
-			}
-
-			.post .title a:link, .post .title a:visited {
-				color: #333;
 			}
 
 			.post .timestamp {
@@ -145,12 +141,16 @@
 			<div class="blog">
 
 				<ul class="posts">
-
-					<% for (var i=0; i < blogPosts.length; i++ ) { %>
 					
-						<%- include partial-blogpost.ejs %>
-
-					<% } %>
+					<li class="post" id="<%= post.slug %>">
+						<div class="title"><%= post.title %></div>
+						<div class="timestamp"><%= post.timestamp %></div>
+						<div class="body"><%- post.body %></div>
+						<div class="shareBtn"><i class="fa fa-share" aria-hidden="true"></i></div>
+						<div class="shareUrl">
+							<strong>Copy and paste to share:</strong><br>http://alpha.chicago1.org/blog/<%= post.slug %>
+						</div>
+					</li>
 
 				</ul>
 
@@ -170,8 +170,8 @@
 	$(".shareBtn").on('click', function() {
 		console.log($(this).parent().attr("id"));
 		$(this).siblings('.shareUrl').css({"display":"block"});
-		$(this + 'input').select();
 		$(this).remove();
+
 	});
 
 	</script>

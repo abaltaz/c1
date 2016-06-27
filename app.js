@@ -35,7 +35,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', getData);
-app.use('/blog', blog);
+//app.use('/blog', blog);
+
+app.get('/blog', blog.blog);
+app.get('/blog/:slug', blog.blogPost);
 
 //app.use('/users', users);
 
