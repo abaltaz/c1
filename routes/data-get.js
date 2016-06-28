@@ -6,7 +6,8 @@ var moment = require('moment');
 var underscore = require('underscore');
 var parseString = require('xml2js').parseString;
 var markdownDeep = require('markdowndeep');
-var Promise = require('promise');
+var mlbSchedule = require('../routes/mlbSchedule');
+//var Promise = require('promise');
 
 var markdown = new markdownDeep.Markdown();
 markdown.ExtraMode = true;
@@ -57,6 +58,22 @@ var inTwoDays;
 var inThreeDays;
 
 var obstacles = {};
+
+/*
+setTimeout(function(){
+	console.log("mlbcubs10", mlbSchedule.cubs);
+	console.log("mlbsox10", mlbSchedule.sox);
+},5000);
+*/
+
+
+mlbSchedule.getcubs.on('ready', function() {
+	console.log("mlbcubs18", mlbSchedule.cubs);
+});
+
+mlbSchedule.getsox.on('ready', () => {
+	console.log("mlbsox18", mlbSchedule.sox);
+});
 
 
 
@@ -216,7 +233,7 @@ function getGoogleSheet() {
 	return new Promise(function(resolve,reject) {
 	
 		// spreadsheet key is the long id in the sheets URL 
-		var my_sheet = new GoogleSpreadsheet('1tg5uQadbOIUv-rxrCWhiIgDmwnaGkT7jJrb6rxurkfI');
+		var my_sheet = new GoogleSpreadsheet(process.env.GSHEET_EVENTS);
 	
 		my_sheet.getRows(1, function(err, row_data){
 			
@@ -226,8 +243,8 @@ function getGoogleSheet() {
 
 			underscore.each(row_data, function(row_json, index) {
 				
-				var startDate = moment(row_json.startdate, "YYYY-MM-DD HH:mm:ss")
-				var endDate = moment(row_json.enddate, "YYYY-MM-DD HH:mm:ss")				
+				var startDate = moment(row_json.startdate, "YYYY-MM-DD HH:mm")
+				var endDate = moment(row_json.enddate, "YYYY-MM-DD HH:mm")				
 				status = determineEventStatus(startDate, endDate, 3);
 
 				console.log(endDate);
@@ -407,22 +424,22 @@ function getGameStatus(teamParams) {
 					status: status.type,
 					start: gameDate,
 					end: gameEnd,
-					title: teamParams.name + " game in Chicago " + gameDate.format("(MM/DD)"),
+					title: `${teamParams.name} game in Chicago ${gameDate.format("(MM/DD)")}`,
 					slug: convertToSlug_withDate(teamParams.name, gameDate)
 				};
 
 				game["classNames"] = "game " + teamParams.name.toLowerCase() + " " + game.slug;
 				
-				if (status.type === "current") {
-					game["description"] = "Started at " + gameDate.format("h:mm A");
+				if (status.type === "soon" || status.type === "later") {
+					game["description"] = "Starts at " + gameDate.format("h:mm A");
 				}
 
-				if (status.type === "later") {
-					game["description"] = "Starts at " + gameDate.format("h:mm A");
+				else if (status.type === "current") {
+					game["description"] = "Started at " + gameDate.format("h:mm A");
 				}
 				
 				else if (status.type === "recent") {
-					game["description"] = "Starts at " + gameDate.format("h:mm A");
+					game["description"] = "Started at " + gameDate.format("h:mm A");
 				}
 				
 				else if (status.type === "future") {
@@ -740,7 +757,7 @@ function determineEventStatus(startDate, endDate, futureThreshold) {
     };
 	
     var now = moment();
-
+    var hoursUntil = now.diff(startDate, 'hours');
   
     //console.log(now.format("MM/DD/YY hh:mma"));
     //console.log(startDate.format("MM/DD/YY hh:mma"));
@@ -763,7 +780,17 @@ function determineEventStatus(startDate, endDate, futureThreshold) {
       }
 
         else if (now.isSame(startDate, 'day') &&
-                 now.isBefore(startDate)) {
+		         now.isBefore(startDate) && 
+		         hoursUntil >= -2) {	
+
+		         	status.type = "soon";
+		     	 	status.weightTime = 5;
+        }
+
+        else if (now.isSame(startDate, 'day') &&
+                 now.isBefore(startDate)  && 
+		         hoursUntil < -2) {
+                 
                  status.type = "later";
              	 status.weightTime = 5;
         }
@@ -786,7 +813,7 @@ function determineEventStatus(startDate, endDate, futureThreshold) {
       return false;
     }
 	
-	if (status.type === "current" || status.type === "later" || status.type === "future" || status.type === "recent") {
+	if (status.type === "current" || status.type === "soon" || status.type === "later" || status.type === "future" || status.type === "recent") {
 		status.inDisplayWindow = true;
 	}
 
@@ -805,7 +832,7 @@ function assignToADay(data) {
 		obstacles.all.push(event);
 
 		//Rules for displaying an event for Today
-		if (event.status === "current" || event.status === "later") {
+		if (event.status === "current" || event.status === "soon" || event.status === "later") {
 			obstacles.today.events.push(event);
 		}
 		

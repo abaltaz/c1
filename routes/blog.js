@@ -83,10 +83,11 @@ function convertToSlug_withDate(Text, Date) {
 
 }
 
+
+//Set up routers for blog page and blogpost page
+
 var blogRouter = express.Router();
 var blogPostRouter = express.Router();
-
-
 
 blogRouter.get('/blog', function(req, res, next) {
 
@@ -100,9 +101,6 @@ blogRouter.get('/blog', function(req, res, next) {
 blogPostRouter.get('/blog/:slug', function(req, res, next) {
 
 	var post = underscore.where(blogPosts, {slug: req.params.slug});
-
-	console.log("bpr1", req.params.slug, post);
-
 	res.render('blogpost', { post:post[0] });
 
 });

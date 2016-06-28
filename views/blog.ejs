@@ -170,7 +170,6 @@
 	$(".shareBtn").on('click', function() {
 		console.log($(this).parent().attr("id"));
 		$(this).siblings('.shareUrl').css({"display":"block"});
-		$(this + 'input').select();
 		$(this).remove();
 	});
 

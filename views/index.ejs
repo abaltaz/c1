@@ -47,7 +47,7 @@
 			
 		  	<% for (var i=0; i < obstacles.today.events.length; i++ ) { %>
 
-		  		<li class="update <%= obstacles.today.events[i].classNames %>">
+		  		<li class="update <%= obstacles.today.events[i].status %> <%= obstacles.today.events[i].classNames %>">
 		  			<div class="icon" data-icons="<%- obstacles.today.events[i].icon %>"></div>
 			  		<div class="title"><%= obstacles.today.events[i].title %></div>
 			  		<div class="msg"><%- obstacles.today.events[i].description %></div>
