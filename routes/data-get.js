@@ -57,6 +57,8 @@ var inOneDay;
 var inTwoDays;
 var inThreeDays;
 
+var statusOrder = ["current", "soon", "later", "recent", "past"];
+
 var obstacles = {};
 
 /*
@@ -216,6 +218,7 @@ function assembleObstacles() {
 				obstacles.numString = obstacles.today.events.length + "(Smooth sailing)"
 			}
 
+			obstacles.today.events = underscore.sortBy(obstacles.today.events, 'statusRank');
 			
 			resolve({
 				obstacles: obstacles,
@@ -260,6 +263,7 @@ function getGoogleSheet() {
 						source: row_json.source,
 						slug: convertToSlug_withDate(row_json.title, startDate),
 						status: status.type,
+						statusRank: statusOrder.indexOf(status.type),
 						inDisplayWindow: status.inDisplayWindow
 					};
 
@@ -327,6 +331,7 @@ function getCtaStatus() {
 								//impactedService: convertToSlug(alert.ImpactedService[0].Service[0].ServiceName[0]),
 								inDisplayWindow: status.inDisplayWindow,
 								status: status.type,
+								statusRank: statusOrder.indexOf(status.type),
 								slug: convertToSlug_withDate(alert.Headline[0], alertStart)
 							};
 
@@ -422,6 +427,7 @@ function getGameStatus(teamParams) {
 				var game = {
 			  		inDisplayWindow: status.inDisplayWindow,
 					status: status.type,
+					statusRank: statusOrder.indexOf(status.type),
 					start: gameDate,
 					end: gameEnd,
 					title: `${teamParams.name} game in Chicago ${gameDate.format("(MM/DD)")}`,
@@ -571,6 +577,7 @@ function getRainStatus() {
 										alertNow: true,
 										inDisplayWindow: status.inDisplayWindow,
 										status: status.type,
+										statusRank: statusOrder.indexOf(status.type),
 										start: startDate,
 										end: endDate,
 										slug: convertToSlug_withDate(alert.title, startDate),
@@ -604,6 +611,7 @@ function getRainStatus() {
 					var thisForecast = {
 						inDisplayWindow: status.inDisplayWindow,
 						status: status.type,
+						statusRank: statusOrder.indexOf(status.type),
 						start: startDate,
 						end: startDate,
 						slug: convertToSlug_withDate("forecast", startDate),
@@ -683,6 +691,7 @@ function getTraffic() {
 						end: startDate,
 						inDisplayWindow: status.inDisplayWindow,
 						status: status.type,
+						statusRank: statusOrder.indexOf(status.type),
 						slug: convertToSlug_withDate(route.name, startDate)
 					};
 

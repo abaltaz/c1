@@ -150,6 +150,11 @@ b {
   max-width: 300px;
 }
 
+
+.updates > li.later .title, .updates > li.later .msg, .updates > li.later .icon {
+  color: #afafaf;
+}
+
 .updates > li .msg {
   /*border-top: 1px solid #eee;
   margin: 20px 0 0 0;
