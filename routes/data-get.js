@@ -894,38 +894,3 @@ router.get('/', function(req, res, next) {
 });
 
 module.exports = router;
-
-/*
-function calc_a(x) {
-	return new Promise(function(resolve, reject){
-
-	  var a = x;
-	  var b = 10;
-
-	  resolve(a+b);
-
-	});
-}
-    
-function calc_b(x) {
-	return new Promise(function(resolve, reject){
-
-	  var a = x;
-	  var b = 100;
-
-	  resolve(a+b);
-
-	});
-}
-    	
-
-
-
-
-calc_a(10).then(function(data_a){
-	      console.log(data_a);
-	      return calc_b(100)
-	    }).then(function(data_b){
-	      console.log(data_b);
-	    });
-*/

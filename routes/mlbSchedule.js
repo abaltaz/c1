@@ -6,8 +6,6 @@ var underscore = require('underscore');
 var parseString = require('xml2js').parseString;
 var Converter = require("csvtojson").Converter;
 var EventEmitter = require('events');
-var Promise = require('promise');
-
 
 
 function doRequest(endpoint, endpointFormat){
@@ -78,6 +76,75 @@ function getScheduleInterval(endpoint, team) {
 getScheduleInterval(gameCalendars.cubs, "cubs");
 getScheduleInterval(gameCalendars.sox, "sox");
 
+function getGameStatus2(teamParams) {
+	return new Promise(function(resolve,reject) {
+		doRequest(teamParams.schedule, "json").then(function(data){
+        
+	        //Set the current day
+	        var today = moment();
+	        //("05/29/16 3:00pm", "MM/DD/YY h:mma");    
+			
+			var games = [];
+			
 
+	        //Iterate through each game in the schedule
+	        underscore.each(data, function(value, index) {    
+  
+	          //Assemble a game's date and time like so
+	          var gameDatePretty = 
+	              value[teamParams.dateIdentifier]
+	              + " "
+	              + value[teamParams.timeIdentifier];
+  
+  
+	          //Create a Moment from the games date and time
+	          var gameDate = moment(gameDatePretty, "MM/DD/YY hh:mm A");
+			  
+			  //Create a Moment 5 hours after a game's start time
+			  var gameEnd = gameDate.clone().add(3, "hours");
+ 
+			  
+			  var status = determineEventStatus(gameDate, gameEnd, 3);
+			  
+			  if (status && status.inDisplayWindow == true) {
+
+				var game = {
+			  		inDisplayWindow: status.inDisplayWindow,
+					status: status.type,
+					statusRank: statusOrder.indexOf(status.type),
+					start: gameDate,
+					end: gameEnd,
+					title: `${teamParams.name} game in Chicago ${gameDate.format("(MM/DD)")}`,
+					slug: convertToSlug_withDate(teamParams.name, gameDate)
+				};
+
+				game["classNames"] = "game " + teamParams.name.toLowerCase() + " " + game.slug;
+				
+				if (status.type === "soon" || status.type === "later") {
+					game["description"] = "Starts at " + gameDate.format("h:mm A");
+				}
+
+				else if (status.type === "current") {
+					game["description"] = "Started at " + gameDate.format("h:mm A");
+				}
+				
+				else if (status.type === "recent") {
+					game["description"] = "Started at " + gameDate.format("h:mm A");
+				}
+				
+				else if (status.type === "future") {
+					game["title"] = teamParams.name + " at home, starts at " + gameDate.format("h:mm A (MM/DD)");
+				}
+				  
+				games.push(game);
+				
+			  }
+
+	        });
+			
+	        resolve(games);
+		});
+	});
+}
 
 
