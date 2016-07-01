@@ -8,6 +8,7 @@ var parseString = require('xml2js').parseString;
 var marked = require('marked');
 var mlbSchedule = require('../requests/mlbSchedule');
 var trafficAlerts = require('../requests/trafficAlerts');
+var uber = require('../requests/uber');
 var weather = require('../requests/weather');
 //var Promise = require('promise');
 
@@ -127,6 +128,10 @@ function assembleObstacles() {
 			assignToADay(mlbSchedule.cubs);
 			assignToADay(mlbSchedule.sox);
 			assignToADay(trafficAlerts.data);
+			uber.on('ready', function() {
+				console.log('uber', uber.data);
+				assignToADay(uber.data);
+			});
 
 			if (weather.data.rainStatus.rainToday) {
 

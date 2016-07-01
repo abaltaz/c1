@@ -213,17 +213,15 @@ b {
   font-family: C1;
 }
 
-
-.traffic .icon:before {
-  content: "\f018";
-  font-family: FontAwesome;
-}
-
 .transit .icon:before {
     content: "a";
     font-family: C1;
 }
 
+.uber .icon:before {
+    content: "n";
+    font-family: C1;
+}
 
 .special .icon:before {
   background-image: url("http://img.relax.ru/88317/9506715671966128_4d299cc8.jpg");
