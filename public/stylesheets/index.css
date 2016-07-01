@@ -10,7 +10,7 @@ html {
 }
 
 body {
-  font-family: Open Sans;
+  font-family: Roboto;
   font-weight: 300;
   color: #444;
   padding: 0 10px;
@@ -146,7 +146,7 @@ b {
 .updates > li .title {
   margin: 0 0 15px 0;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
   max-width: 300px;
 }
 
@@ -197,6 +197,7 @@ b {
 
 .updates > li .label-status i {
   font-size: 13px;
+  vertical-align: middle;
 }
 
 .weather-alert .icon:before {
@@ -206,8 +207,8 @@ b {
 }
 
 .rain .icon:before {
-  content: "\f043";
-  font-family: FontAwesome;
+  content: "i";
+  font-family: "c1";
 }
 
 .cubs .icon:before {
@@ -346,7 +347,6 @@ b {
 
 
 .notifications {
-  font-family: Open Sans;
   width: 100%;
   margin: 150px 0 0px;
   border-top: 1px solid #eee;

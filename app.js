@@ -38,7 +38,7 @@ app.use('/', getData);
 
 //router for /blog
 app.use('/', blog.blogRouter);
-
+  
 //router for /blog/:slug
 app.use('/', blog.blogPostRouter);
 

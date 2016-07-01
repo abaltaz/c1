@@ -264,7 +264,8 @@ function getGoogleSheet() {
 						slug: convertToSlug_withDate(row_json.title, startDate),
 						status: status.type,
 						statusRank: statusOrder.indexOf(status.type),
-						inDisplayWindow: status.inDisplayWindow
+						inDisplayWindow: status.inDisplayWindow,
+						hoursUntil: status.hoursUntil
 					};
 
 					customUpdate["classNames"] = "custom-update " + customUpdate.slug;
@@ -766,7 +767,9 @@ function determineEventStatus(startDate, endDate, futureThreshold) {
     };
 	
     var now = moment();
-    var hoursUntil = now.diff(startDate, 'hours');
+    var hoursUntil = Math.abs(now.diff(startDate, 'hours'));
+    status.hoursUntil = hoursUntil;
+
   
     //console.log(now.format("MM/DD/YY hh:mma"));
     //console.log(startDate.format("MM/DD/YY hh:mma"));
@@ -790,7 +793,7 @@ function determineEventStatus(startDate, endDate, futureThreshold) {
 
         else if (now.isSame(startDate, 'day') &&
 		         now.isBefore(startDate) && 
-		         hoursUntil >= -2) {	
+		         hoursUntil <= 1) {	
 
 		         	status.type = "soon";
 		     	 	status.weightTime = 5;
@@ -798,7 +801,7 @@ function determineEventStatus(startDate, endDate, futureThreshold) {
 
         else if (now.isSame(startDate, 'day') &&
                  now.isBefore(startDate)  && 
-		         hoursUntil < -2) {
+		         hoursUntil > 1) {
                  
                  status.type = "later";
              	 status.weightTime = 5;
@@ -816,6 +819,7 @@ function determineEventStatus(startDate, endDate, futureThreshold) {
         else if (now.isAfter(endDate, 'day')) {
                 status.type = "past";
         }
+
     }
   
     else {
