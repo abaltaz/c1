@@ -70,11 +70,11 @@ setTimeout(function(){
 
 
 mlbSchedule.getcubs.on('ready', function() {
-	console.log("mlbcubs18", mlbSchedule.cubs);
+	console.log("mlbcubs19", mlbSchedule.cubs);
 });
 
 mlbSchedule.getsox.on('ready', () => {
-	console.log("mlbsox18", mlbSchedule.sox);
+	console.log("mlbsox19", mlbSchedule.sox);
 });
 
 
@@ -118,7 +118,7 @@ function assembleObstacles() {
 
 		
 		getRainStatus().then(function(data){
-			console.log('getrainstatus, then...');
+			
 
 			if (data.rainStatus.rainToday) {
 
@@ -147,24 +147,10 @@ function assembleObstacles() {
 			});
 			*/
 			
-			return getGameStatus(cubsParams)
-		}).catch(function(err){
-			console.log('getrainstatus Catch', err);
-			return getGameStatus(cubsParams);	
-		}).then(function(data){
-			
-			assignToADay(data);
-			
-			return getGameStatus(soxParams)
-			
-		}).then(function(data) {
-			console.log("BLASDS");
-			assignToADay(data);
-			
-
-
 			return getCtaStatus()
+		}).catch(function(err){
 			
+			return getCtaStatus()
 		}).then(function(data){
 			
 			assignToADay(data);
@@ -173,17 +159,15 @@ function assembleObstacles() {
 			
 		}).then(function(data){
 			
-			console.log("obt1", data);
-
 			assignToADay(data);
 			
 			return getGoogleSheet()
 			
 		}).then(function(data){
 
-			console.log("GS", data);
-			
 			assignToADay(data);
+			assignToADay(mlbSchedule.cubs);
+			assignToADay(mlbSchedule.sox);
 
 			/*
 			underscore.each(data, function(customUpdate,index){
@@ -240,7 +224,7 @@ function getGoogleSheet() {
 	
 		my_sheet.getRows(1, function(err, row_data){
 			
-			//console.log( 'pulled in ' + JSON.stringify(row_data) + ' rows');
+			//
 			
 			var customUpdates = [];
 
@@ -250,7 +234,7 @@ function getGoogleSheet() {
 				var endDate = moment(row_json.enddate, "YYYY-MM-DD HH:mm")				
 				status = determineEventStatus(startDate, endDate, 3);
 
-				console.log(endDate);
+				
 				
 				if (status && status.inDisplayWindow == true) {
 				
@@ -270,7 +254,7 @@ function getGoogleSheet() {
 
 					customUpdate["classNames"] = "custom-update " + customUpdate.slug;
 
-					if (row_json.icon !== "") { customUpdate["icon"] = "&#x" + row_json.icon; } 
+					if (row_json.icon !== "") { customUpdate["icon"] = row_json.icon; } 
 					if (row_json.morelink !== "") { customUpdate["moreLink"] = row_json.morelink; }
 					
 					customUpdates.push(customUpdate);				
@@ -278,7 +262,7 @@ function getGoogleSheet() {
 
 			});
 			
-			console.log("google-sheet", customUpdates);
+			
 				
 			resolve(customUpdates);
 		
@@ -384,7 +368,7 @@ function getCtaStatus() {
 		
 				});
 				
-				console.log(majorAlerts);
+				
 				resolve(majorAlerts);
 				
 			});
@@ -476,7 +460,7 @@ function getRainStatus() {
 			
 			else {
 				
-				console.log('processing rain status');
+				
 				
 		        var currentTime = moment();
 		        var tomorrowDate = moment().add(1, 'day').set("hour", 0).set("minute", 0);
@@ -679,7 +663,7 @@ function getTraffic() {
 
 				if (segmentAlertsHtml.length > 0) {
 
-					console.log("SAH1", segmentAlertsHtml.toString());
+					
 					var description = "<ul>" + segmentAlertsHtml.join("") + "</ul>";
 					var startDate = moment();
 
@@ -709,7 +693,7 @@ function getTraffic() {
 
 		//Need to figure out how to structure this Promise without a setTimeout
 		setTimeout(function() {
-			console.log("TR16", trafficAlerts);
+			
 			resolve(trafficAlerts);
 		},100);
 
@@ -723,7 +707,7 @@ function getTraffic() {
 function doRequest(endpoint, endpointFormat){
 	return new Promise(function(resolve,reject) {
 		request(endpoint, function(error, response, body) {
-			console.log("Request made to " + endpoint);
+			
 			
 			if (!error && response.statusCode == 200) {
 			
@@ -771,9 +755,9 @@ function determineEventStatus(startDate, endDate, futureThreshold) {
     status.hoursUntil = hoursUntil;
 
   
-    //console.log(now.format("MM/DD/YY hh:mma"));
-    //console.log(startDate.format("MM/DD/YY hh:mma"));
-    //console.log(endDate.format("MM/DD/YY hh:mma"));
+    //
+    //
+    //
   
   
     //Throw error if endDate is same AND earlier that startDate
@@ -830,7 +814,7 @@ function determineEventStatus(startDate, endDate, futureThreshold) {
 		status.inDisplayWindow = true;
 	}
 
-	//console.log(status);
+	//
 
     return status;
       
@@ -838,7 +822,7 @@ function determineEventStatus(startDate, endDate, futureThreshold) {
 
 function assignToADay(data) {
 
-	console.log("assignToADay-1", obstacles.nextDays.inOneDay);
+	
 
 	underscore.each(data, function(event,index) {
 
@@ -869,7 +853,7 @@ function assignToADay(data) {
 
 	});
 
-	//console.log("assignToADay-2", data.start, obstacles.nextDays.inOneDay);
+	//
 
 }
 
@@ -879,7 +863,7 @@ function obstaclesInterval() {
 		console.log("Running in " + process.env.NODE_ENV + " environment")
 		obstaclesData = data.obstacles;
 		hasCurrentUpdate = data.hasCurrentUpdate;
-		console.log("Requesting C1 data...", obstaclesData);
+		
 		setTimeout(obstaclesInterval, process.env.OBSTACLES_INTERVAL);
 	});	
 }
@@ -888,8 +872,8 @@ obstaclesInterval();
 
 
 router.get('/', function(req, res, next) {
-	console.log("hello", obstaclesData);
-	console.log("today", obstaclesData.today.events);
+	
+	
 	res.render('index', {
 		obstacles: obstaclesData,
 		currentWeather: currentWeather,

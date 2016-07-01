@@ -101,14 +101,11 @@ b {
 }
 
 .updates:after {
-  content: "";
-  background-color: #70a0dc;
+  content: "••••";
+  color: #70a0dc;
   text-align: center;
   display: block;
   margin: 0 auto 30px;
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
 }
 
 
@@ -196,7 +193,7 @@ b {
 }
 
 .updates > li .label-status i {
-  font-size: 13px;
+  font-size: 12px;
   vertical-align: middle;
 }
 
@@ -211,20 +208,11 @@ b {
   font-family: "c1";
 }
 
-.cubs .icon:before {
-  content: "C";
-  font-weight: 800;
-  /*content: "a";
-  font-family: C1;*/
+.cubs .icon:before, .sox .icon:before {
+  content: "e";
+  font-family: C1;
 }
 
-
-.sox .icon:before {
-  content: "S";
-  font-weight: 800;
-  font-size: 20px;
-  display: block;
-}
 
 .traffic .icon:before {
   content: "\f018";
@@ -232,7 +220,7 @@ b {
 }
 
 .transit .icon:before {
-    content: "b";
+    content: "a";
     font-family: C1;
 }
 
@@ -254,14 +242,10 @@ b {
   content: "Red Line";
 }
 
-.cubs .icon {
-  margin-top: 3px
-}
-
 
 .custom-update .icon:before {
     content: attr(data-icons);
-    font-family: 'FontAwesome';
+    font-family: 'C1';
 }
 
 .next-days {

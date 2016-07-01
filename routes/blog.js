@@ -16,7 +16,6 @@ var blogPosts;
 
 getGoogleSheet().then(function(posts){
 	blogPosts = posts;
-	console.log("blog4", posts);
 });
 
 

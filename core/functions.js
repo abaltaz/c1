@@ -8,9 +8,9 @@ var parseString = require('xml2js').parseString;
 var markdownDeep = require('markdowndeep');
 var mlbSchedule = require('../routes/mlbSchedule');
 
+module.exports.statusOrder = ["current", "soon", "later", "recent", "past"];
 
-
-function doRequest(endpoint, endpointFormat){
+module.exports.doRequest = function(endpoint, endpointFormat){
 	return new Promise(function(resolve,reject) {
 		request(endpoint, function(error, response, body) {
 			console.log("Request made to " + endpoint);
@@ -42,7 +42,7 @@ function convertToSlug(Text) {
         ;
 }
 
-function convertToSlug_withDate(Text, Date) {	
+module.exports.convertToSlug_withDate = function(Text, Date) {	
 	var t = Text.toLowerCase().replace(/[^\w ]+/g,'').replace(/ +/g,'-');
 	var d = Date.format("-MMDDYY-HHmm");
 
@@ -50,7 +50,7 @@ function convertToSlug_withDate(Text, Date) {
 
 }
 
-function determineEventStatus(startDate, endDate, futureThreshold) {
+module.exports.determineEventStatus = function(startDate, endDate, futureThreshold) {
   
     var status = {
     	type: "",
