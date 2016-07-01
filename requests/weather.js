@@ -37,14 +37,8 @@ function getWeather() {
 		          rainToday: false,
 		          rainTodayDetails: [],
 		          rainTodayString: "",
-		      	  rainTodayTitle: forecast.hourly.summary,	
-		          currentWeather: 
-		            Math.round(forecast.currently.temperature) + "° " 
-		            + forecast.currently.summary
+		      	  rainTodayTitle: forecast.hourly.summary
 		        };
-			
-				//Store the current weather
-				currentWeather = rainStatus.currentWeather;
         
 		        //Iterate through the hourly forecast
 		        underscore.each(forecast.hourly.data, function(forecast,index) {
@@ -184,7 +178,8 @@ function getWeather() {
 		        resolve({
 					rainStatus: rainStatus,
 					weatherAlerts: weatherAlerts,
-					dailyForecast: dailyForecast
+					dailyForecast: dailyForecast,
+					currentWeather: `${Math.round(forecast.currently.temperature)}° ${forecast.currently.summary}`
 				});
 			
 			}

@@ -5,13 +5,9 @@ var GoogleSpreadsheet = require("google-spreadsheet");
 var moment = require('moment');
 var underscore = require('underscore');
 var parseString = require('xml2js').parseString;
-var markdownDeep = require('markdowndeep');
 var marked = require('marked');
 var Promise = require('promise');
 
-var markdown = new markdownDeep.Markdown();
-markdown.ExtraMode = true;
-markdown.SafeMode = false;
 
 var blogPosts;
 

@@ -48,7 +48,7 @@ function getTraffic() {
 				underscore.each(road, function(roadSegment){
 
 					//Store an object as a string if the road is congested
-					if (roadSegment.level === "LIGHT_CONGESTION") {
+					if (roadSegment.level === "HEAVY_CONGESTION") {
 						segmentAlertsHtml.push("<li>" + roadSegment.from + " to " + roadSegment.to + "</li>");
 					}
 

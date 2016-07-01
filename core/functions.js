@@ -5,7 +5,6 @@ var GoogleSpreadsheet = require("google-spreadsheet");
 var moment = require('moment');
 var underscore = require('underscore');
 var parseString = require('xml2js').parseString;
-var markdownDeep = require('markdowndeep');
 
 
 module.exports.statusOrder = ["current", "soon", "later", "recent", "past"];

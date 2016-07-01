@@ -5,15 +5,11 @@ var GoogleSpreadsheet = require("google-spreadsheet");
 var moment = require('moment');
 var underscore = require('underscore');
 var parseString = require('xml2js').parseString;
-var markdownDeep = require('markdowndeep');
+var marked = require('marked');
 var mlbSchedule = require('../requests/mlbSchedule');
 var trafficAlerts = require('../requests/trafficAlerts');
 var weather = require('../requests/weather');
 //var Promise = require('promise');
-
-var markdown = new markdownDeep.Markdown();
-markdown.ExtraMode = true;
-markdown.SafeMode = false;
 
 
 var endpoints = {
@@ -215,7 +211,7 @@ function getGoogleSheet() {
 				
 					var customUpdate = {					
 						title: row_json.title,
-						description: markdown.Transform(row_json.description),
+						description: marked(row_json.description),
 						start: startDate,
 						end: endDate,
 						severity: row_json.severity,
@@ -775,7 +771,7 @@ router.get('/', function(req, res, next) {
 	
 	res.render('index', {
 		obstacles: obstaclesData,
-		currentWeather: currentWeather,
+		currentWeather: weather.data.currentWeather,
 		hasCurrentUpdate: hasCurrentUpdate
 	});
 });
