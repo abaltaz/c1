@@ -20,6 +20,7 @@
     "request": "~2.72.0",
     "google-spreadsheet": "~2.0.3",
     "markdowndeep": "~1.6.8",
-    "csvtojson": "~1.0.0"
+    "csvtojson": "~1.0.0",
+    "marked": "~0.3.5"
   }
 }

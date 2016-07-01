@@ -6,7 +6,9 @@ var moment = require('moment');
 var underscore = require('underscore');
 var parseString = require('xml2js').parseString;
 var markdownDeep = require('markdowndeep');
-var mlbSchedule = require('../routes/mlbSchedule');
+var mlbSchedule = require('../requests/mlbSchedule');
+var trafficAlerts = require('../requests/trafficAlerts');
+var weather = require('../requests/weather');
 //var Promise = require('promise');
 
 var markdown = new markdownDeep.Markdown();
@@ -62,12 +64,6 @@ var statusOrder = ["current", "soon", "later", "recent", "past"];
 var obstacles = {};
 
 /*
-setTimeout(function(){
-	console.log("mlbcubs10", mlbSchedule.cubs);
-	console.log("mlbsox10", mlbSchedule.sox);
-},5000);
-*/
-
 
 mlbSchedule.getcubs.on('ready', function() {
 	console.log("mlbcubs19", mlbSchedule.cubs);
@@ -76,7 +72,7 @@ mlbSchedule.getcubs.on('ready', function() {
 mlbSchedule.getsox.on('ready', () => {
 	console.log("mlbsox19", mlbSchedule.sox);
 });
-
+*/
 
 
 function assembleObstacles() {
@@ -117,24 +113,37 @@ function assembleObstacles() {
 	return new Promise(function(resolve,reject) {
 
 		
-		getRainStatus().then(function(data){
+		getCtaStatus().then(function(transitAlerts){
 			
+			assignToADay(transitAlerts);
 
-			if (data.rainStatus.rainToday) {
+			return getGoogleSheet()
+
+		}).catch(function(err){
+			
+			return getGoogleSheet()
+
+		}).then(function(googleSheet){
+
+			assignToADay(googleSheet);
+			assignToADay(weather.data.weatherAlerts);
+			assignToADay(weather.data.dailyForecast);
+			assignToADay(mlbSchedule.cubs);
+			assignToADay(mlbSchedule.sox);
+			assignToADay(trafficAlerts.data);
+
+			if (weather.data.rainStatus.rainToday) {
 
 				obstacles.today.events.push({
-					occurence: data.rainStatus.rainToday,
-					title: data.rainStatus.rainTodayString,
+					occurence: weather.data.rainStatus.rainToday,
+					title: weather.data.rainStatus.rainTodayString,
 					category: "weather",
 					type: "rain",
 					classNames: "rain",
-					description: data.rainStatus.rainTodayTitle
+					description: weather.data.rainStatus.rainTodayTitle
 				});
 			
 			}
-
-			assignToADay(data.weatherAlerts);
-			assignToADay(data.dailyForecast);
 
 			/*
 			underscore.each(data.weatherAlerts, function(weatherAlert,index){
@@ -146,41 +155,7 @@ function assembleObstacles() {
 				});
 			});
 			*/
-			
-			return getCtaStatus()
-		}).catch(function(err){
-			
-			return getCtaStatus()
-		}).then(function(data){
-			
-			assignToADay(data);
-			
-			return getTraffic()
-			
-		}).then(function(data){
-			
-			assignToADay(data);
-			
-			return getGoogleSheet()
-			
-		}).then(function(data){
 
-			assignToADay(data);
-			assignToADay(mlbSchedule.cubs);
-			assignToADay(mlbSchedule.sox);
-
-			/*
-			underscore.each(data, function(customUpdate,index){
-				obstacles[customUpdate.title + (index + 1)] = {
-					occurence: customUpdate.isCurrent,
-					description: customUpdate.description,
-					category: "custom-update",
-					type: customUpdate.title,
-					title: customUpdate.title,
-					icon:  "&#x" + customUpdate.icon
-				}
-			});
-			*/
 			
 			//Determine if there are NO current updates
 			hasCurrentUpdate = false;
@@ -254,7 +229,7 @@ function getGoogleSheet() {
 
 					customUpdate["classNames"] = "custom-update " + customUpdate.slug;
 
-					if (row_json.icon !== "") { customUpdate["icon"] = row_json.icon; } 
+					if (row_json.icon !== "") { customUpdate["icon"] = row_json.icon; } /*"&#x" + customUpdate.icon*/
 					if (row_json.morelink !== "") { customUpdate["moreLink"] = row_json.morelink; }
 					
 					customUpdates.push(customUpdate);				
@@ -519,7 +494,8 @@ function getRainStatus() {
 		                time: forecastTime.format("ha"), 
 		                intensity: forecast.precipIntensity,
 		                summary: forecast.summary,
-		                probablity: probablity()
+		                probablity: probablity(),
+		                occurence: data.rainStatus.rainToday
 		              });
             
 		            }
@@ -624,84 +600,7 @@ function getRainStatus() {
 	});
 }
 
-var trafficRoutes = {
-	lsd_nb: {
-		name: "Lake Shore Drive Northbound",
-		endpoint: "http://www.travelmidwest.com/lmiga/travelTime.json?path=GATEWAY.IL.LAKESHORE.LAKE%20SHORE%20DRIVE%20NB"
-	},
-	lsd_sb: {
-		name: "Lake Shore Drive Southbound",
-		endpoint: "http://www.travelmidwest.com/lmiga/travelTime.json?path=GATEWAY.IL.LAKESHORE.LAKE%20SHORE%20DRIVE%20SB"
-	}
-};
 
-
-function getTraffic() {
-
-	return new Promise(function(resolve,reject) {
-
-		var trafficAlerts=[];
-
-		//Iterate through each Traffic Route endpoint
-		underscore.each(trafficRoutes, function(route, index) {
-
-			//Make the request for each route
-			doRequest(route.endpoint, "json").then(function(road){
-
-				//Array containing html strings for each traffic alert item
-				var segmentAlertsHtml = [];
-
-				//Iterate through each road-segment object in the response from IDOT
-				underscore.each(road, function(roadSegment){
-
-					//Store an object as a string if the road is congested
-					if (roadSegment.level === "HEAVY_CONGESTION") {
-						segmentAlertsHtml.push("<li>" + roadSegment.from + " to " + roadSegment.to + "</li>");
-					}
-
-				});
-
-				if (segmentAlertsHtml.length > 0) {
-
-					
-					var description = "<ul>" + segmentAlertsHtml.join("") + "</ul>";
-					var startDate = moment();
-
-					var status = determineEventStatus(startDate, startDate, 1);
-
-					var alert = {
-						description: description,
-						title: "Heavy traffic on " + route.name,
-						start: startDate,
-						end: startDate,
-						inDisplayWindow: status.inDisplayWindow,
-						status: status.type,
-						statusRank: statusOrder.indexOf(status.type),
-						slug: convertToSlug_withDate(route.name, startDate)
-					};
-
-
-					
-					alert["classNames"] = "traffic " + alert.slug;
-
-					trafficAlerts.push(alert);
-				}
-
-			});
-
-		});
-
-		//Need to figure out how to structure this Promise without a setTimeout
-		setTimeout(function() {
-			
-			resolve(trafficAlerts);
-		},100);
-
-
-
-	});
-
-}
 
 
 function doRequest(endpoint, endpointFormat){

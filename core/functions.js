@@ -6,7 +6,7 @@ var moment = require('moment');
 var underscore = require('underscore');
 var parseString = require('xml2js').parseString;
 var markdownDeep = require('markdowndeep');
-var mlbSchedule = require('../routes/mlbSchedule');
+
 
 module.exports.statusOrder = ["current", "soon", "later", "recent", "past"];
 

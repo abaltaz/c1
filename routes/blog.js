@@ -6,6 +6,7 @@ var moment = require('moment');
 var underscore = require('underscore');
 var parseString = require('xml2js').parseString;
 var markdownDeep = require('markdowndeep');
+var marked = require('marked');
 var Promise = require('promise');
 
 var markdown = new markdownDeep.Markdown();
@@ -36,7 +37,7 @@ function getGoogleSheet() {
 
 				items.push({
 					title: row_json.title,
-					body: markdown.Transform(row_json.body),
+					body: marked(row_json.body),
 					timestamp: timestamp,
 					timeEpoch: timestamp.valueOf(),
 					slug: convertToSlug_withDate(row_json.title, moment(row_json.date, "YYYY-MM-DD"))
