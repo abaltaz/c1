@@ -42,7 +42,7 @@ function getSurge() {
 			var surgeItem = [];
 
 
-			if (uberx[0].surge_multiplier > 0.5) {
+			if (uberx[0].surge_multiplier > process.env.UBER_SURGE_THRESHOLD) {
 
 				var startDate = moment();
 
