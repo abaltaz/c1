@@ -102,6 +102,7 @@ b {
 
 .updates:after {
   content: "••••";
+  font-size: 24px;
   color: #70a0dc;
   text-align: center;
   display: block;

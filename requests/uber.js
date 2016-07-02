@@ -35,9 +35,9 @@ function getSurge() {
 
 	return new Promise(function(resolve, reject) {
 
-		c1functions.doRequest(uberPrice, "json").then(function(prices){
+		c1functions.doRequest(uberPrice, "json").then(function(data){
 
-			var uberx = underscore.where(prices.prices, {localized_display_name: 'uberX'});
+			var uberx = underscore.where(data.prices, {localized_display_name: 'uberX'});
 
 			if (uberx[0].surge_multiplier > 1) {
 
