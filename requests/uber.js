@@ -24,7 +24,7 @@ function getSurgeInterval() {
 	getSurge().then(function(data) {
 		module.exports.data = data;
 		//console.log(data);
-		//module.exports.emit('ready');
+		module.exports.emit('ready');
 	});
 
 	setTimeout(getSurgeInterval, 300000);
@@ -40,12 +40,13 @@ function getSurge() {
 			console.log(data);
 
 			var uberx = underscore.where(data.prices, {localized_display_name: 'uberX'});
+			var surgeItem = [];
 
 			if (uberx[0].surge_multiplier > 1) {
 
 				var startDate = moment();
 
-				var surgeItem = [{
+				surgeItem.push({
 					title: "Uber surge in effect",
 					description: `Fare increase estimated to be ${uberx[0].surge_multiplier}x`,
 					start: startDate,
@@ -54,7 +55,7 @@ function getSurge() {
 					status: "current",
 					statusRank: 0,
 					slug: c1functions.convertToSlug_withDate("uber surge", startDate)
-				}];
+				});
 
 				surgeItem[0]["classNames"] = "uber " + surgeItem[0].slug;
 

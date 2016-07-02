@@ -124,10 +124,10 @@ function assembleObstacles() {
 
 			assignToADay(weather.data.weatherAlerts);
 			assignToADay(weather.data.dailyForecast);
-			//uber.on('ready', function() {
-			//	console.log('uber', uber.data);
+			uber.on('ready', function() {
+				console.log('uber', uber.data);
 				assignToADay(uber.data);
-			//});
+			});
 			assignToADay(trafficAlerts.data);
 			assignToADay(googleSheet);
 			assignToADay(mlbSchedule.cubs);
