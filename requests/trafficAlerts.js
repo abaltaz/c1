@@ -6,6 +6,7 @@ var EventEmitter = require('events');
 var c1functions = require('../core/functions');
 
 
+var eventType = "traffic";
 
 var trafficRoutes = {
 	lsd_nb: {
@@ -28,6 +29,8 @@ function getTrafficInterval() {
 	setTimeout(getTrafficInterval, 300000);
 
 };
+
+
 
 function getTraffic() {
 
@@ -55,14 +58,15 @@ function getTraffic() {
 				});
 
 				if (segmentAlertsHtml.length > 0) {
-
 					
 					var description = "<ul>" + segmentAlertsHtml.join("") + "</ul>";
 					var startDate = moment();
 
 					var status = c1functions.determineEventStatus(startDate, startDate, 1);
 
+
 					var alert = {
+						eventType: "traffic",
 						description: description,
 						title: "Heavy traffic on " + route.name,
 						start: startDate,
@@ -70,12 +74,13 @@ function getTraffic() {
 						inDisplayWindow: status.inDisplayWindow,
 						status: status.type,
 						statusRank: c1functions.statusOrder.indexOf(status.type),
+						eventRank: c1functions.eventOrder.indexOf(eventType),
 						slug: c1functions.convertToSlug_withDate(route.name, startDate)
 					};
 
 
 					
-					alert["classNames"] = "traffic " + alert.slug;
+					alert["classNames"] = `${eventType} alert.slug`;
 
 					trafficAlerts.push(alert);
 				}
@@ -88,6 +93,7 @@ function getTraffic() {
 		setTimeout(function() {
 			
 			resolve(trafficAlerts);
+
 		},100);
 
 	});

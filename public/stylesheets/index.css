@@ -133,9 +133,9 @@ b {
   color: #999;
   margin: 0 0 5px 0;
   position: absolute;
-  top: 12px;
-  right: 17px;
-  font-size: 26px;
+  top: 25px;
+  left: 27px;
+  font-size: 36px;
   width: 25px;
   text-align: center;
 }
@@ -161,6 +161,11 @@ b {
   font-weight:400;
   line-height: 22px;
 }
+
+.updates > li .msg ul {
+  padding-left: 18px;
+}
+
 
 .updates > li .title:before {
   font-size: 24px;

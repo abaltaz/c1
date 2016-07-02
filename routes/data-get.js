@@ -10,6 +10,7 @@ var mlbSchedule = require('../requests/mlbSchedule');
 var trafficAlerts = require('../requests/trafficAlerts');
 var uber = require('../requests/uber');
 var weather = require('../requests/weather');
+var c1functions = require('../core/functions');
 //var Promise = require('promise');
 
 
@@ -124,10 +125,12 @@ function assembleObstacles() {
 
 			assignToADay(weather.data.weatherAlerts);
 			assignToADay(weather.data.dailyForecast);
-			uber.on('ready', function() {
-				console.log('uber', uber.data);
+			//uber.on('ready', function() {
+			//	console.log('uber', uber.data);
 				assignToADay(uber.data);
-			});
+			//});
+
+			console.log("traffic", trafficAlerts.data);
 			assignToADay(trafficAlerts.data);
 			assignToADay(googleSheet);
 			assignToADay(mlbSchedule.cubs);
@@ -179,8 +182,12 @@ function assembleObstacles() {
 				obstacles.numString = obstacles.today.events.length + "(Smooth sailing)"
 			}
 
-			obstacles.today.events = underscore.sortBy(obstacles.today.events, 'statusRank');
+			//obstacles.today.events = underscore.sortBy(obstacles.today.events, 'statusRank');
 			
+			obstacles.today.events = underscore.sortBy(obstacles.today.events, 'statusRank');
+			obstacles.today.events = underscore.sortBy(obstacles.today.events, 'eventRank');
+
+
 			resolve({
 				obstacles: obstacles,
 				hasCurrentUpdate: hasCurrentUpdate
@@ -195,6 +202,8 @@ function assembleObstacles() {
 function getGoogleSheet() {
 	
 	return new Promise(function(resolve,reject) {
+
+		var eventType = "custom-update";
 	
 		// spreadsheet key is the long id in the sheets URL 
 		var my_sheet = new GoogleSpreadsheet(process.env.GSHEET_EVENTS);
@@ -216,6 +225,7 @@ function getGoogleSheet() {
 				if (status && status.inDisplayWindow == true) {
 				
 					var customUpdate = {					
+						eventType: eventType,
 						title: row_json.title,
 						description: marked(row_json.description),
 						start: startDate,
@@ -225,11 +235,12 @@ function getGoogleSheet() {
 						slug: convertToSlug_withDate(row_json.title, startDate),
 						status: status.type,
 						statusRank: statusOrder.indexOf(status.type),
+						eventRank: c1functions.eventOrder.indexOf(eventType),
 						inDisplayWindow: status.inDisplayWindow,
 						hoursUntil: status.hoursUntil
 					};
 
-					customUpdate["classNames"] = "custom-update " + customUpdate.slug;
+					customUpdate["classNames"] = `${eventType} customUpdate.slug`;
 
 					if (row_json.icon !== "") { customUpdate["icon"] = row_json.icon; } /*"&#x" + customUpdate.icon*/
 					if (row_json.morelink !== "") { customUpdate["moreLink"] = row_json.morelink; }
@@ -765,11 +776,13 @@ function obstaclesInterval() {
 		obstaclesData = data.obstacles;
 		hasCurrentUpdate = data.hasCurrentUpdate;
 		
+		console.log(obstaclesData);
+
 		setTimeout(obstaclesInterval, process.env.OBSTACLES_INTERVAL);
 	});	
 }
 
-obstaclesInterval();
+setTimeout(obstaclesInterval, 2000);
 
 
 router.get('/', function(req, res, next) {

@@ -1,13 +1,12 @@
 var express = require('express');
 var router = express.Router();
-var request = require('request');
 var moment = require('moment');
 var underscore = require('underscore');
-var parseString = require('xml2js').parseString;
 var Converter = require("csvtojson").Converter;
 var EventEmitter = require('events');
 var c1functions = require('../core/functions');
 
+var eventType = "game";
 
 var cubsParams = {
   name: "Cubs",
@@ -57,6 +56,8 @@ function getSchedule(endpoint) {
 
 		require("request").get(endpoint).pipe(converter);
 
+		console.log(`Request made to MLB ${moment().format("hh:mm:ss")}`);
+
 		converter.on("end_parsed", function (schedule) {
 			resolve(schedule); //here is your result json object 
 		});
@@ -71,11 +72,10 @@ function getGameStatus(teamParams) {
         
 	        //Set the current day
 	        var today = moment();
-	        //("05/29/16 3:00pm", "MM/DD/YY h:mma");    
+	        //("05/29/16 3:00pm", "MM/DD/YY h:mma");
 			
 			var games = [];
-			
-
+	
 	        //Iterate through each game in the schedule
 	        underscore.each(data, function(value, index) {    
   
@@ -100,16 +100,18 @@ function getGameStatus(teamParams) {
 			  if (status && status.inDisplayWindow == true) {
 
 				var game = {
+			  		eventType: eventType,
 			  		inDisplayWindow: status.inDisplayWindow,
 					status: status.type,
 					statusRank: c1functions.statusOrder.indexOf(status.type),
+					eventRank: c1functions.eventOrder.indexOf(eventType),
 					start: gameDate,
 					end: gameEnd,
 					title: `${teamParams.name} game in Chicago ${gameDate.format("(MM/DD)")}`,
 					slug: c1functions.convertToSlug_withDate(teamParams.name, gameDate)
 				};
 
-				game["classNames"] = "game " + teamParams.name.toLowerCase() + " " + game.slug;
+				game["classNames"] = `${eventType} ${teamParams.name.toLowerCase()} ${game.slug}`;
 				
 				if (status.type === "soon" || status.type === "later") {
 					game["description"] = "Starts at " + gameDate.format("h:mm A");

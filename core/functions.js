@@ -8,6 +8,7 @@ var parseString = require('xml2js').parseString;
 
 
 module.exports.statusOrder = ["current", "soon", "later", "recent", "past"];
+module.exports.eventOrder = ["weather-alert", "rain", "transit", "uber", "game", "traffic", "custom-update"];
 
 module.exports.doRequest = function(endpoint, endpointFormat){
 	return new Promise(function(resolve,reject) {
@@ -26,6 +27,7 @@ module.exports.doRequest = function(endpoint, endpointFormat){
 			}
 			
 			else {
+				console.log("there was an error");
 				resolve(Error);
 			}
 			
