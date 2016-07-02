@@ -122,16 +122,17 @@ function assembleObstacles() {
 
 		}).then(function(googleSheet){
 
-			assignToADay(googleSheet);
 			assignToADay(weather.data.weatherAlerts);
 			assignToADay(weather.data.dailyForecast);
+			//uber.on('ready', function() {
+			//	console.log('uber', uber.data);
+				assignToADay(uber.data);
+			//});
+			assignToADay(trafficAlerts.data);
+			assignToADay(googleSheet);
 			assignToADay(mlbSchedule.cubs);
 			assignToADay(mlbSchedule.sox);
-			assignToADay(trafficAlerts.data);
-			uber.on('ready', function() {
-				console.log('uber', uber.data);
-				assignToADay(uber.data);
-			});
+
 
 			if (weather.data.rainStatus.rainToday) {
 

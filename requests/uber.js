@@ -24,7 +24,7 @@ function getSurgeInterval() {
 	getSurge().then(function(data) {
 		module.exports.data = data;
 		//console.log(data);
-		module.exports.emit('ready');
+		//module.exports.emit('ready');
 	});
 
 	setTimeout(getSurgeInterval, 300000);
@@ -36,6 +36,8 @@ function getSurge() {
 	return new Promise(function(resolve, reject) {
 
 		c1functions.doRequest(uberPrice, "json").then(function(data){
+
+			console.log(data);
 
 			var uberx = underscore.where(data.prices, {localized_display_name: 'uberX'});
 
