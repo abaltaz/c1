@@ -90,17 +90,20 @@ function assembleObstacles() {
 			inOneDay: {
 				dayName: days[inOneDay.day()],
 				dayNum: inOneDay.date(),
-				events: []
+				events: [],
+				slug: `next-day-${inOneDay.format("MMDDYY")}`
 			},
 			inTwoDays: {
 				dayName: days[inTwoDays.day()],
 				dayNum: inTwoDays.date(),
-				events: []
+				events: [],
+				slug: `next-day-${inTwoDays.format("MMDDYY")}`
 			},
 			inThreeDays: {
 				dayName: days[inThreeDays.day()],
 				dayNum: inThreeDays.date(),
-				events: []
+				events: [],
+				slug: `next-day-${inThreeDays.format("MMDDYY")}`
 			}
 		},
 		all: [],

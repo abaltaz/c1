@@ -27,7 +27,7 @@ function getSurgeInterval() {
 		//module.exports.emit('ready');
 	});
 
-	setTimeout(getSurgeInterval, 300000);
+	setTimeout(getSurgeInterval, 60000);
 
 }
 
@@ -37,7 +37,7 @@ function getSurge() {
 
 		c1functions.doRequest(uberPrice, "json").then(function(data){
 
-			//console.log(data);
+			console.log(data);
 			var uberx = underscore.where(data.prices, {localized_display_name: 'uberX'});
 			var surgeItem = [];
 
