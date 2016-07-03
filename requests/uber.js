@@ -60,11 +60,87 @@ function getSurge() {
 				});
 
 				surgeItem[0]["classNames"] = `${eventType} ${surgeItem[0].slug}`;
-
-				resolve(surgeItem);
-
 			}
+
+			resolve(surgeItem);
 
 		});
 	});
+}
+
+
+
+
+var locations = {
+	downtown: {lat: 41.8904, long: -87.6236},
+	andersonville: {lat: 41.9796, long: -87.6701},
+	loganSquare: {lat: 41.8904, long: -87.6236}
+};
+
+var routes = {
+	downtownToAndersonville: [locations.downtown, locations.andersonville],
+	andersonvilleToDowntown: [locations.andersonville, locations.downtown],
+	downtownToLogan: [locations.downtown, locations.loganSquare],
+	loganToDowntown: [locations.loganSquare, locations.downtown]
+};
+
+/*
+getPrices().then(function(data) {
+	console.log("prices", data);
+});
+
+*/
+
+function getPrices() {
+
+	return new Promise(function(resolve, reject) {
+
+		var prices = [];
+
+		underscore.each(routes, function(route, index) {
+
+			//console.log(`${route[0].lat} - ${route[0].long} - ${route[1].lat} - ${route[1].long}`);
+
+			var priceRequest = {
+			  url: `https://api.uber.com/v1/estimates/price?start_latitude=${route[0].lat}&start_longitude=${route[0].long}&end_latitude=${route[1].lat}&end_longitude=${route[1].long}`,
+			  headers: {
+			    'Authorization': 'Token kX9EW-r3R12vguxlrUfq8NZ9rqiPMGoQHOJOd9Tc'
+			  }
+			};
+
+			//console.log(priceRequest.url);
+
+			c1functions.doRequest(priceRequest, "json").then(function(data){
+				//console.log("uprice", data);
+
+				var uberx = underscore.where(data.prices, {localized_display_name: 'uberX'});
+
+				if (uberx[0].surge_multiplier > process.env.UBER_SURGE_THRESHOLD) {
+					prices.push(uberx[0].surge_multiplier);
+				}
+
+			});
+
+		});
+
+		setTimeout(function() {
+
+			var sum = 0;
+
+			underscore.each(prices, function(value, index) {
+				sum += value;
+			});
+
+			var priceAvg = sum / prices.length;
+
+			console.log("prices", prices);
+			console.log("pricesum", sum);
+			console.log("priceAvg", priceAvg);
+
+			resolve("Price Avg", prices, priceAvg);
+
+		}, 2000);
+
+	});
+
 }

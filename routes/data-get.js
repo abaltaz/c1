@@ -128,30 +128,49 @@ function assembleObstacles() {
 
 			assignToADay(weather.data.weatherAlerts);
 			assignToADay(weather.data.dailyForecast);
+			assignToADay(weather.data.nextRainEvent);
 			//uber.on('ready', function() {
 			//	console.log('uber', uber.data);
-				assignToADay(uber.data);
+			assignToADay(uber.data);
 			//});
-
-			console.log("traffic", trafficAlerts.data);
 			assignToADay(trafficAlerts.data);
 			assignToADay(googleSheet);
 			assignToADay(mlbSchedule.cubs);
 			assignToADay(mlbSchedule.sox);
 
+			/*
 
 			if (weather.data.rainStatus.rainToday) {
+				
+				var status = determineEventStatus(weather.data.rainStatus.rainTodayDetails[0].startDate, 
+									 			  weather.data.rainStatus.rainTodayDetails[0].endDate,
+									 			  1);
+				
 
-				obstacles.today.events.push({
+				var rainEvent = {
 					occurence: weather.data.rainStatus.rainToday,
 					title: weather.data.rainStatus.rainTodayString,
+					description: weather.data.rainStatus.rainTodayTitle,
+					startDate: weather.data.rainStatus.rainTodayDetails[0].startDate.format("MM/DD hh:mma"),
+					endDate: weather.data.rainStatus.rainTodayDetails[0].endDate.format("MM/DD hh:mma"),
 					category: "weather",
 					type: "rain",
-					classNames: "rain",
-					description: weather.data.rainStatus.rainTodayTitle
-				});
+					inDisplayWindow: status.inDisplayWindow,
+					status: status.type,
+					statusRank: c1functions.statusOrder.indexOf(status.type),
+					eventRank: c1functions.eventOrder.indexOf("rain"),
+					slug: convertToSlug_withDate("rain", weather.data.rainStatus.rainTodayDetails[0].startDate)
+				}
+
+				console.log("HELLO RAIN5", rainEvent);
+
+				rainEvent["classNames"] = `rain ${rainEvent.slug}`;
+
+				obstacles.today.events.push(rainEvent);
 			
 			}
+
+			*/
 
 			/*
 			underscore.each(data.weatherAlerts, function(weatherAlert,index){
@@ -187,8 +206,9 @@ function assembleObstacles() {
 
 			//obstacles.today.events = underscore.sortBy(obstacles.today.events, 'statusRank');
 			
-			obstacles.today.events = underscore.sortBy(obstacles.today.events, 'statusRank');
+			//Sort on event type, them event status
 			obstacles.today.events = underscore.sortBy(obstacles.today.events, 'eventRank');
+			obstacles.today.events = underscore.sortBy(obstacles.today.events, 'statusRank');
 
 
 			resolve({

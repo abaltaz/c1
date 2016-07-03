@@ -12,7 +12,7 @@ getWeatherInterval();
 
 function getWeatherInterval() {
 	getWeather().then(function(data) {
-
+		console.log("HELLO RAIN7", data.nextRainEvent);
 		module.exports.data = data;
 	});
 
@@ -34,6 +34,7 @@ function getWeather() {
 		        var currentTime = moment();
 		        var tomorrowDate = moment().add(1, 'day').set("hour", 0).set("minute", 0);
         
+        		var nextRainEvent;
 		        var rainStatus = {
 		          rainToday: false,
 		          rainTodayDetails: [],
@@ -84,7 +85,9 @@ function getWeather() {
 
 
 		              rainStatus.rainTodayDetails.push({
-		                time: forecastTime.format("ha"), 
+		                time: forecastTime.format("ha"),
+		                startDate: forecastTime,
+		                endDate: forecastTime.clone().add(1, "hours"),
 		                intensity: forecast.precipIntensity,
 		                summary: forecast.summary,
 		                probablity: probablity(),
@@ -96,6 +99,34 @@ function getWeather() {
 		          }
           
 		        });
+
+		        if (rainStatus.rainToday) {
+				
+					var status = c1functions.determineEventStatus(rainStatus.rainTodayDetails[0].startDate, 
+										 			  			  rainStatus.rainTodayDetails[0].endDate,
+										 			  			  1);
+					
+
+					var rainEvent = {
+						occurence: rainStatus.rainToday,
+						title: rainStatus.rainTodayString,
+						description: rainStatus.rainTodayTitle,
+						start: rainStatus.rainTodayDetails[0].startDate,
+						end: rainStatus.rainTodayDetails[0].endDate,
+						category: "weather",
+						type: "rain",
+						inDisplayWindow: status.inDisplayWindow,
+						status: status.type,
+						statusRank: c1functions.statusOrder.indexOf(status.type),
+						eventRank: c1functions.eventOrder.indexOf("rain"),
+						slug: c1functions.convertToSlug_withDate("rain", rainStatus.rainTodayDetails[0].startDate)
+					}
+
+					rainEvent["classNames"] = `rain ${rainEvent.slug}`;
+
+					nextRainEvent = rainEvent;
+				
+				}
 
 		    	
         	
@@ -182,7 +213,7 @@ function getWeather() {
 				dailyForecast.splice(0,1);
 			
 		        resolve({
-					rainStatus: rainStatus,
+					nextRainEvent: nextRainEvent,
 					weatherAlerts: weatherAlerts,
 					dailyForecast: dailyForecast,
 					currentWeather: `${Math.round(forecast.currently.temperature)}° ${forecast.currently.summary}`

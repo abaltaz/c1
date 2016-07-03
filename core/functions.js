@@ -72,6 +72,8 @@ module.exports.determineEventStatus = function(startDate, endDate, futureThresho
     //If the event starts less than N days from the current day
     if (startDate.diff(now, 'days') <= futureThreshold ) {
   
+  	  //An event is CURRENT if the current time is between the start and end dates, 
+  	  //OR the current day is the same as the start date AND the start time and end time are the same
       if (now.isBetween(startDate, endDate) ||
          (now.isSame(startDate, 'day') && startDate.isSame(endDate))) {
         status.type = "current";
