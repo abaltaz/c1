@@ -12,6 +12,7 @@ getWeatherInterval();
 
 function getWeatherInterval() {
 	getWeather().then(function(data) {
+
 		module.exports.data = data;
 	});
 
@@ -39,7 +40,8 @@ function getWeather() {
 		          rainTodayString: "",
 		      	  rainTodayTitle: forecast.hourly.summary
 		        };
-        
+        		
+
 		        //Iterate through the hourly forecast
 		        underscore.each(forecast.hourly.data, function(forecast,index) {
           
@@ -59,6 +61,8 @@ function getWeather() {
 		              //function to set string based on probability of rain
 		              var probablity = function() {
 
+		              	   console.log("HI", forecast.precipProbability, forecastTime.format("MM/DD HH:mm"), forecast.time);
+
 			              if (forecast.precipProbability > 0.25 && forecast.precipProbability <= 0.5) {
 			                    return "Slight chance"
 			              }
@@ -73,16 +77,18 @@ function getWeather() {
 		              
 		              }
 
+
   		              if (rainStatus.rainTodayString === "") {
 		              	rainStatus.rainTodayString = probablity() + " of rain at " + forecastTime.format("ha");
 		          	  }
+
 
 		              rainStatus.rainTodayDetails.push({
 		                time: forecastTime.format("ha"), 
 		                intensity: forecast.precipIntensity,
 		                summary: forecast.summary,
 		                probablity: probablity(),
-		                occurence: data.rainStatus.rainToday
+		                occurence: rainStatus.rainToday
 		              });
             
 		            }
@@ -91,7 +97,7 @@ function getWeather() {
           
 		        });
 
-		        
+		    	
         	
 				//Get Weather Alerts
 				var weatherAlerts = [];
