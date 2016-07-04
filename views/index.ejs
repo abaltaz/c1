@@ -110,7 +110,6 @@
 
 		<script>
 
-
 			var allClearPhrases = [
 			"How nice",
 			"All good",
@@ -118,8 +117,7 @@
 			"No worries"
 			];
 
-			function randomIntFromInterval(min,max)
-			{
+			function randomIntFromInterval(min,max) {
 			    return Math.floor(Math.random()*(max-min+1)+min);
 			}
 
@@ -127,8 +125,13 @@
 
 			$(".notifications .close-btn").on("click", function(){
 				$(".notifications").remove();
-			})
+			};
 
+		</script>
+
+		<script>
+
+			var dismissedNotifs = [];
 
 		</script>
 

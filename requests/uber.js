@@ -72,9 +72,12 @@ function getSurge() {
 
 
 var locations = {
-	downtown: {lat: 41.8904, long: -87.6236},
-	andersonville: {lat: 41.9796, long: -87.6701},
-	loganSquare: {lat: 41.8904, long: -87.6236}
+	downtown: {lat: 41.8904, long: -87.6236, name: "Downtown"},
+	andersonville: {lat: 41.9796, long: -87.6701, name: "Andersonville"},
+	loganSquare: {lat: 41.8904, long: -87.6236, name: "Logan Square"},
+	lincolnPark: {lat: 41.9214, long: -87.6513, name: "Lincoln Park"},
+	rogersPark: {lat: 42.0106, long: -87.6696, name: "Rogers Park"},
+	hydePark: {lat: 41.7943, long: -87.5907, name: "Hyde Park"}
 };
 
 var routes = {
@@ -84,12 +87,12 @@ var routes = {
 	loganToDowntown: [locations.loganSquare, locations.downtown]
 };
 
-/*
+
 getPrices().then(function(data) {
 	console.log("prices", data);
 });
 
-*/
+
 
 function getPrices() {
 
