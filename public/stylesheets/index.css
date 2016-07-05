@@ -224,6 +224,11 @@ b {
     font-family: C1;
 }
 
+.traffic .icon:before {
+    content: "h";
+    font-family: C1;
+}
+
 .uber .icon:before {
     content: "n";
     font-family: C1;
