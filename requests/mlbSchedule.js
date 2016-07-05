@@ -35,13 +35,11 @@ getScheduleInterval(soxParams, "sox");
 setTimeout(function() {
 	getGameStatusInterval(cubsParams, "cubs");
 	getGameStatusInterval(soxParams, "sox");
-}, 1000);
+}, 2000);
 
 
-module.exports.getcubs = new EventEmitter();
-module.exports.getsox = new EventEmitter();
-
-
+//module.exports.getcubs = new EventEmitter();
+//module.exports.getsox = new EventEmitter();
 
 //Functions to download game schedules once per day
 function getScheduleInterval(teamParams) {
@@ -80,11 +78,12 @@ function getSchedule(endpoint) {
 function getGameStatusInterval(teamParams, teamName) {
 	getGameStatus(teamParams).then(function(data){
 		module.exports[teamName] = data;
-		module.exports["get" + teamName].emit('ready');
+		//console.log("Processing game status: ", ind, module.exports[teamName]);;
+		//module.exports["get" + teamName].emit('ready');
 	});
 
 	setTimeout(function() {
-		getGameStatusInterval(teamParams);
+		getGameStatusInterval(teamParams, teamName);
 	}, 60000);
 }
 

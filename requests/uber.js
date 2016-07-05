@@ -37,7 +37,7 @@ function getSurge() {
 
 		c1functions.doRequest(uberPrice, "json").then(function(data){
 
-			console.log(data);
+			//console.log(data);
 			var uberx = underscore.where(data.prices, {localized_display_name: 'uberX'});
 			var surgeItem = [];
 
@@ -88,10 +88,11 @@ var routes = {
 };
 
 
+/*
 getPrices().then(function(data) {
 	console.log("prices", data);
 });
-
+*/
 
 
 function getPrices() {
