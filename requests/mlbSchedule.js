@@ -135,8 +135,12 @@ function getGameStatus(teamParams) {
 
 			game["classNames"] = `${eventType} ${teamParams.name.toLowerCase()} ${game.slug}`;
 			
-			if (status.type === "soon" || status.type === "later") {
+			if (status.type === "later") {
 				game["description"] = "Starts at " + gameDate.format("h:mm A");
+			}
+
+			else if (status.type === "soon") {
+				game["description"] = "Starts " + moment().to(gameDate);
 			}
 
 			else if (status.type === "current") {
