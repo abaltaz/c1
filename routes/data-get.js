@@ -797,7 +797,7 @@ function assignToADay(data) {
 
 function obstaclesInterval() {
 	assembleObstacles().then(function(data){
-		console.log("Running in " + process.env.NODE_ENV + " environment")
+		console.log("Running in " + process.env.NODE_ENV + " environment: " + moment().format("MM/DD hh:mma"));
 		obstaclesData = data.obstacles;
 		hasCurrentUpdate = data.hasCurrentUpdate;
 		
