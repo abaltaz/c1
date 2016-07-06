@@ -214,8 +214,13 @@ b {
   font-family: "c1";
 }
 
-.cubs .icon:before, .sox .icon:before {
-  content: "e";
+.cubs .icon:before {
+  content: "p";
+  font-family: C1;
+}
+
+.sox .icon:before {
+  content: "o";
   font-family: C1;
 }
 
