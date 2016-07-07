@@ -12,7 +12,7 @@ getWeatherInterval();
 
 function getWeatherInterval() {
 	getWeather().then(function(data) {
-		console.log("HELLO RAIN7", data.nextRainEvent);
+		//console.log("HELLO RAIN9", data);
 		module.exports.data = data;
 	});
 
@@ -54,7 +54,7 @@ function getWeather() {
 		          if (forecastTime.isAfter(currentTime) && forecastTime.isBefore(tomorrowDate)) {
                       
 		            //Determine likelihood of rain
-		            if (forecast.precipProbability > 0.25) {
+		            if (forecast.precipProbability > -1) {
 
 
 		              rainStatus.rainToday = true;
@@ -64,7 +64,7 @@ function getWeather() {
 
 		              	   console.log("HI", forecast.precipProbability, forecastTime.format("MM/DD HH:mm"), forecast.time);
 
-			              if (forecast.precipProbability > 0.25 && forecast.precipProbability <= 0.5) {
+			              if (forecast.precipProbability > -1 && forecast.precipProbability <= 0.5) {
 			                    return "Slight chance"
 			              }
 			                  
@@ -114,7 +114,7 @@ function getWeather() {
 						start: rainStatus.rainTodayDetails[0].startDate,
 						end: rainStatus.rainTodayDetails[0].endDate,
 						category: "weather",
-						type: "rain",
+						eventType: "rain",
 						inDisplayWindow: status.inDisplayWindow,
 						status: status.type,
 						statusRank: c1functions.statusOrder.indexOf(status.type),
@@ -213,7 +213,7 @@ function getWeather() {
 				dailyForecast.splice(0,1);
 			
 		        resolve({
-					nextRainEvent: nextRainEvent,
+					nextRainEvent: [nextRainEvent],
 					weatherAlerts: weatherAlerts,
 					dailyForecast: dailyForecast,
 					currentWeather: `${Math.round(forecast.currently.temperature)}° ${forecast.currently.summary}`
