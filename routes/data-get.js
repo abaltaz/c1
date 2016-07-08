@@ -805,7 +805,7 @@ function obstaclesInterval() {
 		
 		console.log(obstaclesData);
 
-		setTimeout(obstaclesInterval, process.env.OBSTACLES_INTERVAL);
+		setTimeout(obstaclesInterval, 60000);
 	});	
 }
 
