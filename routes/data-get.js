@@ -84,6 +84,7 @@ function assembleObstacles() {
 		today: {
 			dayName: days[now.day()],
 			dayNum: now.date(),
+			currentTime: now.format("h:mma"),
 			events: []
 		},
 		nextDays: {
@@ -208,8 +209,8 @@ function assembleObstacles() {
 			
 			//Sort on event type, then event status
 			obstacles.today.events = underscore.sortBy(obstacles.today.events, 'start');
-			obstacles.today.events = underscore.sortBy(obstacles.today.events, 'statusRank');
 			obstacles.today.events = underscore.sortBy(obstacles.today.events, 'eventRank');
+			obstacles.today.events = underscore.sortBy(obstacles.today.events, 'statusRank');
 
 
 
@@ -329,7 +330,8 @@ function getCtaStatus() {
 								//impactedService: convertToSlug(alert.ImpactedService[0].Service[0].ServiceName[0]),
 								inDisplayWindow: status.inDisplayWindow,
 								status: status.type,
-								statusRank: statusOrder.indexOf(status.type),
+								statusRank: c1functions.statusOrder.indexOf(status.type),
+								eventRank: c1functions.eventOrder.indexOf('transit'),
 								slug: convertToSlug_withDate(alert.Headline[0], alertStart)
 							};
 

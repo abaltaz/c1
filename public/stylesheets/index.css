@@ -116,7 +116,7 @@ b {
     border: 1px solid #e8e8e8;
     border-radius: 4px;
     margin: 10px 0;
-    padding: 20px 25px 20px 90px;
+    padding: 20px 0 20px 0;
     background-color: #f9f9f9;
     font-size: 14px;
     position: relative;
@@ -145,7 +145,10 @@ b {
   margin: 0 0 15px 0;
   font-size: 16px;
   font-weight: 600;
-  max-width: 300px;
+}
+
+.updates > li .title, .updates > li .msg, .updates > li .label-status{
+  padding: 0 25px 0 90px;
 }
 
 
