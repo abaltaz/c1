@@ -45,7 +45,7 @@ setTimeout(function() {
 function getScheduleInterval(teamParams) {
 
 	getSchedule(teamParams.schedule).then(function(data){
-		console.log("mlb04", data);
+		//console.log("mlb04", data);
 		teamParams.storedSchedule = data;
 	});
 
@@ -116,7 +116,7 @@ function getGameStatus(teamParams) {
 
 		  
 		  var status = c1functions.determineEventStatus(gameDate, gameEnd, 3);
-		  console.log("MLB Game Status", teamParams.name, gameDatePretty, status);
+		  //console.log("MLB Game Status", teamParams.name, gameDatePretty, status);
 
 		  
 		  if (status && status.inDisplayWindow == true) {

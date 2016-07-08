@@ -56,7 +56,6 @@ function getWeather() {
 		            //Determine likelihood of rain
 		            if (forecast.precipProbability > 0.24) {
 
-
 		              rainStatus.rainToday = true;
 
 		              //function to set string based on probability of rain
@@ -123,11 +122,13 @@ function getWeather() {
 					}
 
 					rainEvent["classNames"] = `rain ${rainEvent.slug}`;
-
 					nextRainEvent = rainEvent;
 				
 				}
 
+				else {
+					nextRainEvent = false;
+				}
 		    	
         	
 				//Get Weather Alerts
@@ -163,6 +164,8 @@ function getWeather() {
 										inDisplayWindow: status.inDisplayWindow,
 										status: status.type,
 										statusRank: c1functions.statusOrder.indexOf(status.type),
+										eventType: "weather-alert",
+										eventRank: c1functions.eventOrder.indexOf("weather-alert"),
 										start: startDate,
 										end: endDate,
 										slug: c1functions.convertToSlug_withDate(alert.title, startDate),
