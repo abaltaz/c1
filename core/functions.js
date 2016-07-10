@@ -36,12 +36,8 @@ module.exports.doRequest = function(endpoint, endpointFormat){
 }
 
 
-function convertToSlug(Text) {
-    return Text
-        .toLowerCase()
-        .replace(/[^\w ]+/g,'')
-        .replace(/ +/g,'-')
-        ;
+module.exports.convertToSlug = function(Text) {
+    return Text.toLowerCase().replace(/[^\w ]+/g,'').replace(/ +/g,'-');
 }
 
 module.exports.convertToSlug_withDate = function(Text, Date) {	

@@ -86,12 +86,14 @@
 
 		<%- include partial-footer.ejs %>		
 
-		<div class="notifications">
-			<div class="about">
-			  <strong>Chicago 1</strong> is a short feed of things in Chicago that slow you down, whether it's rain, a Wrigley game or a train delay.
+		<!--
+		<div class="message-bar">
+			<div class="<%- messageBar[0].classNames %>">
+			  <%- messageBar[0].description %>
 			  <div class="close-btn"></div>
 			</div>
 		</div>
+		-->
 
 		<div class="modal">
 		  <div class="background"></div>
@@ -123,15 +125,129 @@
 
 			$(".all-clear .title").html(allClearPhrases[randomIntFromInterval(0,3)])
 
-			$(".notifications .close-btn").on("click", function(){
-				$(".notifications").remove();
-			});
+			
 
 		</script>
 
 		<script>
 
-			var dismissedNotifs = [];
+		if (window.location.href.indexOf('clearmsghistory') > -1) {
+			localStorage.setItem("userMsgHistory", null);
+		}
+
+		var availableMessages = [];
+
+		getAvailableMessages();
+		displayMessage();
+
+		
+
+		function getAvailableMessages() {
+
+			var appMessages = <%- JSON.stringify(messageBar) %>;
+			var userMessages = JSON.parse(localStorage.getItem("userMsgHistory"));
+
+
+			console.log('appMessages', appMessages);
+			console.log('userMessages', userMessages);
+			
+
+			//If the user dismissed messages, compare each app message against the user messages.
+			//If no match is found for a given app message, add the app message to the availableMessages array
+			if (appMessages.length > 0 && (userMessages !== null && userMessages.length > 0)) {
+				$.each(appMessages, function(index, appMessage) {
+
+					var foundMatch;
+
+					$.each(userMessages, function(index, userMessage) {
+						if (appMessage.className === userMessage.className) {
+							foundMatch = true;
+						}
+					});
+
+					if (!foundMatch) {
+						availableMessages.push(appMessage);
+					}
+
+				});
+			}
+
+			else if (appMessages.length > 0 && (userMessages === null || userMessages.length === 0)) {
+				availableMessages = appMessages;
+			}
+
+			console.log('availableMessages', availableMessages);
+
+		}
+
+		function displayMessage() {
+
+			
+			
+			if (availableMessages.length > 0) {
+
+				var message = availableMessages[0];	
+
+				console.log(message);	
+
+				var messageBarOuter = $('<div class="message-bar"></div>');
+				var messageBarInner = $('<div></div>');
+				var messageBarDismiss = $('<div class="dismiss-btn">' + message.dismisscta + '</div>');
+				var messageText = message.description;
+				var messageClass = message.className;
+
+				messageBarInner = messageBarInner.addClass(messageClass).append(messageText).append(messageBarDismiss);
+
+				var messageBar = $(messageBarOuter).append(messageBarInner);
+
+				//console.log(messageBar);
+
+				$("body").append(messageBar);
+
+				setTimeout(function() {
+					$(".message-bar").css({"bottom": "0px"});
+				},500);
+
+				$(".message-bar .dismiss-btn").on("click", function(){
+					
+					var className = $(this).parent().attr('class');
+
+					dismissMessage(className);
+
+				});
+
+			}
+		}
+
+		  function dismissMessage(className) {
+
+		  	var userMsgHistory = JSON.parse(localStorage.getItem("userMsgHistory"));
+    
+		    if (userMsgHistory === null ) {
+		      userMsgHistory = [];
+		      userMsgHistory.push({
+		        className: className,
+		        isDismissed: true
+		      });
+		    }
+
+		    else {
+		      userMsgHistory.push({
+		        className: className,
+		        isDismissed: true
+		      });
+		    }
+
+		    userMsgHistory = JSON.stringify(userMsgHistory);
+		    localStorage.setItem("userMsgHistory", userMsgHistory);
+		    availableMessages.splice(0,1);
+
+		    $("." + className).parent().remove();
+
+		    displayMessage();
+		  
+		  }
+
 
 		</script>
 

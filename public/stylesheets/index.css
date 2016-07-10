@@ -347,19 +347,20 @@ b {
 }
 
 
-.notifications {
+.message-bar {
   width: 100%;
   margin: 150px 0 0px;
   border-top: 1px solid #eee;
   color: #cac7c7;
   position: fixed;
   left: 0;
-  bottom: 0;
+  bottom: -75px;
   padding: 15px 0;
-  background: rgba(0,0,0,0.85);
+  background-color: rgba(0,0,0,0.85);
+  -webkit-transition: all 0.2s;
 }
 
-.notifications .about {
+.message-bar div:first-child {
   width: 100%;
   max-width: 600px;
   font-size: 12px;
@@ -369,7 +370,7 @@ b {
   position: relative;
 }
 
-.notifications .close-btn {
+.message-bar .dismiss-btn {
   position: absolute;
   right: 10px;
   top: 0px;
@@ -389,9 +390,6 @@ b {
   cursor: pointer;
 }
 
-.notifications .close-btn:before {
-  content: "OK";
-}
 
 ul.options {
   list-style: none;

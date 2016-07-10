@@ -51,6 +51,7 @@ var days = [
 var obstaclesData;
 var currentWeather;
 var hasCurrentUpdate;
+var messageBar;
 
 var now;
 var inOneDay;
@@ -135,9 +136,11 @@ function assembleObstacles() {
 			assignToADay(uber.data);
 			//});
 			assignToADay(trafficAlerts.data);
-			assignToADay(googleSheet);
 			assignToADay(mlbSchedule.cubs);
 			assignToADay(mlbSchedule.sox);
+			assignToADay(googleSheet.customUpdates);
+
+			console.log('mb', googleSheet.messageBar);
 
 			/*
 
@@ -216,7 +219,8 @@ function assembleObstacles() {
 
 			resolve({
 				obstacles: obstacles,
-				hasCurrentUpdate: hasCurrentUpdate
+				hasCurrentUpdate: hasCurrentUpdate,
+				messageBar: googleSheet.messageBar
 			});
 			
 		});
@@ -233,12 +237,12 @@ function getGoogleSheet() {
 	
 		// spreadsheet key is the long id in the sheets URL 
 		var my_sheet = new GoogleSpreadsheet(process.env.GSHEET_EVENTS);
-	
+
+
 		my_sheet.getRows(1, function(err, row_data){
 			
-			//
-			
 			var customUpdates = [];
+			var messages = [];
 
 			underscore.each(row_data, function(row_json, index) {
 				
@@ -276,9 +280,31 @@ function getGoogleSheet() {
 
 			});
 			
-			
+			my_sheet.getRows(2, function(err, row_data){
 				
-			resolve(customUpdates);
+				underscore.each(row_data, function(value,index) {
+					
+					var slug = c1functions.convertToSlug(value.description);
+					var slugTruncated = slug.substring(0, 40);
+
+					messages.push({
+						description: marked(value.description),
+						dismisscta: value.dismisscta,
+						slug: slugTruncated,
+						className: slugTruncated
+					});
+
+				});
+
+				//console.log(messages);
+
+				resolve({
+					customUpdates: customUpdates,
+					messageBar: messages
+				});
+
+			});
+				
 		
 		});
 	
@@ -390,257 +416,6 @@ function getCtaStatus() {
 		});
 	});
 }
-
-
-function getGameStatus(teamParams) {
-	return new Promise(function(resolve,reject) {
-		doRequest(teamParams.schedule, "json").then(function(data){
-        
-	        //Set the current day
-	        var today = moment();
-	        //("05/29/16 3:00pm", "MM/DD/YY h:mma");    
-			
-			var games = [];
-			
-
-	        //Iterate through each game in the schedule
-	        underscore.each(data, function(value, index) {    
-  
-	          //Assemble a game's date and time like so
-	          var gameDatePretty = 
-	              value[teamParams.dateIdentifier]
-	              + " "
-	              + value[teamParams.timeIdentifier];
-  
-  
-	          //Create a Moment from the games date and time
-	          var gameDate = moment(gameDatePretty, "MM/DD/YY hh:mm A");
-			  
-			  //Create a Moment 5 hours after a game's start time
-			  var gameEnd = gameDate.clone().add(3, "hours");
- 
-			  
-			  var status = determineEventStatus(gameDate, gameEnd, 3);
-			  
-			  if (status && status.inDisplayWindow == true) {
-
-				var game = {
-			  		inDisplayWindow: status.inDisplayWindow,
-					status: status.type,
-					statusRank: statusOrder.indexOf(status.type),
-					start: gameDate,
-					end: gameEnd,
-					title: `${teamParams.name} game in Chicago ${gameDate.format("(MM/DD)")}`,
-					slug: convertToSlug_withDate(teamParams.name, gameDate)
-				};
-
-				game["classNames"] = "game " + teamParams.name.toLowerCase() + " " + game.slug;
-				
-				if (status.type === "soon" || status.type === "later") {
-					game["description"] = "Starts at " + gameDate.format("h:mm A");
-				}
-
-				else if (status.type === "current") {
-					game["description"] = "Started at " + gameDate.format("h:mm A");
-				}
-				
-				else if (status.type === "recent") {
-					game["description"] = "Started at " + gameDate.format("h:mm A");
-				}
-				
-				else if (status.type === "future") {
-					game["title"] = teamParams.name + " at home, starts at " + gameDate.format("h:mm A (MM/DD)");
-				}
-				  
-				games.push(game);
-				
-			  }
-
-	        });
-			
-	        resolve(games);
-		});
-	});
-}
-		
-
-
-function getRainStatus() {
-	return new Promise(function(resolve,reject) {
-		doRequest(endpoints.forecast, "json").then(function(forecast){	
-			
-			if (forecast == Error) {
-				reject(new Error("Bad response from Forecast.io endpoint"));
-			}
-			
-			else {
-				
-				
-				
-		        var currentTime = moment();
-		        var tomorrowDate = moment().add(1, 'day').set("hour", 0).set("minute", 0);
-        
-		        var rainStatus = {
-		          rainToday: false,
-		          rainTodayDetails: [],
-		          rainTodayString: "",
-		      	  rainTodayTitle: forecast.hourly.summary,	
-		          currentWeather: 
-		            Math.round(forecast.currently.temperature) + "° " 
-		            + forecast.currently.summary
-		        };
-			
-				//Store the current weather
-				currentWeather = rainStatus.currentWeather;
-        
-		        //Iterate through the hourly forecast
-		        underscore.each(forecast.hourly.data, function(forecast,index) {
-          
-		          var forecastTime = moment(forecast.time * 1000);
-        
-
-          
-		          //If the hourly forecast is between now and tomorrow
-		          if (forecastTime.isAfter(currentTime) && forecastTime.isBefore(tomorrowDate)) {
-                      
-		            //Determine likelihood of rain
-		            if (forecast.precipProbability > 0.25) {
-
-
-		              rainStatus.rainToday = true;
-
-		              //function to set string based on probability of rain
-		              var probablity = function() {
-
-			              if (forecast.precipProbability > 0.25 && forecast.precipProbability <= 0.5) {
-			                    return "Slight chance"
-			              }
-			                  
-		                  else if (forecast.precipProbability > 0.5 && forecast.precipProbability <= 0.75) {
-		                    	return "Good chance"
-		                  }
-		                  
-		                  else if (forecast.precipProbability > 0.75 && forecast.precipProbability <= 1) {
-		                    	return "Very good chance"
-		                  }
-		              
-		              }
-
-  		              if (rainStatus.rainTodayString === "") {
-		              	rainStatus.rainTodayString = probablity() + " of rain at " + forecastTime.format("ha");
-		          	  }
-
-		              rainStatus.rainTodayDetails.push({
-		                time: forecastTime.format("ha"), 
-		                intensity: forecast.precipIntensity,
-		                summary: forecast.summary,
-		                probablity: probablity(),
-		                occurence: data.rainStatus.rainToday
-		              });
-            
-		            }
-          
-		          }
-          
-		        });
-
-		        
-        	
-				//Get Weather Alerts
-				var weatherAlerts = [];
-			
-				if (typeof forecast.alerts !== "undefined") {
-				
-					underscore.each(forecast.alerts, function(alert, index) {
-
-						if (alert.title.indexOf("Air Quality") === -1 && 
-							alert.title.indexOf("Statement") === -1) {
-
-							var startDate = moment(alert.time * 1000);
-							var endDate = moment(alert.expires * 1000);
-							var status = determineEventStatus(startDate, endDate, 3);
-
-							if (status && status.inDisplayWindow == true) {
-
-								var endDateString;
-
-								if (moment().isSame(endDate, 'day')) {
-									endDateString = endDate.format("h:mm A");
-								}
-
-								else if (moment().isBefore(endDate, 'day')) {
-									endDateString = endDate.format("h:mm A on MMMM D");
-								}
-
-								var alert = {
-										string: alert.title + ". Starts at " + startDate.format("h:mm A on M/D")
-											    + " and is expected to end at " + endDate.format("h:mm A on M/D"),
-										alertNow: true,
-										inDisplayWindow: status.inDisplayWindow,
-										status: status.type,
-										statusRank: statusOrder.indexOf(status.type),
-										start: startDate,
-										end: endDate,
-										slug: convertToSlug_withDate(alert.title, startDate),
-										title: alert.title,
-										description: "Expected to end at " + endDateString,
-										moreLink: alert.uri
-									};
-
-								alert["classNames"] = "weather-alert " + alert.slug;
-
-								weatherAlerts.push(alert);	
-
-							}
-						}
-
-					});
-				}
-			
-
-				//Get Daily Forecast
-
-				var dailyForecast = [];
-
-				underscore.each(forecast.daily.data, function(day, index) {
-				
-
-					var startDate = moment(day.time * 1000);
-
-					var status = determineEventStatus(startDate, startDate, 3);
-
-					var thisForecast = {
-						inDisplayWindow: status.inDisplayWindow,
-						status: status.type,
-						statusRank: statusOrder.indexOf(status.type),
-						start: startDate,
-						end: startDate,
-						slug: convertToSlug_withDate("forecast", startDate),
-						title: day.summary
-								 + " High " + Math.round(day.temperatureMax) + "°"
-					};
-
-					thisForecast["classNames"] = "forecast " + thisForecast.slug;
-
-					dailyForecast.push(thisForecast);
-
-				});
-
-				dailyForecast.splice(0,1);
-			
-		        resolve({
-					rainStatus: rainStatus,
-					weatherAlerts: weatherAlerts,
-					dailyForecast: dailyForecast
-				});
-			
-			}
-			
-		});
-	});
-}
-
-
 
 
 function doRequest(endpoint, endpointFormat){
@@ -802,8 +577,7 @@ function obstaclesInterval() {
 		console.log("Running in " + process.env.NODE_ENV + " environment: " + moment().format("MM/DD hh:mma"));
 		obstaclesData = data.obstacles;
 		hasCurrentUpdate = data.hasCurrentUpdate;
-		
-		console.log(obstaclesData);
+		messageBar = data.messageBar;
 
 		setTimeout(obstaclesInterval, 60000);
 	});	
@@ -818,7 +592,8 @@ router.get('/', function(req, res, next) {
 	res.render('index', {
 		obstacles: obstaclesData,
 		currentWeather: weather.data.currentWeather,
-		hasCurrentUpdate: hasCurrentUpdate
+		hasCurrentUpdate: hasCurrentUpdate,
+		messageBar: messageBar
 	});
 });
 
