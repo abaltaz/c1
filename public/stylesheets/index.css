@@ -36,10 +36,10 @@ body {
 
 h1 {
   font-family: Roboto Slab;
-  font-weight: 100;
+  font-weight: 400;
   padding: 0;
   margin: 0 0 5px;
-  color: #222;
+  color: #777;
 }
 
 h1 span {
@@ -48,7 +48,7 @@ h1 span {
 }
 
 h1 a:link, h1 a:visited, h1 a:active {
-  color: #222;
+  color: #777;
 }
 
 a {
