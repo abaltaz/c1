@@ -39,7 +39,7 @@ h1 {
   font-weight: 400;
   padding: 0;
   margin: 0 0 5px;
-  color: #777;
+  color: #888;
 }
 
 h1 span {
@@ -48,7 +48,7 @@ h1 span {
 }
 
 h1 a:link, h1 a:visited, h1 a:active {
-  color: #777;
+  color: #888;
 }
 
 a {
@@ -307,6 +307,7 @@ b {
 .next-days ul {
     padding-left: 20px;
     font-size: 14px;
+    text-transform: none;
 }
 
 .next-days ul li {
@@ -354,7 +355,7 @@ b {
   color: #cac7c7;
   position: fixed;
   left: 0;
-  bottom: -75px;
+  bottom: -90px;
   padding: 15px 0;
   background-color: rgba(0,0,0,0.85);
   -webkit-transition: all 0.2s;
@@ -363,10 +364,10 @@ b {
 .message-bar div:first-child {
   width: 100%;
   max-width: 600px;
-  font-size: 12px;
+  font-size: 13px;
   display: block;
   margin: 0 auto;
-  padding: 0 60px 0 15px;
+  padding: 0 60px 0 10px;
   position: relative;
 }
 
@@ -388,6 +389,12 @@ b {
   color: #565656;
   font-weight: 700;
   cursor: pointer;
+}
+
+.message-bar a {
+  color: #fff;
+  font-weight: 400;
+  text-decoration: underline;
 }
 
 

@@ -88,11 +88,11 @@ var routes = {
 };
 
 
-/*
+
 getPrices().then(function(data) {
 	console.log("prices", data);
 });
-*/
+
 
 
 function getPrices() {
@@ -120,7 +120,12 @@ function getPrices() {
 				var uberx = underscore.where(data.prices, {localized_display_name: 'uberX'});
 
 				if (uberx[0].surge_multiplier > process.env.UBER_SURGE_THRESHOLD) {
-					prices.push(uberx[0].surge_multiplier);
+					prices.push({
+						priceIncrease: uberx[0].surge_multiplier,
+						routeStart: route[0].name,
+						routeEnd: route[1].name,
+						description: `${uberx[0].surge_multiplier}: ${route[0].name} to ${route[1].name}`
+					});
 				}
 
 			});
@@ -131,8 +136,8 @@ function getPrices() {
 
 			var sum = 0;
 
-			underscore.each(prices, function(value, index) {
-				sum += value;
+			underscore.each(prices, function(priceItem, index) {
+				sum += priceItem.priceIncrease;
 			});
 
 			var priceAvg = sum / prices.length;

@@ -140,7 +140,7 @@ function assembleObstacles() {
 			assignToADay(mlbSchedule.sox);
 			assignToADay(googleSheet.customUpdates);
 
-			console.log('mb', googleSheet.messageBar);
+			
 
 			/*
 
@@ -187,7 +187,7 @@ function assembleObstacles() {
 			});
 			*/
 
-			
+			/*
 			//Determine if there are NO current updates
 			hasCurrentUpdate = false;
 			for (var obstacle in obstacles) {
@@ -195,6 +195,7 @@ function assembleObstacles() {
 					hasCurrentUpdate = true;
 				}
 			}
+			*/
 
 			if (obstacles.today.events.length === 1) {
 				obstacles.numString = "(1 obstacle)"
@@ -219,7 +220,7 @@ function assembleObstacles() {
 
 			resolve({
 				obstacles: obstacles,
-				hasCurrentUpdate: hasCurrentUpdate,
+				//hasCurrentUpdate: hasCurrentUpdate,
 				messageBar: googleSheet.messageBar
 			});
 			
@@ -576,7 +577,7 @@ function obstaclesInterval() {
 	assembleObstacles().then(function(data){
 		console.log("Running in " + process.env.NODE_ENV + " environment: " + moment().format("MM/DD hh:mma"));
 		obstaclesData = data.obstacles;
-		hasCurrentUpdate = data.hasCurrentUpdate;
+		//hasCurrentUpdate = data.hasCurrentUpdate;
 		messageBar = data.messageBar;
 
 		setTimeout(obstaclesInterval, 60000);
@@ -592,7 +593,7 @@ router.get('/', function(req, res, next) {
 	res.render('index', {
 		obstacles: obstaclesData,
 		currentWeather: weather.data.currentWeather,
-		hasCurrentUpdate: hasCurrentUpdate,
+		//hasCurrentUpdate: hasCurrentUpdate,
 		messageBar: messageBar
 	});
 });
