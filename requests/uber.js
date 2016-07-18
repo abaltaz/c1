@@ -166,6 +166,11 @@ function getPrices() {
 
 						resolve(surgeObstacle);
 					}
+
+					else {
+						resolve();
+					}
+
 				}
 
 			});
