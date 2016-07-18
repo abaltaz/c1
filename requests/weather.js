@@ -219,7 +219,8 @@ function getWeather() {
 					nextRainEvent: [nextRainEvent],
 					weatherAlerts: weatherAlerts,
 					dailyForecast: dailyForecast,
-					currentWeather: `${Math.round(forecast.currently.temperature)}° ${forecast.currently.summary}`
+					currentWeather: `${Math.round(forecast.currently.temperature)}° ${forecast.currently.summary}`,
+					todayWeather: `${forecast.daily.data[0].summary} High ${Math.round(forecast.daily.data[0].temperatureMax)}°`
 				});
 			
 			}

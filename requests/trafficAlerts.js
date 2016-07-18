@@ -52,14 +52,27 @@ function getTraffic() {
 
 					//Store an object as a string if the road is congested
 					if (roadSegment.level === "HEAVY_CONGESTION") {
-						segmentAlertsHtml.push("<li>" + roadSegment.from + " to " + roadSegment.to + "</li>");
+						segmentAlertsHtml.push(`<li>Heavy traffic near ${roadSegment.to}</li>`);
+					}
+
+					else if (roadSegment.level === "MEDIUM_CONGESTION") {
+						segmentAlertsHtml.push(`<li>Moderate traffic near ${roadSegment.to}</li>`);
 					}
 
 				});
 
 				if (segmentAlertsHtml.length > 0) {
-					
-					var description = "<ul>" + segmentAlertsHtml.join("") + "</ul>";
+
+					//If only 1 item in the traffic alerts array, remove the <li> elements
+					if (segmentAlertsHtml.length === 1) {
+						var description = segmentAlertsHtml[0].replace("<li>", "").replace("</li>","");
+					}
+
+					//Otherwise, add <ul> around the list elements
+					else {
+						var description = "<ul>" + segmentAlertsHtml.join("") + "</ul>";
+					}
+
 					var startDate = moment();
 
 					var status = c1functions.determineEventStatus(startDate, startDate, 1);
@@ -68,14 +81,15 @@ function getTraffic() {
 					var alert = {
 						eventType: "traffic",
 						description: description,
-						title: "Heavy traffic on " + route.name,
+						title: route.name,
 						start: startDate,
 						end: startDate,
 						inDisplayWindow: status.inDisplayWindow,
 						status: status.type,
 						statusRank: c1functions.statusOrder.indexOf(status.type),
 						eventRank: c1functions.eventOrder.indexOf(eventType),
-						slug: c1functions.convertToSlug_withDate(route.name, startDate)
+						slug: c1functions.convertToSlug_withDate(route.name, startDate),
+						attribution: "Gateway traffic information courtesy of the Illinois Department of Transportation"
 					};
 
 

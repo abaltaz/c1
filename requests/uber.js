@@ -17,6 +17,7 @@ var uberPrice = {
 
 module.exports = new EventEmitter();
 
+/*
 getSurgeInterval();
 
 function getSurgeInterval() {
@@ -30,6 +31,8 @@ function getSurgeInterval() {
 	setTimeout(getSurgeInterval, 60000);
 
 }
+
+*/
 
 function getSurge() {
 
@@ -89,9 +92,19 @@ var routes = {
 
 
 
-getPrices().then(function(data) {
-	console.log("prices", data);
-});
+getPricesInterval();
+
+function getPricesInterval() {
+
+	getPrices().then(function(data) {
+		module.exports.data = [data];
+		//console.log(so2, data);
+		//module.exports.emit('ready');
+	});
+
+	setTimeout(getPricesInterval, 60000);
+
+}
 
 
 
@@ -100,9 +113,13 @@ function getPrices() {
 	return new Promise(function(resolve, reject) {
 
 		var prices = [];
+		var sum = 0;
+		var routeSurges = [];
+		var iteration = 0;
 
 		underscore.each(routes, function(route, index) {
 
+			
 			//console.log(`${route[0].lat} - ${route[0].long} - ${route[1].lat} - ${route[1].long}`);
 
 			var priceRequest = {
@@ -111,44 +128,89 @@ function getPrices() {
 			    'Authorization': 'Token kX9EW-r3R12vguxlrUfq8NZ9rqiPMGoQHOJOd9Tc'
 			  }
 			};
-
-			//console.log(priceRequest.url);
+			
 
 			c1functions.doRequest(priceRequest, "json").then(function(data){
-				//console.log("uprice", data);
-
+				
+				iteration++ 
 				var uberx = underscore.where(data.prices, {localized_display_name: 'uberX'});
+	
+				sum += uberx[0].surge_multiplier;
+				prices.push(uberx[0].surge_multiplier);
+				routeSurges.push(`<li>${route[0].name} to ${route[1].name}: ${uberx[0].surge_multiplier}x</li>`);
 
-				if (uberx[0].surge_multiplier > process.env.UBER_SURGE_THRESHOLD) {
-					prices.push({
-						priceIncrease: uberx[0].surge_multiplier,
-						routeStart: route[0].name,
-						routeEnd: route[1].name,
-						description: `${uberx[0].surge_multiplier}: ${route[0].name} to ${route[1].name}`
-					});
+				console.log("HI, UBER", sum, uberx[0].surge_multiplier, iteration);
+
+				//If this is the final iteration of the routes object
+				if (iteration === underscore.size(routes)) {
+
+					//Calculate and round the surge average and limit it to 1 decimal place
+					var priceAvg = Math.round(sum / prices.length).toFixed(1);
+
+					if (priceAvg > process.env.UBER_SURGE_THRESHOLD) {
+
+						var surgeObstacle = {
+							eventType: eventType,
+							title: "Uber surge in effect",
+							description: `Fare increase around <strong>${priceAvg}x</strong>.`,
+							start: moment(),
+							end: moment(),
+							inDisplayWindow: true,
+							status: "current",
+							statusRank: c1functions.statusOrder.indexOf("current"),
+							eventRank: c1functions.eventOrder.indexOf(eventType),
+							slug: c1functions.convertToSlug_withDate("uber-surge", moment())
+						};
+
+						surgeObstacle["classNames"] = `${eventType} ${surgeObstacle.slug}`;
+
+						resolve(surgeObstacle);
+					}
 				}
 
 			});
 
 		});
 
+		/*
+
 		setTimeout(function() {
 
 			var sum = 0;
 
+			var routeSurges = []
+
 			underscore.each(prices, function(priceItem, index) {
 				sum += priceItem.priceIncrease;
+
+				routeSurges.push(`<li>${priceItem.description}</li>`);
 			});
 
 			var priceAvg = sum / prices.length;
 
+			var surgeObstacle = {
+				eventType: eventType,
+				title: "Uber surge in effect",
+				description: `Fare increase is around ${priceAvg}: <ul>${routeSurges}</ul>`,
+				start: moment(),
+				end: moment(),
+				inDisplayWindow: true,
+				status: "current",
+				statusRank: c1functions.statusOrder.indexOf("current"),
+				eventRank: c1functions.eventOrder.indexOf(eventType),
+				slug: c1functions.convertToSlug_withDate("uber-surge", moment())
+			};
+
+			//console.log("surgeObstacle", surgeObstacle);
 			console.log("prices", prices);
 			console.log("pricesum", sum);
 			console.log("priceAvg", priceAvg);
 
-			resolve("Price Avg", prices, priceAvg);
+			resolve(surgeObstacle);
 
-		}, 2000);
+		}, 5000);
+
+		*/
 
 	});
 

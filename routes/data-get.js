@@ -86,6 +86,7 @@ function assembleObstacles() {
 			dayName: days[now.day()],
 			dayNum: now.date(),
 			currentTime: now.format("h:mma"),
+			hasCurrentEvent: false,
 			events: []
 		},
 		nextDays: {
@@ -132,7 +133,7 @@ function assembleObstacles() {
 			assignToADay(weather.data.dailyForecast);
 			assignToADay(weather.data.nextRainEvent);
 			//uber.on('ready', function() {
-			//	console.log('uber', uber.data);
+			console.log('uber1', uber.data);
 			assignToADay(uber.data);
 			//});
 			assignToADay(trafficAlerts.data);
@@ -566,6 +567,11 @@ function assignToADay(data) {
 			obstacles.nextDays.inThreeDays.events.push(event);
 		}
 
+		//If the event is current, set hasCurrentEvent to true -- use for "All Clear" message 
+		if (event.status === "current" || event.status === "soon") {
+			obstacles.today.hasCurrentEvent = true;
+		}
+
 	});
 
 	//
@@ -577,6 +583,7 @@ function obstaclesInterval() {
 	assembleObstacles().then(function(data){
 		console.log("Running in " + process.env.NODE_ENV + " environment: " + moment().format("MM/DD hh:mma"));
 		obstaclesData = data.obstacles;
+		console.log(obstaclesData);
 		//hasCurrentUpdate = data.hasCurrentUpdate;
 		messageBar = data.messageBar;
 
@@ -593,6 +600,7 @@ router.get('/', function(req, res, next) {
 	res.render('index', {
 		obstacles: obstaclesData,
 		currentWeather: weather.data.currentWeather,
+		todayWeather: weather.data.todayWeather,
 		//hasCurrentUpdate: hasCurrentUpdate,
 		messageBar: messageBar
 	});

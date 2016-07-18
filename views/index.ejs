@@ -2,6 +2,15 @@
 <html>
 	<head>
 		<%- include partial-html-head.ejs %>
+
+		<style>
+			.current-weather .inner:after {
+				content: '\A<%= todayWeather %>';
+				display: block;
+				cursor: default;
+			}
+		</style>
+
 	</head>
 
 	<body>
@@ -11,7 +20,7 @@
 
 		  <%- include partial-header.ejs %>
 
-		  <% if (obstacles.today.events.length === 0) { %>
+		  <% if (obstacles.today.hasCurrentEvent === false) { %>
 			  <div class="all-clear">
 			    <i class="fa fa-check-circle" aria-hidden="true"></i>
 			    <div class="details">
@@ -73,7 +82,10 @@
 
 		  <% } %>
 		  
-		  
+		<%- include partial-sources.ejs %>  
+		<%- include partial-footer.ejs %>
+			
+
 		  <div class="push-footers"></div>
 		</div>
 
@@ -84,8 +96,7 @@
 		</div>
 		-->
 
-		<%- include partial-footer.ejs %>
-		<div style="text-align:center;font-size:10px;margin-top:10px"><%= obstacles.today.currentTime %></div>		
+			
 
 		<!--
 		<div class="message-bar">
@@ -126,7 +137,21 @@
 
 			$(".all-clear .title").html(allClearPhrases[randomIntFromInterval(0,3)])
 
-			
+		
+			setTimeout(function() {
+				slideCurrentWeather();
+			},1000);
+
+			$('.current-weather .inner').on('click', function() {
+				slideCurrentWeather();
+			});
+
+			function slideCurrentWeather() {
+				$('.current-weather .inner').css('top','-20px');
+				setTimeout(function() {
+					$('.current-weather .inner').css('top','0px');
+				},5000);
+			}
 
 		</script>
 
