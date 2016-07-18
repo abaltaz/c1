@@ -157,9 +157,15 @@
 
 		<script>
 
+		if (window.location.href.indexOf('showcurrenttime') > -1) {
+			$(".footer").append('<div style="text-align:center;font-size:10px;margin-top:10px;position:absolute;bottom:25px;left:0px;right:0px"><%= obstacles.today.currentTime %></div>');
+		}
+
 		if (window.location.href.indexOf('clearmsghistory') > -1) {
 			localStorage.setItem("userMsgHistory", null);
 		}
+
+
 
 		var availableMessages = [];
 

@@ -108,7 +108,7 @@ b {
   margin: 0 auto;
   text-align: left;
   list-style: none;
-  padding: 0;
+  padding: 0 5px;
 }
 
 .updates:after {
@@ -265,6 +265,7 @@ b {
   color: #999;
   text-align:center;
   background: #e8e8e8;
+  color: #777;
 }
 
 .sources ul {
