@@ -97,7 +97,7 @@ getPricesInterval();
 function getPricesInterval() {
 
 	getPrices().then(function(data) {
-		module.exports.data = [data];
+		module.exports.data = data;
 		//console.log(so2, data);
 		//module.exports.emit('ready');
 	});
@@ -134,6 +134,7 @@ function getPrices() {
 				
 				iteration++ 
 				var uberx = underscore.where(data.prices, {localized_display_name: 'uberX'});
+				var surgeObstacle = [];
 	
 				sum += uberx[0].surge_multiplier;
 				prices.push(uberx[0].surge_multiplier);
@@ -149,7 +150,7 @@ function getPrices() {
 
 					if (priceAvg > process.env.UBER_SURGE_THRESHOLD) {
 
-						var surgeObstacle = {
+						surgeObstacle.push({
 							eventType: eventType,
 							title: "Uber surge in effect",
 							description: `Fare increase around <strong>${priceAvg}x</strong>.`,
@@ -160,16 +161,13 @@ function getPrices() {
 							statusRank: c1functions.statusOrder.indexOf("current"),
 							eventRank: c1functions.eventOrder.indexOf(eventType),
 							slug: c1functions.convertToSlug_withDate("uber-surge", moment())
-						};
+						});
 
-						surgeObstacle["classNames"] = `${eventType} ${surgeObstacle.slug}`;
+						surgeObstacle[0]["classNames"] = `${eventType} ${surgeObstacle.slug}`;
 
-						resolve(surgeObstacle);
 					}
 
-					else {
-						resolve();
-					}
+					resolve(surgeObstacle);
 
 				}
 
