@@ -146,7 +146,7 @@ function getPrices() {
 				if (iteration === underscore.size(routes)) {
 
 					//Calculate and round the surge average and limit it to 1 decimal place
-					var priceAvg = sum / prices.length.toFixed(1);
+					var priceAvg = (sum / prices.length).toFixed(1);
 
 					if (priceAvg > process.env.UBER_SURGE_THRESHOLD) {
 
