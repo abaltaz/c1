@@ -129,7 +129,7 @@ function getGameStatus(teamParams) {
 				eventRank: c1functions.eventOrder.indexOf(eventType),
 				start: gameDate,
 				end: gameEnd,
-				title: `${teamParams.name} game in Chicago ${gameDate.format("(MM/DD)")}`,
+				title: `${teamParams.name} game in Chicago`,
 				slug: c1functions.convertToSlug_withDate(teamParams.name, gameDate)
 			};
 
@@ -152,7 +152,7 @@ function getGameStatus(teamParams) {
 			}
 			
 			else if (status.type === "future") {
-				game["title"] = teamParams.name + " at home, starts at " + gameDate.format("h:mm A (MM/DD)");
+				game["title"] = teamParams.name + " at home, starts at " + gameDate.format("h:mm A");
 			}
 			  
 			games.push(game);

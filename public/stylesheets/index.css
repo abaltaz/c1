@@ -59,9 +59,10 @@ a {
   color: #777;
   height: 20px;
   overflow: hidden;
-  width: 380px;
+  max-width: 380px;
   display: block;
   margin: 0 auto;
+  line-height: 20px;
 }
 
 .current-weather .inner {
@@ -579,4 +580,13 @@ ul.footer .c1built-icons .icon-chicago-star {
   .weather {
     top: 18px;
   }
+
+  .updates .icon {
+    left: 4vw;
+  }
+
+  .updates > li .title, .updates > li .msg, .updates > li .label-status{
+    padding-left: 20vw;
+  }
+
 }

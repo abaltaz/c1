@@ -76,47 +76,46 @@ mlbSchedule.getsox.on('ready', () => {
 
 function assembleObstacles() {
 
-	now = moment();
-	inOneDay = now.clone().add(1, "day").hour(5);
-	inTwoDays = now.clone().add(2, "day").hour(5);
-	inThreeDays = now.clone().add(3, "day").hour(5);
-
-	obstacles = {
-		today: {
-			dayName: days[now.day()],
-			dayNum: now.date(),
-			currentTime: now.format("h:mma"),
-			hasCurrentEvent: false,
-			events: []
-		},
-		nextDays: {
-			inOneDay: {
-				dayName: days[inOneDay.day()],
-				dayNum: inOneDay.date(),
-				events: [],
-				slug: `next-day-${inOneDay.format("MMDDYY")}`
-			},
-			inTwoDays: {
-				dayName: days[inTwoDays.day()],
-				dayNum: inTwoDays.date(),
-				events: [],
-				slug: `next-day-${inTwoDays.format("MMDDYY")}`
-			},
-			inThreeDays: {
-				dayName: days[inThreeDays.day()],
-				dayNum: inThreeDays.date(),
-				events: [],
-				slug: `next-day-${inThreeDays.format("MMDDYY")}`
-			}
-		},
-		all: [],
-		allClear: false,
-		numString: ""
-	};
-
 	return new Promise(function(resolve,reject) {
 
-		
+		now = moment();
+		inOneDay = now.clone().add(1, "day").hour(5);
+		inTwoDays = now.clone().add(2, "day").hour(5);
+		inThreeDays = now.clone().add(3, "day").hour(5);
+
+		obstacles = {
+			today: {
+				dayName: days[now.day()],
+				dayNum: now.date(),
+				currentTime: now.format("h:mma"),
+				hasCurrentEvent: false,
+				events: []
+			},
+			nextDays: {
+				inOneDay: {
+					dayName: days[inOneDay.day()],
+					dayNum: inOneDay.date(),
+					events: [],
+					slug: `next-day-${inOneDay.format("MMDDYY")}`
+				},
+				inTwoDays: {
+					dayName: days[inTwoDays.day()],
+					dayNum: inTwoDays.date(),
+					events: [],
+					slug: `next-day-${inTwoDays.format("MMDDYY")}`
+				},
+				inThreeDays: {
+					dayName: days[inThreeDays.day()],
+					dayNum: inThreeDays.date(),
+					events: [],
+					slug: `next-day-${inThreeDays.format("MMDDYY")}`
+				}
+			},
+			all: [],
+			allClear: false,
+			numString: ""
+		};
+
 		getCtaStatus().then(function(transitAlerts){
 			
 			assignToADay(transitAlerts);
@@ -587,6 +586,9 @@ function obstaclesInterval() {
 		//hasCurrentUpdate = data.hasCurrentUpdate;
 		messageBar = data.messageBar;
 
+		setTimeout(obstaclesInterval, 60000);
+	}).catch(function(err) {
+		console.log("An error occurred in assembleObstacles(). Executing function again in 60 seconds.");
 		setTimeout(obstaclesInterval, 60000);
 	});	
 }
