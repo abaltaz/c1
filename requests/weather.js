@@ -12,18 +12,21 @@ getWeatherInterval();
 
 function getWeatherInterval() {
 	getWeather().then(function(data) {
-		//console.log("HELLO RAIN9", data);
 		module.exports.data = data;
+		setTimeout(getWeatherInterval, 300000);
+	}).catch(function(err){
+		setTimeout(getWeatherInterval, 300000);
+		console.log("Error processing Weather data. Trying again in 5 minutes");
 	});
 
-	setTimeout(getWeatherInterval, 300000);
+	
 
 };
 
 
 function getWeather() {
 	return new Promise(function(resolve,reject) {
-		c1functions.doRequest(weatherEndpoint, "json").then(function(forecast){	
+		c1functions.doRequest(weatherEndpoint, "json").then(function(forecast){
 			
 			if (forecast == Error) {
 				reject(new Error("Bad response from Forecast.io endpoint"));
@@ -171,10 +174,17 @@ function getWeather() {
 										slug: c1functions.convertToSlug_withDate(alert.title, startDate),
 										title: alert.title,
 										description: "Expected to end at " + endDateString,
-										moreLink: alert.uri
+										moreLink: alert.uri,
+										severity: ""
 									};
 
-								alert["classNames"] = "weather-alert " + alert.slug;
+								if (alert.title.indexOf("Warning") > -1) {
+									alert.severity = " severity-high";
+								}
+
+								alert["classNames"] = "weather-alert " + alert.slug + alert.severity;
+
+								
 
 								weatherAlerts.push(alert);	
 
@@ -225,6 +235,8 @@ function getWeather() {
 			
 			}
 			
+		}).catch(function(err) {
+			console.log("Error with ForecastIO request.");
 		});
 	});
 }

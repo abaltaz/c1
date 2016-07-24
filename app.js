@@ -1,4 +1,5 @@
 var express = require('express');
+var compression = require('compression');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -33,7 +34,12 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+
+//Set cache-control headers to the /public directory with a max-age of 1 day
+app.use(express.static(path.join(__dirname, 'public'), { maxAge: 86400000 }));
+
+// compress all requests
+//app.use(compression());
 
 /*
 app.use(minifyHTML({
@@ -92,6 +98,7 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
+
 
 
 module.exports = app;

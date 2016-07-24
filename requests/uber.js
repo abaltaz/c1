@@ -98,11 +98,11 @@ function getPricesInterval() {
 
 	getPrices().then(function(data) {
 		module.exports.data = data;
-		//console.log(so2, data);
-		//module.exports.emit('ready');
+		setTimeout(getPricesInterval, 60000);
+	}).catch(function(err){
+		setTimeout(getPricesInterval, 60000);
+		console.log("Error with processing Uber surge. Trying again in 1 minute.");
 	});
-
-	setTimeout(getPricesInterval, 60000);
 
 }
 
@@ -171,6 +171,8 @@ function getPrices() {
 
 				}
 
+			}).catch(function(err){
+				console.log("Error with Uber surge request.");
 			});
 
 		});

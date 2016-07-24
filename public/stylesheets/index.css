@@ -231,7 +231,7 @@ b {
 .weather-alert .icon:before {
   content: "\f06a";
   font-family: FontAwesome;
-  color: #E65252;
+
 }
 
 .rain .icon:before {
@@ -269,7 +269,7 @@ b {
   color: #999;
   text-align:center;
   background: #e8e8e8;
-  color: #777;
+  color: #555;
 }
 
 .sources ul {
@@ -574,6 +574,10 @@ ul.footer .c1built-icons .icon-chicago-star {
   border-radius: 5px;
   padding: 15px;
   overflow: auto;
+}
+
+body .buorg {
+  background-color: #fff;
 }
 
 @media (max-width: 420px) {

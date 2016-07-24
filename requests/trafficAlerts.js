@@ -24,10 +24,11 @@ getTrafficInterval();
 function getTrafficInterval() {
 	getTraffic().then(function(data) {
 		module.exports.data = data;
+		setTimeout(getTrafficInterval, 300000);
+	}).catch(function(err){
+		setTimeout(getTrafficInterval, 300000);
+		console.log("Error with processing traffic. Trying again in 5 minutes.");
 	});
-
-	setTimeout(getTrafficInterval, 300000);
-
 };
 
 
@@ -99,6 +100,8 @@ function getTraffic() {
 					trafficAlerts.push(alert);
 				}
 
+			}).catch(function(err){
+				console.log("Error with Traffic request. Trying again in 5 minutes.")
 			});
 
 		});

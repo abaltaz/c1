@@ -45,14 +45,18 @@ setTimeout(function() {
 function getScheduleInterval(teamParams) {
 
 	getSchedule(teamParams.schedule).then(function(data){
-		//console.log("mlb04", data);
 		teamParams.storedSchedule = data;
+		//Do it every day
+		setTimeout(function() {
+			getScheduleInterval(teamParams);
+		}, 86400000);
+	}).catch(function(err) {
+		setTimeout(function() {
+			getScheduleInterval(teamParams);
+			console.log("MLB Getting CSV Schedule error: Executing function again in 1 hours");
+		}, 3600000);
 	});
-
-	//Do it every day
-	setTimeout(function() {
-		getScheduleInterval(teamParams);
-	}, 86400000);
+	
 }
 
 function getSchedule(endpoint) {
@@ -78,13 +82,19 @@ function getSchedule(endpoint) {
 function getGameStatusInterval(teamParams, teamName) {
 	getGameStatus(teamParams).then(function(data){
 		module.exports[teamName] = data;
-		//console.log("Processing game status: ", ind, module.exports[teamName]);;
-		//module.exports["get" + teamName].emit('ready');
+		
+		setTimeout(function() {
+			getGameStatusInterval(teamParams, teamName);
+		}, 60000);
+	
+	}).catch(function(err) {
+		setTimeout(function() {
+			getGameStatusInterval(teamParams, teamName);
+			console.log("MLB Process Schedule error: Executing function again in 60 seconds");
+		}, 60000);
 	});
 
-	setTimeout(function() {
-		getGameStatusInterval(teamParams, teamName);
-	}, 60000);
+	
 }
 
 

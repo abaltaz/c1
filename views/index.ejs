@@ -9,6 +9,11 @@
 				display: block;
 				cursor: default;
 			}
+
+			.update.severity-high .icon{
+				color: #E65252;
+			}
+
 		</style>
 
 	</head>
@@ -284,6 +289,27 @@
 
 
 		</script>
+
+		<script> 
+
+			updateBrowser(function(ready) {
+				console.log(ready);
+			});
+
+			function updateBrowser(callback) {
+				var $buoop = {c:2,text: ""}; 
+				function $buo_f(){ 
+				 var e = document.createElement("script"); 
+				 e.src = "//browser-update.org/update.min.js"; 
+				 document.body.appendChild(e);
+				};
+				try {document.addEventListener("DOMContentLoaded", $buo_f,false)}
+				catch(e){window.attachEvent("onload", $buo_f)}
+
+				callback("updateBrowser is ready");
+			}
+
+		</script> 
 
 	</body>
 </html>
