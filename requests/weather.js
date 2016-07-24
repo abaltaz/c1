@@ -174,17 +174,15 @@ function getWeather() {
 										slug: c1functions.convertToSlug_withDate(alert.title, startDate),
 										title: alert.title,
 										description: "Expected to end at " + endDateString,
-										moreLink: alert.uri,
-										severity: ""
+										moreLink: alert.uri
 									};
 
+								alert["classNames"] = "weather-alert " + alert.slug;
+
 								if (alert.title.indexOf("Warning") > -1) {
-									alert.severity = " severity-high";
+									alert.severity = "severity-high";
+									alert.classNames = `${alert.classNames} ${alert.severity}`;
 								}
-
-								alert["classNames"] = "weather-alert " + alert.slug + alert.severity;
-
-								
 
 								weatherAlerts.push(alert);	
 

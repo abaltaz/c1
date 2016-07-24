@@ -212,9 +212,11 @@ function assembleObstacles() {
 			//obstacles.today.events = underscore.sortBy(obstacles.today.events, 'statusRank');
 			
 			//Sort on event type, then event status
+
 			obstacles.today.events = underscore.sortBy(obstacles.today.events, 'start');
-			obstacles.today.events = underscore.sortBy(obstacles.today.events, 'eventRank');
 			obstacles.today.events = underscore.sortBy(obstacles.today.events, 'statusRank');
+			obstacles.today.events = underscore.sortBy(obstacles.today.events, 'eventRank');
+			obstacles.today.events = underscore.sortBy(obstacles.today.events, 'severity');
 
 
 

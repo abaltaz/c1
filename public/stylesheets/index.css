@@ -229,8 +229,8 @@ b {
 }
 
 .weather-alert .icon:before {
-  content: "\f06a";
-  font-family: FontAwesome;
+  content: "t";
+  font-family: "c1";
 
 }
 
