@@ -214,9 +214,11 @@ function assembleObstacles() {
 			//Sort on event type, then event status
 
 			obstacles.today.events = underscore.sortBy(obstacles.today.events, 'start');
-			obstacles.today.events = underscore.sortBy(obstacles.today.events, 'statusRank');
-			obstacles.today.events = underscore.sortBy(obstacles.today.events, 'eventRank');
+			
+			
 			obstacles.today.events = underscore.sortBy(obstacles.today.events, 'severity');
+			obstacles.today.events = underscore.sortBy(obstacles.today.events, 'eventRank');
+			obstacles.today.events = underscore.sortBy(obstacles.today.events, 'statusRank');
 
 
 
@@ -606,7 +608,8 @@ router.get('/', function(req, res, next) {
 		currentWeather: weather.data.currentWeather,
 		todayWeather: weather.data.todayWeather,
 		//hasCurrentUpdate: hasCurrentUpdate,
-		messageBar: messageBar
+		messageBar: messageBar,
+		env: process.env.NODE_ENV
 	});
 });
 
