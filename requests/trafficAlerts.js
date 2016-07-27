@@ -95,7 +95,7 @@ function getTraffic() {
 
 
 					
-					alert["classNames"] = `${eventType} alert.slug`;
+					alert["classNames"] = `${eventType} ${c1functions.convertToSlug(route.name)} ${alert.slug}`;
 
 					trafficAlerts.push(alert);
 				}

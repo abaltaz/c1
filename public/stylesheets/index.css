@@ -255,8 +255,13 @@ b {
 }
 
 
-.traffic .icon:before {
-    content: "h";
+.traffic.lake-shore-drive-southbound .icon:before {
+    content: "w";
+    font-family: C1;
+}
+
+.traffic.lake-shore-drive-northbound .icon:before {
+    content: "v";
     font-family: C1;
 }
 
