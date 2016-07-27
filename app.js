@@ -41,7 +41,7 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: 86400000 }));
 // compress all requests
 //app.use(compression());
 
-/*
+
 app.use(minifyHTML({
     override:      true,
     htmlMinifier: {
@@ -53,7 +53,7 @@ app.use(minifyHTML({
         minifyJS:                  true
     }
 }));
-*/
+
 
 app.use('/', getData);
 
