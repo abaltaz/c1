@@ -13,17 +13,16 @@ body {
   font-family: Open Sans;
   font-weight: 300;
   color: #444;
-  padding: 0 10px;
   height: 100%;
 }
 
 .content-wrapper {
-  margin-bottom: -230px;
+  margin-bottom: -75px;
   min-height: 100%;
 }
 
 .header {
-  padding: 0 0 10px 5px;
+  padding: 0 0 10px 0;
   width: 100%;
   max-width: 500px;
   display: block;
@@ -36,19 +35,44 @@ body {
 
 h1 {
   font-family: Roboto Slab;
-  font-weight: 100;
+  font-weight: 400;
   padding: 0;
   margin: 0 0 5px;
-  color: #222;
+  color: #888;
 }
 
 h1 span {
-  font-size: 26px;
+  font-size: 25px;
+  margin-left: 5px;
+}
+
+h1 a:link, h1 a:visited, h1 a:active {
+  color: #888;
+}
+
+a {
+  text-decoration: none
 }
 
 .current-weather {
   font-size: 13px;
   color: #777;
+  height: 20px;
+  overflow: hidden;
+  max-width: 380px;
+  display: block;
+  margin: 0 auto;
+  line-height: 20px;
+}
+
+.current-weather .inner {
+  font-size: 13px;
+  color: #777;
+  height: 20px;
+  transition: all 0.5s ease;
+  position: relative;
+  top: 0px;
+  cursor: pointer;
 }
 
 p {
@@ -73,12 +97,12 @@ b {
 .all-clear .title {
   margin-bottom: 5px;
   font-size: 18px;
-  font-weight: 400;
+  font-weight: 500;
 }
 
 .all-clear .details {
   font-size: 16px;
-  color: #666;
+  color: #555;
 }
 
 .updates {
@@ -88,28 +112,26 @@ b {
   margin: 0 auto;
   text-align: left;
   list-style: none;
-  padding: 0;
+  padding: 0 5px;
 }
 
 .updates:after {
-  content: "";
-  background-color: #70a0dc;
+  content: "••••";
+  font-size: 24px;
+  color: #70a0dc;
   text-align: center;
   display: block;
   margin: 0 auto 30px;
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
 }
 
 
 
 .updates > li {
-    color: #666;
+    color: #555;
     border: 1px solid #e8e8e8;
     border-radius: 4px;
     margin: 10px 0;
-    padding: 20px 25px;
+    padding: 20px 0 20px 0;
     background-color: #f9f9f9;
     font-size: 14px;
     position: relative;
@@ -126,27 +148,42 @@ b {
   color: #999;
   margin: 0 0 5px 0;
   position: absolute;
-  top: 12px;
-  right: 17px;
-  font-size: 26px;
+  top: 25px;
+  left: 27px;
+  font-size: 36px;
+  width: 40px;
+  text-align: center;
 }
 
 
 .updates > li .title {
-  margin: 0 0 15px 0;
+  margin: 0 0 5px 0;
   font-size: 16px;
   font-weight: 600;
-  max-width: 300px;
+}
+
+.updates > li .title, .updates > li .msg, .updates > li .label-status{
+  padding: 0 25px 0 90px;
+}
+
+
+.updates > li.later .title, .updates > li.later .msg, .updates > li.later .icon {
+  color: #afafaf;
 }
 
 .updates > li .msg {
   /*border-top: 1px solid #eee;
   margin: 20px 0 0 0;
   padding: 20px 0 0 0;*/
-  color: #888;
+  color: #555;
   font-weight:400;
   line-height: 22px;
 }
+
+.updates > li .msg ul {
+  padding-left: 18px;
+}
+
 
 .updates > li .title:before {
   font-size: 24px;
@@ -155,7 +192,7 @@ b {
 .updates > li .more {
   text-transform: uppercase;
   font-size: 12px;
-  margin: 10px 0 0 0;
+  margin: 15px 0 0 0;
   text-align: center;
 }
 
@@ -164,37 +201,87 @@ b {
   color: #8585ef;
 }
 
+.updates > li .date-info {
+
+  font-size: 12px;
+  margin: 15px 0 0 0;
+  color: #777;
+}
+
+.updates > li .label-status {
+  color: #999;
+  font-size: 11px;
+  position: relative;
+  top: -5px;
+  margin-bottom: -3px;
+}
+
+.updates > li .label-status i {
+  font-size: 12px;
+  vertical-align: middle;
+}
+
+.updates > li .attribution {
+  padding: 0 25px;
+  font-size: 11px;
+  margin-top: 20px;
+  color: #b3b3b3;
+}
+
 .weather-alert .icon:before {
-  content: "\f06a";
-  font-family: FontAwesome;
-  color: #E65252;
+  content: "t";
+  font-family: "c1";
+
 }
 
 .rain .icon:before {
-  content: "\f043";
-  font-family: FontAwesome;
+  content: "i";
+  font-family: "c1";
 }
 
 .cubs .icon:before {
-  content: "C";
-  font-weight: 800;
-  /*content: "a";
-  font-family: C1;*/
+  content: "p";
+  font-family: C1;
 }
 
-
 .sox .icon:before {
-  content: "S";
-  font-weight: 800;
-  font-size: 20px;
-  display: block;
+  content: "o";
+  font-family: C1;
 }
 
 .transit .icon:before {
-    content: "b";
+    content: "a";
     font-family: C1;
 }
 
+
+.traffic .icon:before {
+    content: "h";
+    font-family: C1;
+}
+
+
+.sources {
+  margin: 50px 0 0;
+  padding: 10px 0;
+  display: block;
+  font-size: 11px;
+  color: #999;
+  text-align:center;
+  background: #e8e8e8;
+  color: #555;
+}
+
+.sources ul {
+
+
+}
+
+
+.uber .icon:before {
+    content: "n";
+    font-family: C1;
+}
 
 .special .icon:before {
   background-image: url("http://img.relax.ru/88317/9506715671966128_4d299cc8.jpg");
@@ -213,14 +300,10 @@ b {
   content: "Red Line";
 }
 
-.cubs .icon {
-  margin-top: 3px
-}
-
 
 .custom-update .icon:before {
     content: attr(data-icons);
-    font-family: 'FontAwesome';
+    font-family: 'C1';
 }
 
 .next-days {
@@ -235,7 +318,7 @@ b {
 }
 
 
-.next-days h2 {
+.next-days h3 {
     font-size: 13px;
     text-transform: uppercase;
     font-weight: 300;
@@ -243,7 +326,7 @@ b {
     display: inline-block;
 }
 
-.next-days h2:before {
+.next-days h3:before {
   content: attr(data-date-num);
   border-left: 1px solid #999;
   border-right: 1px solid #999;
@@ -265,6 +348,7 @@ b {
 .next-days ul {
     padding-left: 20px;
     font-size: 14px;
+    text-transform: none;
 }
 
 .next-days ul li {
@@ -273,7 +357,7 @@ b {
 
 
 .push-footers {
-  height: 230px;
+  height: 75px;
 }
 
 .hide-button {
@@ -305,30 +389,29 @@ b {
 }
 
 
-.footer {
-  font-family: Open Sans;
+.message-bar {
   width: 100%;
   margin: 150px 0 0px;
-  border-top: 1px solid #eee;
   color: #cac7c7;
   position: fixed;
   left: 0;
-  bottom: 0;
+  bottom: -90px;
   padding: 15px 0;
-  background: rgba(0,0,0,0.85);
+  background-color: rgba(0,0,0,0.85);
+  -webkit-transition: all 0.2s;
 }
 
-.footer .about {
+.message-bar div:first-child {
   width: 100%;
   max-width: 600px;
-  font-size: 12px;
+  font-size: 13px;
   display: block;
   margin: 0 auto;
-  padding: 0 60px 0 15px;
+  padding: 0 60px 0 10px;
   position: relative;
 }
 
-.footer .close-btn {
+.message-bar .dismiss-btn {
   position: absolute;
   right: 10px;
   top: 0px;
@@ -348,8 +431,116 @@ b {
   cursor: pointer;
 }
 
-.footer .close-btn:before {
-  content: "OK";
+.message-bar a {
+  color: #fff;
+  font-weight: 400;
+  text-decoration: underline;
+}
+
+
+ul.options {
+  list-style: none;
+  text-align: center;
+  padding: 0;
+  margin: 50px 0 0 0;
+}
+
+ul.options li {
+  display: inline-block;
+  vertical-align: top;
+  margin: 0 25px;
+  width: 80px;
+}
+
+ul.options li i {
+  font-size: 30px;
+  color: #777;
+}
+
+ul.options li i:hover {
+  color: #111;
+}
+
+ul.options a:link {
+  text-decoration: none;
+  color: #777;
+}
+
+ul.options a:link:hover {
+  color: #111;
+}
+
+ul.options li .text {
+  font-size: 10px;
+  display: block;
+  margin: 5px 0 0 0;
+  font-weight: 400
+}
+
+ul.options .op-about .icon-c1-logo {
+  font-size: 24px;
+  margin-bottom: -2px;
+}
+
+
+ul.footer {
+  padding: 0;
+  list-style: none;
+  text-align: center;
+  font-size: 12px;
+  padding: 40px 0;
+  background-color: #f5f5f5;
+  font-family: Roboto Slab;
+  position: relative;
+}
+
+ul.footer li {
+  display: inline-block;
+  color: #777;
+  text-transform: lowercase;
+  font-weight: 400;
+}
+
+ul.footer li:not(:first-child):before {
+  content: " - ";
+  font-size: 16px;
+}
+
+ul.footer a:link {
+  text-decoration: none;
+  color: #777;
+}
+
+ul.footer .c1built {
+  margin: 10px 0 5px 0;
+  color: #777;
+}
+
+ul.footer .c1built-icons i {
+  vertical-align: middle;
+  margin: 0 4px
+}
+
+
+ul.footer .c1built-icons .icon-laptop {
+  color: #b5b5f9;
+  font-size: 18px;
+  position: relative;
+  top: 2px
+}
+
+ul.footer .c1built-icons .icon-coffee {
+  color: #cacaca;
+  font-size: 20px;
+  position: relative;
+  left: 2px;
+}
+
+ul.footer .c1built-icons .icon-chicago-star {
+  color: #ffa5a5;
+  font-size: 17px;
+  position: relative;
+  top: 2px;
 }
 
 
@@ -385,8 +576,21 @@ b {
   overflow: auto;
 }
 
+body .buorg {
+  background-color: #fff;
+}
+
 @media (max-width: 420px) {
   .weather {
     top: 18px;
   }
+
+  .updates .icon {
+    left: 4vw;
+  }
+
+  .updates > li .title, .updates > li .msg, .updates > li .label-status{
+    padding-left: 20vw;
+  }
+
 }

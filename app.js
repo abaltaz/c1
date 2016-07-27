@@ -1,13 +1,24 @@
 var express = require('express');
+var compression = require('compression');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var minifyHTML = require('express-minify-html');
+
+//Check if we're using the local environment; if so, load the env file
+if (process.env.NODE_ENV === "local") {
+  var env = require('./env.js')
+}
 
 var routes = require('./routes/');
-var users = require('./routes/users');
-var getData = require('./routes/getdata');
+//var users = require('./routes/users');
+var getData = require('./routes/data-get');
+var blog = require('./routes/blog');
+
+
+
 //var mlbSchedule = require('./routes/mlbSchedule');
 
 var app = express();
@@ -23,10 +34,37 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+
+//Set cache-control headers to the /public directory with a max-age of 1 day
+app.use(express.static(path.join(__dirname, 'public'), { maxAge: 86400000 }));
+
+// compress all requests
+//app.use(compression());
+
+
+app.use(minifyHTML({
+    override:      true,
+    htmlMinifier: {
+        removeComments:            true,
+        collapseWhitespace:        true,
+        collapseBooleanAttributes: true,
+        removeAttributeQuotes:     true,
+        removeEmptyAttributes:     true,
+        minifyJS:                  true
+    }
+}));
+
 
 app.use('/', getData);
-app.use('/users', users);
+
+//router for /blog
+app.use('/', blog.blogRouter);
+  
+//router for /blog/:slug
+app.use('/', blog.blogPostRouter);
+
+
+//app.use('/users', users);
 
 
 
@@ -60,6 +98,7 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
+
 
 
 module.exports = app;
