@@ -73,6 +73,7 @@ a {
   position: relative;
   top: 0px;
   cursor: pointer;
+  margin: 0 10px;
 }
 
 p {

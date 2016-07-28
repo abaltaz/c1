@@ -154,10 +154,14 @@
 
 			function slideCurrentWeather() {
 				$('.current-weather .inner').css('top','-20px');
-				//$('.current-weather').css({'height': '40px', 'margin-bottom': '-20px'});
+				$('.current-weather .inner').one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(e) {
+					$('.current-weather').css({'height': '40px', 'margin-bottom': '-20px'});
+				});
 				setTimeout(function() {
+
 					$('.current-weather .inner').css('top','0px');
-					//$('.current-weather').css({'height': '20px', 'margin-bottom': '0px'});
+					$('.current-weather').css({'height': '20px', 'margin-bottom': '0px'});
+					$('.current-weather .inner').off('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend');
 				},5000);
 			}
 
