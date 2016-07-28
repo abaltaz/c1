@@ -66,8 +66,8 @@ a {
 }
 
 .current-weather .inner {
-  font-size: 13px;
-  color: #777;
+  font-size: 14px;
+  color: #555;
   height: 20px;
   transition: all 0.5s ease;
   position: relative;
