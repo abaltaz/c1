@@ -228,6 +228,9 @@ function assembleObstacles() {
 				messageBar: googleSheet.messageBar
 			});
 			
+		}).catch(function(err){
+			//if something bad happens inside googlesheet promise
+			console.log("Error occurred inside googlesheet promise");
 		});
 	});
 }

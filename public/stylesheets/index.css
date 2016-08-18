@@ -168,7 +168,7 @@ b {
 }
 
 
-.updates > li.later .title, .updates > li.later .msg, .updates > li.later .icon {
+.updates > li.later .title, .updates > li.later .msg, .updates > li.later .icon, .updates > li .date-info {
   color: #afafaf;
 }
 
@@ -203,7 +203,6 @@ b {
 }
 
 .updates > li .date-info {
-
   font-size: 12px;
   margin: 15px 0 0 0;
   color: #777;
@@ -252,6 +251,11 @@ b {
 
 .transit .icon:before {
     content: "a";
+    font-family: C1;
+}
+
+.traffic .icon:before {
+    content: "h";
     font-family: C1;
 }
 
