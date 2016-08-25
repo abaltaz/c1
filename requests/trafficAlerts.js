@@ -26,15 +26,29 @@ var trafficRoutes = {
 	i90_wb: {
 		name: "I-90 Westbound",
 		endpoint: "http://www.travelmidwest.com/lmiga/travelTime.json?path=GATEWAY.IL.I-90.I-90+WB",
-		roads: ["WB Kennedy Expy"],
+		roads: ["WB Kennedy Expy", "NB Dan Ryan Expy"],
 		roadName: "Kennedy Expressway Westbound",
 		showRoadDetail: false
 	},
 	i90_eb: {
 		name: "I-90 Eastbound",
 		endpoint: "http://www.travelmidwest.com/lmiga/travelTime.json?path=GATEWAY.IL.I-90.I-90+EB",
-		roads: ["EB Kennedy Expy"],
+		roads: ["EB Kennedy Expy", "SB Dan Ryan Expy"],
 		roadName: "Kennedy Expressway Eastbound",
+		showRoadDetail: false
+	},
+	danryan_nb: {
+		name: "Dan Ryan Northbound",
+		endpoint: "http://www.travelmidwest.com/lmiga/travelTime.json?path=GATEWAY.IL.I-90.I-90+WB",
+		roads: ["NB Dan Ryan Expy"],
+		roadName: "Dan Ryan Northbound",
+		showRoadDetail: false
+	},
+	danryan_sb: {
+		name: "Dan Ryan Southbound",
+		endpoint: "http://www.travelmidwest.com/lmiga/travelTime.json?path=GATEWAY.IL.I-90.I-90+EB",
+		roads: ["SB Dan Ryan Expy"],
+		roadName: "Dan Ryan Southbound",
 		showRoadDetail: false
 	},
 	i55_nb: {
@@ -84,7 +98,8 @@ function getTraffic() {
 
 	return new Promise(function(resolve,reject) {
 
-		var trafficAlerts=[];
+		var lsd_trafficAlerts=[];
+		var expressway_trafficAlerts=[];
 
 		//Iterate through each Traffic Route endpoint
 		underscore.each(trafficRoutes, function(routeMeta, index) {
@@ -101,7 +116,7 @@ function getTraffic() {
 				});
 
 
-				console.log("validRoads", validRoads);
+				//console.log("validRoads", validRoads);
 
 				//Array containing html strings for each traffic alert item
 				var segmentAlertsHtml = [];
@@ -173,7 +188,7 @@ function getTraffic() {
 					
 					alert["classNames"] = `${eventType} ${c1functions.convertToSlug(routeMeta.name)} ${alert.slug}`;
 
-					trafficAlerts.push(alert);
+					lsd_trafficAlerts.push(alert);
 				}
 
 			}).catch(function(err){
@@ -185,7 +200,7 @@ function getTraffic() {
 		//Need to figure out how to structure this Promise without a setTimeout
 		setTimeout(function() {
 			
-			resolve(trafficAlerts);
+			resolve(lsd_trafficAlerts);
 
 		},100);
 

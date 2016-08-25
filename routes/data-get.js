@@ -16,26 +16,9 @@ var c1functions = require('../core/functions');
 
 var endpoints = {
 	forecast: "https://api.forecast.io/forecast/783d0532d2e2a62cd4fea9df27df5414/41.8369,-87.6847",
-	cubs: "https://api.myjson.com/bins/4bg78",
-	sox: "https://api.myjson.com/bins/5any4",
 	ctaTrains: "http://www.transitchicago.com/api/1.0/alerts.aspx?routeid=red,blue,org,brn,g,pexp"
 };
 
-var cubsParams = {
-  name: "Cubs",
-  schedule: "https://api.myjson.com/bins/4bg78",
-  dateFormat: "MM/YY/DD",
-  dateIdentifier: "START DATE",
-  timeIdentifier: "START TIME"
-};
-
-var soxParams = {
-  name: "Sox",
-  schedule: "https://api.myjson.com/bins/5any4",
-  dateFormat: "MM/YY/DD",
-  dateIdentifier: "START DATE",
-  timeIdentifier: "START TIME"
-};
 
 var days = [
       "Sunday", 
@@ -50,7 +33,7 @@ var days = [
 
 var obstaclesData;
 var currentWeather;
-var hasCurrentUpdate;
+var obstacles;
 var messageBar;
 
 var now;
@@ -60,23 +43,13 @@ var inThreeDays;
 
 var statusOrder = ["current", "soon", "later", "recent", "past"];
 
-var obstacles = {};
-
-/*
-
-mlbSchedule.getcubs.on('ready', function() {
-	console.log("mlbcubs19", mlbSchedule.cubs);
-});
-
-mlbSchedule.getsox.on('ready', () => {
-	console.log("mlbsox19", mlbSchedule.sox);
-});
-*/
 
 
 function assembleObstacles() {
 
 	return new Promise(function(resolve,reject) {
+
+		console.log("Executing assembleObstacles() Promise");
 
 		now = moment();
 		inOneDay = now.clone().add(1, "day").hour(5);
@@ -132,7 +105,6 @@ function assembleObstacles() {
 			assignToADay(weather.data.dailyForecast);
 			assignToADay(weather.data.nextRainEvent);
 			//uber.on('ready', function() {
-			console.log('uber1', uber.data);
 			assignToADay(uber.data);
 			//});
 			assignToADay(trafficAlerts.data);
@@ -187,16 +159,6 @@ function assembleObstacles() {
 			});
 			*/
 
-			/*
-			//Determine if there are NO current updates
-			hasCurrentUpdate = false;
-			for (var obstacle in obstacles) {
-				if (obstacles[obstacle].occurence == true){
-					hasCurrentUpdate = true;
-				}
-			}
-			*/
-
 			if (obstacles.today.events.length === 1) {
 				obstacles.numString = "(1 obstacle)"
 			}
@@ -214,8 +176,6 @@ function assembleObstacles() {
 			//Sort on event type, then event status
 
 			obstacles.today.events = underscore.sortBy(obstacles.today.events, 'start');
-			
-			
 			obstacles.today.events = underscore.sortBy(obstacles.today.events, 'severity');
 			obstacles.today.events = underscore.sortBy(obstacles.today.events, 'eventRank');
 			obstacles.today.events = underscore.sortBy(obstacles.today.events, 'statusRank');
@@ -224,7 +184,6 @@ function assembleObstacles() {
 
 			resolve({
 				obstacles: obstacles,
-				//hasCurrentUpdate: hasCurrentUpdate,
 				messageBar: googleSheet.messageBar
 			});
 			
@@ -256,7 +215,7 @@ function getGoogleSheet() {
 				
 				var startDate = moment(row_json.startdate, "YYYY-MM-DD HH:mm")
 				var endDate = moment(row_json.enddate, "YYYY-MM-DD HH:mm")				
-				status = determineEventStatus(startDate, endDate, 3);
+				status = c1functions.determineEventStatus(startDate, endDate, 3);
 
 				
 				
@@ -270,7 +229,7 @@ function getGoogleSheet() {
 						end: endDate,
 						severity: row_json.severity,
 						source: row_json.source,
-						slug: convertToSlug_withDate(row_json.title, startDate),
+						slug: c1functions.convertToSlug_withDate(row_json.title, startDate),
 						status: status.type,
 						statusRank: statusOrder.indexOf(status.type),
 						eventRank: c1functions.eventOrder.indexOf(eventType),
@@ -321,7 +280,7 @@ function getGoogleSheet() {
 
 function getCtaStatus() {
 	return new Promise(function(resolve,reject) {
-		doRequest(endpoints.ctaTrains, "xml").then(function(data){
+		c1functions.doRequest(endpoints.ctaTrains, "xml").then(function(data){
 			parseString(data, function(err, xmlToJsonResults) {
 				
 				ctaStatus = xmlToJsonResults.CTAAlerts.Alert;
@@ -346,7 +305,7 @@ function getCtaStatus() {
 							alertEnd = alertStart;
 						}
 
-						var status = determineEventStatus(alertStart, alertEnd, 2);
+						var status = c1functions.determineEventStatus(alertStart, alertEnd, 2);
 
 						//If the CTA alert occurs anytime on the present day
 						//if (now.isSame(alertStart, "date") || now.isBetween(alertStart, alertEnd)) {
@@ -366,7 +325,7 @@ function getCtaStatus() {
 								status: status.type,
 								statusRank: c1functions.statusOrder.indexOf(status.type),
 								eventRank: c1functions.eventOrder.indexOf('transit'),
-								slug: convertToSlug_withDate(alert.Headline[0], alertStart)
+								slug: c1functions.convertToSlug_withDate(alert.Headline[0], alertStart)
 							};
 
 							majorAlert["classNames"] = "cta transit " + majorAlert.slug;
@@ -426,125 +385,8 @@ function getCtaStatus() {
 }
 
 
-function doRequest(endpoint, endpointFormat){
-	return new Promise(function(resolve,reject) {
-		request(endpoint, function(error, response, body) {
-			
-			
-			if (!error && response.statusCode == 200) {
-			
-				if (endpointFormat === "json") {
-					resolve(JSON.parse(body));
-				}
-				else if (endpointFormat === "xml") {
-					resolve(body);
-				}
-			}
-			
-			else {
-				resolve(Error);
-			}
-			
-		});
-	});
-}
-
-function convertToSlug(Text) {
-    return Text
-        .toLowerCase()
-        .replace(/[^\w ]+/g,'')
-        .replace(/ +/g,'-')
-        ;
-}
-
-function convertToSlug_withDate(Text, Date) {	
-	var t = Text.toLowerCase().replace(/[^\w ]+/g,'').replace(/ +/g,'-');
-	var d = Date.format("-MMDDYY-HHmm");
-
-	return t + d;
-
-}
-
-function determineEventStatus(startDate, endDate, futureThreshold) {
-  
-    var status = {
-    	type: "",
-		inDisplayWindow: false
-    };
-	
-    var now = moment();
-    var hoursUntil = Math.abs(now.diff(startDate, 'hours'));
-    status.hoursUntil = hoursUntil;
-
-  
-    //
-    //
-    //
-  
-  
-    //Throw error if endDate is same AND earlier that startDate
-    if (startDate.isSame(endDate) === false && 
-        startDate.isBefore(endDate) === false) {
-        return(new Error("Start Date is after End Date"));
-    }
-    
-    //If the event starts less than N days from the current day
-    if (startDate.diff(now, 'days') <= futureThreshold ) {
-  
-      if (now.isBetween(startDate, endDate) ||
-         (now.isSame(startDate, 'day') && startDate.isSame(endDate))) {
-        status.type = "current";
-    	status.weightTime = 10;
-      }
-
-        else if (now.isSame(startDate, 'day') &&
-		         now.isBefore(startDate) && 
-		         hoursUntil <= 1) {	
-
-		         	status.type = "soon";
-		     	 	status.weightTime = 5;
-        }
-
-        else if (now.isSame(startDate, 'day') &&
-                 now.isBefore(startDate)  && 
-		         hoursUntil > 1) {
-                 
-                 status.type = "later";
-             	 status.weightTime = 5;
-        }
-
-        else if (now.isBefore(startDate, 'day')) {
-                status.type = "future";
-        }
-
-        else if (now.isSame(endDate, 'day') &&
-                 now.isAfter(endDate)) {
-                status.type = "recent";
-        }
-
-        else if (now.isAfter(endDate, 'day')) {
-                status.type = "past";
-        }
-
-    }
-  
-    else {
-      return false;
-    }
-	
-	if (status.type === "current" || status.type === "soon" || status.type === "later" || status.type === "future" || status.type === "recent") {
-		status.inDisplayWindow = true;
-	}
-
-	//
-
-    return status;
-      
-}
 
 function assignToADay(data) {
-
-	
 
 	underscore.each(data, function(event,index) {
 
@@ -556,25 +398,25 @@ function assignToADay(data) {
 		}
 		
 		//Rules for displaying an event for 1 day from now
-		if (inOneDay.isSame(event.start, "day") || 
+		else if (inOneDay.isSame(event.start, "day") || 
 			inOneDay.isBetween(event.start, event.end)) {
 			obstacles.nextDays.inOneDay.events.push(event);
 		}
 
 		//Rules for displaying an event for 2 days from now
-		if (inTwoDays.isSame(event.start, "day") || 
+		else if (inTwoDays.isSame(event.start, "day") || 
 			inTwoDays.isBetween(event.start, event.end)) {
 			obstacles.nextDays.inTwoDays.events.push(event);
 		}
 	
 		//Rules for displaying an event for 3 days from now
-		if (inThreeDays.isSame(event.start, "day") || 
+		else if (inThreeDays.isSame(event.start, "day") || 
 			inThreeDays.isBetween(event.start, event.end)) {
 			obstacles.nextDays.inThreeDays.events.push(event);
 		}
 
 		//If the event is current, set hasCurrentEvent to true -- use for "All Clear" message 
-		if (event.status === "current" || event.status === "soon") {
+		else if (event.status === "current" || event.status === "soon") {
 			obstacles.today.hasCurrentEvent = true;
 		}
 
@@ -587,10 +429,9 @@ function assignToADay(data) {
 
 function obstaclesInterval() {
 	assembleObstacles().then(function(data){
-		console.log("Running in " + process.env.NODE_ENV + " environment: " + moment().format("MM/DD hh:mma"));
+		console.log("Running in " + process.env.NODE_ENV + " environment.");
+		
 		obstaclesData = data.obstacles;
-		console.log(obstaclesData);
-		//hasCurrentUpdate = data.hasCurrentUpdate;
 		messageBar = data.messageBar;
 
 		setTimeout(obstaclesInterval, 60000);
@@ -610,7 +451,6 @@ router.get('/', function(req, res, next) {
 		obstacles: obstaclesData,
 		currentWeather: weather.data.currentWeather,
 		todayWeather: weather.data.todayWeather,
-		//hasCurrentUpdate: hasCurrentUpdate,
 		messageBar: messageBar,
 		env: process.env.NODE_ENV
 	});

@@ -140,7 +140,7 @@ function getPrices() {
 				prices.push(uberx[0].surge_multiplier);
 				routeSurges.push(`<li>${route[0].name} to ${route[1].name}: ${uberx[0].surge_multiplier}x</li>`);
 
-				console.log("HI, UBER", sum, uberx[0].surge_multiplier, iteration);
+				//console.log("HI, UBER", sum, uberx[0].surge_multiplier, iteration);
 
 				//If this is the final iteration of the routes object
 				if (iteration === underscore.size(routes)) {
