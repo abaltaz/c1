@@ -91,7 +91,11 @@ function assembleObstacles() {
 
 		getCtaStatus().then(function(transitAlerts){
 			
+			console.log("Callback for getCtaStatus()");
+
 			assignToADay(transitAlerts);
+
+			
 
 			return getGoogleSheet()
 
@@ -100,6 +104,8 @@ function assembleObstacles() {
 			return getGoogleSheet()
 
 		}).then(function(googleSheet){
+
+			console.log("Callback for getGoogleSheet()");
 
 			assignToADay(weather.data.weatherAlerts);
 			assignToADay(weather.data.dailyForecast);
@@ -112,6 +118,7 @@ function assembleObstacles() {
 			assignToADay(mlbSchedule.sox);
 			assignToADay(googleSheet.customUpdates);
 
+			console.log("After googleSheet.customUpdates");
 			
 
 			/*
@@ -217,7 +224,6 @@ function getGoogleSheet() {
 				var endDate = moment(row_json.enddate, "YYYY-MM-DD HH:mm")				
 				status = c1functions.determineEventStatus(startDate, endDate, 3);
 
-				
 				
 				if (status && status.inDisplayWindow == true) {
 				
