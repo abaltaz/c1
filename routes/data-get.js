@@ -404,25 +404,25 @@ function assignToADay(data) {
 		}
 		
 		//Rules for displaying an event for 1 day from now
-		else if (inOneDay.isSame(event.start, "day") || 
+		if (inOneDay.isSame(event.start, "day") || 
 			inOneDay.isBetween(event.start, event.end)) {
 			obstacles.nextDays.inOneDay.events.push(event);
 		}
 
 		//Rules for displaying an event for 2 days from now
-		else if (inTwoDays.isSame(event.start, "day") || 
+		if (inTwoDays.isSame(event.start, "day") || 
 			inTwoDays.isBetween(event.start, event.end)) {
 			obstacles.nextDays.inTwoDays.events.push(event);
 		}
 	
 		//Rules for displaying an event for 3 days from now
-		else if (inThreeDays.isSame(event.start, "day") || 
+		if (inThreeDays.isSame(event.start, "day") || 
 			inThreeDays.isBetween(event.start, event.end)) {
 			obstacles.nextDays.inThreeDays.events.push(event);
 		}
 
 		//If the event is current, set hasCurrentEvent to true -- use for "All Clear" message 
-		else if (event.status === "current" || event.status === "soon") {
+		if (event.status === "current" || event.status === "soon") {
 			obstacles.today.hasCurrentEvent = true;
 		}
 
