@@ -214,71 +214,75 @@ function getGoogleSheet() {
 
 
 		my_sheet.getRows(1, function(err, row_data){
+
+			if (err) {
+				reject(new Error("Bad response from Google Sheets"));
+			}
 			
-			var customUpdates = [];
-			var messages = [];
+			else {
+				var customUpdates = [];
+				var messages = [];
 
-			underscore.each(row_data, function(row_json, index) {
-				
-				var startDate = moment(row_json.startdate, "YYYY-MM-DD HH:mm")
-				var endDate = moment(row_json.enddate, "YYYY-MM-DD HH:mm")				
-				status = c1functions.determineEventStatus(startDate, endDate, 3);
-
-				
-				if (status && status.inDisplayWindow == true) {
-				
-					var customUpdate = {					
-						eventType: eventType,
-						title: row_json.title,
-						description: marked(row_json.description),
-						start: startDate,
-						end: endDate,
-						severity: row_json.severity,
-						source: row_json.source,
-						slug: c1functions.convertToSlug_withDate(row_json.title, startDate),
-						status: status.type,
-						statusRank: statusOrder.indexOf(status.type),
-						eventRank: c1functions.eventOrder.indexOf(eventType),
-						inDisplayWindow: status.inDisplayWindow,
-						hoursUntil: status.hoursUntil
-					};
-
-					customUpdate["classNames"] = `${eventType} customUpdate.slug`;
-
-					if (row_json.icon !== "") { customUpdate["icon"] = row_json.icon; } /*"&#x" + customUpdate.icon*/
-					if (row_json.morelink !== "") { customUpdate["moreLink"] = row_json.morelink; }
+				underscore.each(row_data, function(row_json, index) {
 					
-					customUpdates.push(customUpdate);				
-				}
+					var startDate = moment(row_json.startdate, "YYYY-MM-DD HH:mm")
+					var endDate = moment(row_json.enddate, "YYYY-MM-DD HH:mm")				
+					status = c1functions.determineEventStatus(startDate, endDate, 3);
 
-			});
-			
-			my_sheet.getRows(2, function(err, row_data){
-				
-				underscore.each(row_data, function(value,index) {
 					
-					var slug = c1functions.convertToSlug(value.description);
-					var slugTruncated = slug.substring(0, 40);
+					if (status && status.inDisplayWindow == true) {
+					
+						var customUpdate = {					
+							eventType: eventType,
+							title: row_json.title,
+							description: marked(row_json.description),
+							start: startDate,
+							end: endDate,
+							severity: row_json.severity,
+							source: row_json.source,
+							slug: c1functions.convertToSlug_withDate(row_json.title, startDate),
+							status: status.type,
+							statusRank: statusOrder.indexOf(status.type),
+							eventRank: c1functions.eventOrder.indexOf(eventType),
+							inDisplayWindow: status.inDisplayWindow,
+							hoursUntil: status.hoursUntil
+						};
 
-					messages.push({
-						description: marked(value.description),
-						dismisscta: value.dismisscta,
-						slug: slugTruncated,
-						className: slugTruncated
+						customUpdate["classNames"] = `${eventType} customUpdate.slug`;
+
+						if (row_json.icon !== "") { customUpdate["icon"] = row_json.icon; } /*"&#x" + customUpdate.icon*/
+						if (row_json.morelink !== "") { customUpdate["moreLink"] = row_json.morelink; }
+						
+						customUpdates.push(customUpdate);				
+					}
+
+				});
+				
+				my_sheet.getRows(2, function(err, row_data){
+					
+					underscore.each(row_data, function(value,index) {
+						
+						var slug = c1functions.convertToSlug(value.description);
+						var slugTruncated = slug.substring(0, 40);
+
+						messages.push({
+							description: marked(value.description),
+							dismisscta: value.dismisscta,
+							slug: slugTruncated,
+							className: slugTruncated
+						});
+
+					});
+
+					//console.log(messages);
+
+					resolve({
+						customUpdates: customUpdates,
+						messageBar: messages
 					});
 
 				});
-
-				//console.log(messages);
-
-				resolve({
-					customUpdates: customUpdates,
-					messageBar: messages
-				});
-
-			});
-				
-		
+			}
 		});
 	
 	});
@@ -287,105 +291,113 @@ function getGoogleSheet() {
 function getCtaStatus() {
 	return new Promise(function(resolve,reject) {
 		c1functions.doRequest(endpoints.ctaTrains, "xml").then(function(data){
-			parseString(data, function(err, xmlToJsonResults) {
-				
-				ctaStatus = xmlToJsonResults.CTAAlerts.Alert;
-				
-				var majorAlerts = [];
-				var now = moment();
-				//moment().add(4, "days");
-	
-				underscore.each(ctaStatus, function(alert, index) {
 
+			if (data == Error) {
+				reject(new Error("Bad response from CTA endpoint"));
+			}
+
+			else {
+
+				parseString(data, function(err, xmlToJsonResults) {
+					
+					ctaStatus = xmlToJsonResults.CTAAlerts.Alert;
+					
+					var majorAlerts = [];
+					var now = moment();
+					//moment().add(4, "days");
 		
-					if (parseInt(alert.SeverityScore[0]) > 35) {
+					underscore.each(ctaStatus, function(alert, index) {
 
-						var alertStart = moment(alert.EventStart[0], "YYYYMMDD HH:mm");
-						var alertEnd; 
+			
+						if (parseInt(alert.SeverityScore[0]) > 35) {
 
-						if (alert.EventEnd[0] !== "") {
-							alertEnd = moment(alert.EventEnd[0], "YYYYMMDD HH:mm");
-						}
+							var alertStart = moment(alert.EventStart[0], "YYYYMMDD HH:mm");
+							var alertEnd; 
 
-						else {
-							alertEnd = alertStart;
-						}
-
-						var status = c1functions.determineEventStatus(alertStart, alertEnd, 2);
-
-						//If the CTA alert occurs anytime on the present day
-						//if (now.isSame(alertStart, "date") || now.isBetween(alertStart, alertEnd)) {
-						if (status && status.inDisplayWindow == true) {
-													
-							//Iterate through each impacted service (e.g. RedLine) and store it
-							//var impactedServices = [];
-							
-							//Add an object for this alert to the majorAlerts array				
-							var majorAlert = {
-								title: alert.Headline[0],
-								description: alert.ShortDescription[0],
-								start: alertStart,
-								end: alertEnd,
-								//impactedService: convertToSlug(alert.ImpactedService[0].Service[0].ServiceName[0]),
-								inDisplayWindow: status.inDisplayWindow,
-								status: status.type,
-								statusRank: c1functions.statusOrder.indexOf(status.type),
-								eventRank: c1functions.eventOrder.indexOf('transit'),
-								slug: c1functions.convertToSlug_withDate(alert.Headline[0], alertStart)
-							};
-
-							majorAlert["classNames"] = "cta transit " + majorAlert.slug;
-
-							if (now.isBefore(alertStart)) {
-								majorAlert["dateString"] = "Starts at " + alertStart.format("h:mma")
+							if (alert.EventEnd[0] !== "") {
+								alertEnd = moment(alert.EventEnd[0], "YYYYMMDD HH:mm");
 							}
 
-							else if (now.isSame(alertEnd, "day") && alertStart !== alertEnd) {
-								majorAlert["dateString"] = "Ends at " + alertEnd.format("h:mma [today]");
+							else {
+								alertEnd = alertStart;
 							}
 
-							else if (alertStart !== alertEnd) {
-								majorAlert["dateString"] = "Ends on " + alertEnd.format("MMMM D [at] h:mma");
-							}
+							var status = c1functions.determineEventStatus(alertStart, alertEnd, 2);
 
-							majorAlerts.push(majorAlert);
-							
-							/*
-							//If an alert has multiple impact routes, create a new object for each impacted
-							underscore.each(alert.ImpactedService[0].Service, function(Service, index){
+							//If the CTA alert occurs anytime on the present day
+							//if (now.isSame(alertStart, "date") || now.isBetween(alertStart, alertEnd)) {
+							if (status && status.inDisplayWindow == true) {
+														
+								//Iterate through each impacted service (e.g. RedLine) and store it
+								//var impactedServices = [];
 								
-								if (Service.ServiceId[0] == "Red" ||
-									Service.ServiceId[0] == "Blue" ||
-									Service.ServiceId[0] == "Org" ||
-									Service.ServiceId[0] == "Brn" ||
-									Service.ServiceId[0] == "G" ||
-									Service.ServiceId[0] == "P" ||
-									Service.ServiceId[0] == "Pexp") {
-										
-										//Add an object for this alert to the majorAlerts array				
-										majorAlerts.push({
-											headline: alert.Headline[0],
-											description: alert.ShortDescription[0],
-											start: alert.EventStart[0],
-											end: alert.EventEnd[0],
-											impactedService: convertToSlug(Service.ServiceName[0]),
-											inDisplayWindow: timeStatus.inDisplayWindow,
-											timeStatus: timeStatus.type
-											
-										});
+								//Add an object for this alert to the majorAlerts array				
+								var majorAlert = {
+									title: alert.Headline[0],
+									description: alert.ShortDescription[0],
+									start: alertStart,
+									end: alertEnd,
+									//impactedService: convertToSlug(alert.ImpactedService[0].Service[0].ServiceName[0]),
+									inDisplayWindow: status.inDisplayWindow,
+									status: status.type,
+									statusRank: c1functions.statusOrder.indexOf(status.type),
+									eventRank: c1functions.eventOrder.indexOf('transit'),
+									slug: c1functions.convertToSlug_withDate(alert.Headline[0], alertStart)
+								};
+
+								majorAlert["classNames"] = "cta transit " + majorAlert.slug;
+
+								if (now.isBefore(alertStart)) {
+									majorAlert["dateString"] = "Starts at " + alertStart.format("h:mma")
 								}
-							});
-							*/
-				
+
+								else if (now.isSame(alertEnd, "day") && alertStart !== alertEnd) {
+									majorAlert["dateString"] = "Ends at " + alertEnd.format("h:mma [today]");
+								}
+
+								else if (alertStart !== alertEnd) {
+									majorAlert["dateString"] = "Ends on " + alertEnd.format("MMMM D [at] h:mma");
+								}
+
+								majorAlerts.push(majorAlert);
+								
+								/*
+								//If an alert has multiple impact routes, create a new object for each impacted
+								underscore.each(alert.ImpactedService[0].Service, function(Service, index){
+									
+									if (Service.ServiceId[0] == "Red" ||
+										Service.ServiceId[0] == "Blue" ||
+										Service.ServiceId[0] == "Org" ||
+										Service.ServiceId[0] == "Brn" ||
+										Service.ServiceId[0] == "G" ||
+										Service.ServiceId[0] == "P" ||
+										Service.ServiceId[0] == "Pexp") {
+											
+											//Add an object for this alert to the majorAlerts array				
+											majorAlerts.push({
+												headline: alert.Headline[0],
+												description: alert.ShortDescription[0],
+												start: alert.EventStart[0],
+												end: alert.EventEnd[0],
+												impactedService: convertToSlug(Service.ServiceName[0]),
+												inDisplayWindow: timeStatus.inDisplayWindow,
+												timeStatus: timeStatus.type
+												
+											});
+									}
+								});
+								*/
+					
+							}
 						}
-					}
-		
+			
+					});
+					
+					
+					resolve(majorAlerts);
+					
 				});
-				
-				
-				resolve(majorAlerts);
-				
-			});
+			}
 		});
 	});
 }
