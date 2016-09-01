@@ -14,7 +14,7 @@ module.exports.doRequest = function(endpoint, endpointFormat){
 	return new Promise(function(resolve,reject) {
 		request(endpoint, function(error, response, body) {
 			
-			console.log(`Request made to ${endpoint} at ${moment().format('hh:mm:ss')}`);
+			//console.log(`Request made to ${endpoint} at ${moment().format('hh:mm:ss')}`);
 			
 			if (!error && response.statusCode == 200) {
 			

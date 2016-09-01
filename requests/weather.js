@@ -57,20 +57,22 @@ function getWeather() {
 		          if (forecastTime.isAfter(currentTime) && forecastTime.isBefore(tomorrowDate)) {
                       
 		            //Determine likelihood of rain
-		            if (forecast.precipProbability > 0.24) {
+		            if (forecast.precipProbability > 0.5) {
 
 		              rainStatus.rainToday = true;
 
 		              //function to set string based on probability of rain
 		              var probablity = function() {
 
-		              	   console.log("HI", forecast.precipProbability, forecastTime.format("MM/DD HH:mm"), forecast.time);
+		              	   //console.log("HI", forecast.precipProbability, forecastTime.format("MM/DD HH:mm"), forecast.time);
 
+		              	  /* 
 			              if (forecast.precipProbability > 0.24 && forecast.precipProbability <= 0.5) {
 			                    return "Slight chance"
 			              }
+						  */	
 			                  
-		                  else if (forecast.precipProbability > 0.5 && forecast.precipProbability <= 0.75) {
+		                  if (forecast.precipProbability > 0.5 && forecast.precipProbability <= 0.75) {
 		                    	return "Good chance"
 		                  }
 		                  

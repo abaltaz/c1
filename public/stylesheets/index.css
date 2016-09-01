@@ -163,7 +163,7 @@ b {
   font-weight: 600;
 }
 
-.updates > li .title, .updates > li .msg, .updates > li .label-status{
+.updates > li .title, .updates > li .msg, .updates > li .label-status, .updates > li .date-info {
   padding: 0 25px 0 90px;
 }
 
