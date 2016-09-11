@@ -33,14 +33,14 @@ body {
 
 h1 {
   font-family: Roboto Slab;
-  font-weight: 200;
-  font-size: 22px;
-  padding: 8px 0;
+  font-weight: 300;
+  font-size: 18px;
+  padding: 12px 0;
   margin: 0 0 5px;
-  color: #555;
-  background-color: #efefef;
+  color: #888;
+  background-color: #fbfbfb;
   text-transform: uppercase;
-  border-bottom: 1px solid #dedede;
+  border-bottom: 1px solid #eaeaea;
 }
 
 h1 span {
@@ -92,12 +92,10 @@ b {
 
 .all-clear i {
   font-size: 50px;
-  color: green;
-  margin: 0 0 10px;
+  color: #069e06;
 }
 
 .all-clear .title {
-  margin-bottom: 5px;
   font-size: 18px;
   font-weight: 500;
 }
@@ -105,6 +103,7 @@ b {
 .all-clear .details {
   font-size: 16px;
   color: #555;
+  margin-top: -10px;
 }
 
 .updates {
@@ -134,10 +133,10 @@ b {
     border-radius: 4px;
     margin: 10px 0;
     padding: 20px 0 20px 0;
-    background-color: #efefef;
+    background-color: #fbfbfb;
     font-size: 14px;
     position: relative;
-    box-shadow: 2px 2px 2px #d2d2d2
+    /*box-shadow: 2px 2px 2px #d2d2d2*/
 }
 
 .updates > li:last-child {
