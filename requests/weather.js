@@ -25,6 +25,9 @@ function getWeatherInterval() {
 
 
 function getWeather() {
+	
+	console.log("getWeather()");
+
 	return new Promise(function(resolve,reject) {
 		c1functions.doRequest(weatherEndpoint, "json").then(function(forecast){
 			

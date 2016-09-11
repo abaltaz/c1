@@ -110,6 +110,8 @@ function getPricesInterval() {
 
 function getPrices() {
 
+	console.log("Uber getPrices()");
+
 	return new Promise(function(resolve, reject) {
 
 		var prices = [];

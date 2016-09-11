@@ -4,20 +4,14 @@ var request = require('request');
 var GoogleSpreadsheet = require("google-spreadsheet");
 var moment = require('moment');
 var underscore = require('underscore');
-var parseString = require('xml2js').parseString;
 var marked = require('marked');
 var mlbSchedule = require('../requests/mlbSchedule');
 var trafficAlerts = require('../requests/trafficAlerts');
+var ctaAlerts = require('../requests/ctaAlerts');
 var uber = require('../requests/uber');
 var weather = require('../requests/weather');
 var c1functions = require('../core/functions');
 //var Promise = require('promise');
-
-
-var endpoints = {
-	forecast: "https://api.forecast.io/forecast/783d0532d2e2a62cd4fea9df27df5414/41.8369,-87.6847",
-	ctaTrains: "http://www.transitchicago.com/api/1.0/alerts.aspx?routeid=red,blue,org,brn,g,pexp"
-};
 
 
 var days = [
@@ -89,21 +83,7 @@ function assembleObstacles() {
 			numString: ""
 		};
 
-		getCtaStatus().then(function(transitAlerts){
-			
-			console.log("Callback for getCtaStatus()");
-
-			assignToADay(transitAlerts);
-
-			
-
-			return getGoogleSheet()
-
-		}).catch(function(err){
-			
-			return getGoogleSheet()
-
-		}).then(function(googleSheet){
+		getGoogleSheet().then(function(googleSheet){
 
 			console.log("Callback for getGoogleSheet()");
 
@@ -116,55 +96,10 @@ function assembleObstacles() {
 			assignToADay(trafficAlerts.data);
 			assignToADay(mlbSchedule.cubs);
 			assignToADay(mlbSchedule.sox);
+			assignToADay(ctaAlerts.data);
 			assignToADay(googleSheet.customUpdates);
 
 			console.log("After googleSheet.customUpdates");
-			
-
-			/*
-
-			if (weather.data.rainStatus.rainToday) {
-				
-				var status = determineEventStatus(weather.data.rainStatus.rainTodayDetails[0].startDate, 
-									 			  weather.data.rainStatus.rainTodayDetails[0].endDate,
-									 			  1);
-				
-
-				var rainEvent = {
-					occurence: weather.data.rainStatus.rainToday,
-					title: weather.data.rainStatus.rainTodayString,
-					description: weather.data.rainStatus.rainTodayTitle,
-					startDate: weather.data.rainStatus.rainTodayDetails[0].startDate.format("MM/DD hh:mma"),
-					endDate: weather.data.rainStatus.rainTodayDetails[0].endDate.format("MM/DD hh:mma"),
-					category: "weather",
-					type: "rain",
-					inDisplayWindow: status.inDisplayWindow,
-					status: status.type,
-					statusRank: c1functions.statusOrder.indexOf(status.type),
-					eventRank: c1functions.eventOrder.indexOf("rain"),
-					slug: convertToSlug_withDate("rain", weather.data.rainStatus.rainTodayDetails[0].startDate)
-				}
-
-				console.log("HELLO RAIN5", rainEvent);
-
-				rainEvent["classNames"] = `rain ${rainEvent.slug}`;
-
-				obstacles.today.events.push(rainEvent);
-			
-			}
-
-			*/
-
-			/*
-			underscore.each(data.weatherAlerts, function(weatherAlert,index){
-				obstacles.today.events.push({
-					occurence: weatherAlert.alertNow,
-					description: weatherAlert.string,
-					category: "weather",
-					type: "weather-alert"
-				});
-			});
-			*/
 
 			if (obstacles.today.events.length === 1) {
 				obstacles.numString = "(1 obstacle)"
@@ -285,120 +220,6 @@ function getGoogleSheet() {
 			}
 		});
 	
-	});
-}
-
-function getCtaStatus() {
-	return new Promise(function(resolve,reject) {
-		c1functions.doRequest(endpoints.ctaTrains, "xml").then(function(data){
-
-			if (data == Error) {
-				reject(new Error("Bad response from CTA endpoint"));
-			}
-
-			else {
-
-				parseString(data, function(err, xmlToJsonResults) {
-					
-					ctaStatus = xmlToJsonResults.CTAAlerts.Alert;
-					
-					var majorAlerts = [];
-					var now = moment();
-					//moment().add(4, "days");
-		
-					underscore.each(ctaStatus, function(alert, index) {
-
-			
-						if (parseInt(alert.SeverityScore[0]) > 35) {
-
-							var alertStart = moment(alert.EventStart[0], "YYYYMMDD HH:mm");
-							var alertEnd; 
-
-							if (alert.EventEnd[0] !== "") {
-								alertEnd = moment(alert.EventEnd[0], "YYYYMMDD HH:mm");
-							}
-
-							else {
-								alertEnd = alertStart;
-							}
-
-							var status = c1functions.determineEventStatus(alertStart, alertEnd, 2);
-
-							//If the CTA alert occurs anytime on the present day
-							//if (now.isSame(alertStart, "date") || now.isBetween(alertStart, alertEnd)) {
-							if (status && status.inDisplayWindow == true) {
-														
-								//Iterate through each impacted service (e.g. RedLine) and store it
-								//var impactedServices = [];
-								
-								//Add an object for this alert to the majorAlerts array				
-								var majorAlert = {
-									title: alert.Headline[0],
-									description: alert.ShortDescription[0],
-									start: alertStart,
-									end: alertEnd,
-									//impactedService: convertToSlug(alert.ImpactedService[0].Service[0].ServiceName[0]),
-									inDisplayWindow: status.inDisplayWindow,
-									status: status.type,
-									statusRank: c1functions.statusOrder.indexOf(status.type),
-									eventRank: c1functions.eventOrder.indexOf('transit'),
-									slug: c1functions.convertToSlug_withDate(alert.Headline[0], alertStart)
-								};
-
-								majorAlert["classNames"] = "cta transit " + majorAlert.slug;
-
-								if (now.isBefore(alertStart)) {
-									majorAlert["dateString"] = "Starts at " + alertStart.format("h:mma")
-								}
-
-								else if (now.isSame(alertEnd, "day") && alertStart !== alertEnd) {
-									majorAlert["dateString"] = "Ends at " + alertEnd.format("h:mma [today]");
-								}
-
-								else if (alertStart !== alertEnd) {
-									majorAlert["dateString"] = "Ends on " + alertEnd.format("MMMM D [at] h:mma");
-								}
-
-								majorAlerts.push(majorAlert);
-								
-								/*
-								//If an alert has multiple impact routes, create a new object for each impacted
-								underscore.each(alert.ImpactedService[0].Service, function(Service, index){
-									
-									if (Service.ServiceId[0] == "Red" ||
-										Service.ServiceId[0] == "Blue" ||
-										Service.ServiceId[0] == "Org" ||
-										Service.ServiceId[0] == "Brn" ||
-										Service.ServiceId[0] == "G" ||
-										Service.ServiceId[0] == "P" ||
-										Service.ServiceId[0] == "Pexp") {
-											
-											//Add an object for this alert to the majorAlerts array				
-											majorAlerts.push({
-												headline: alert.Headline[0],
-												description: alert.ShortDescription[0],
-												start: alert.EventStart[0],
-												end: alert.EventEnd[0],
-												impactedService: convertToSlug(Service.ServiceName[0]),
-												inDisplayWindow: timeStatus.inDisplayWindow,
-												timeStatus: timeStatus.type
-												
-											});
-									}
-								});
-								*/
-					
-							}
-						}
-			
-					});
-					
-					
-					resolve(majorAlerts);
-					
-				});
-			}
-		});
 	});
 }
 

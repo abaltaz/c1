@@ -96,6 +96,8 @@ function getTrafficInterval() {
 
 function getTraffic() {
 
+	console.log("getTraffic()");
+
 	return new Promise(function(resolve,reject) {
 
 		var lsd_trafficAlerts=[];
