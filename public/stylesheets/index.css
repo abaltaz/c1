@@ -14,6 +14,7 @@ body {
   font-weight: 300;
   color: #444;
   height: 100%;
+  background-color: #fff;
 }
 
 .content-wrapper {
@@ -24,10 +25,7 @@ body {
 .header {
   padding: 0 0 10px 0;
   width: 100%;
-  max-width: 500px;
-  display: block;
-  position: relative;
-  margin: 20px auto 20px;
+  margin: 0 0 15px;
   color: #757575;
   text-align: center;
 }
@@ -35,14 +33,17 @@ body {
 
 h1 {
   font-family: Roboto Slab;
-  font-weight: 400;
-  padding: 0;
+  font-weight: 200;
+  font-size: 22px;
+  padding: 8px 0;
   margin: 0 0 5px;
   color: #888;
+  background-color: #efefef;
+  text-transform: uppercase;
+  border-bottom: 1px solid #dedede;
 }
 
 h1 span {
-  font-size: 25px;
   margin-left: 5px;
 }
 
@@ -61,7 +62,7 @@ a {
   overflow: hidden;
   max-width: 380px;
   display: block;
-  margin: 0 auto;
+  margin: 25px auto 0;
   line-height: 20px;
 }
 
@@ -113,7 +114,7 @@ b {
   margin: 0 auto;
   text-align: left;
   list-style: none;
-  padding: 0 5px;
+  padding: 0 10px;
 }
 
 .updates:after {
@@ -128,12 +129,12 @@ b {
 
 
 .updates > li {
-    color: #555;
-    border: 1px solid #e8e8e8;
+    color: #6da4d6;
+    border: 1px solid #e2e2e2;
     border-radius: 4px;
     margin: 10px 0;
     padding: 20px 0 20px 0;
-    background-color: #f9f9f9;
+    background-color: #efefef;
     font-size: 14px;
     position: relative;
     box-shadow: 2px 2px 2px #d2d2d2
@@ -325,6 +326,7 @@ b {
     border-radius: 4px;
     color: #555;
     border: 1px dashed #b7b6b6;
+    background-color: #fff
 }
 
 
