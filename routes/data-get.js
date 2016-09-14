@@ -5,6 +5,7 @@ var GoogleSpreadsheet = require("google-spreadsheet");
 var moment = require('moment');
 var underscore = require('underscore');
 var marked = require('marked');
+var googleSheet = require('../requests/googleSheet');
 var mlbSchedule = require('../requests/mlbSchedule');
 var trafficAlerts = require('../requests/trafficAlerts');
 var ctaAlerts = require('../requests/ctaAlerts');
@@ -34,9 +35,6 @@ var now;
 var inOneDay;
 var inTwoDays;
 var inThreeDays;
-
-var statusOrder = ["current", "soon", "later", "recent", "past"];
-
 
 
 function assembleObstacles() {
@@ -83,27 +81,23 @@ function assembleObstacles() {
 			numString: ""
 		};
 
-		getGoogleSheet().then(function(googleSheet){
 
-			console.log("Callback for getGoogleSheet()");
+		assignToADay(googleSheet.data.customUpdates);
+		assignToADay(weather.data.weatherAlerts);
+		assignToADay(weather.data.dailyForecast);
+		assignToADay(weather.data.nextRainEvent);
+		//uber.on('ready', function() {
+		assignToADay(uber.data);
+		//});
+		assignToADay(trafficAlerts.data);
+		assignToADay(mlbSchedule.cubs);
+		assignToADay(mlbSchedule.sox);
+		assignToADay(ctaAlerts.data);
 
-			assignToADay(weather.data.weatherAlerts);
-			assignToADay(weather.data.dailyForecast);
-			assignToADay(weather.data.nextRainEvent);
-			//uber.on('ready', function() {
-			assignToADay(uber.data);
-			//});
-			assignToADay(trafficAlerts.data);
-			assignToADay(mlbSchedule.cubs);
-			assignToADay(mlbSchedule.sox);
-			assignToADay(ctaAlerts.data);
-			assignToADay(googleSheet.customUpdates);
 
-			console.log("After googleSheet.customUpdates");
-
-			if (obstacles.today.events.length === 1) {
-				obstacles.numString = "(1 obstacle)"
-			}
+		if (obstacles.today.events.length === 1) {
+			obstacles.numString = "(1 obstacle)"
+		}
 
 			else if (obstacles.today.events.length > 1) {
 				obstacles.numString = "(" + obstacles.today.events.length + " obstacles)"
@@ -113,26 +107,22 @@ function assembleObstacles() {
 				obstacles.numString = obstacles.today.events.length + "(Smooth sailing)"
 			}
 
-			//obstacles.today.events = underscore.sortBy(obstacles.today.events, 'statusRank');
-			
-			//Sort on event type, then event status
+		//obstacles.today.events = underscore.sortBy(obstacles.today.events, 'statusRank');
+		
+		//Sort on event type, then event status
 
-			obstacles.today.events = underscore.sortBy(obstacles.today.events, 'start');
-			obstacles.today.events = underscore.sortBy(obstacles.today.events, 'severity');
-			obstacles.today.events = underscore.sortBy(obstacles.today.events, 'eventRank');
-			obstacles.today.events = underscore.sortBy(obstacles.today.events, 'statusRank');
+		obstacles.today.events = underscore.sortBy(obstacles.today.events, 'start');
+		obstacles.today.events = underscore.sortBy(obstacles.today.events, 'severity');
+		obstacles.today.events = underscore.sortBy(obstacles.today.events, 'eventRank');
+		obstacles.today.events = underscore.sortBy(obstacles.today.events, 'statusRank');
 
 
 
-			resolve({
-				obstacles: obstacles,
-				messageBar: googleSheet.messageBar
-			});
-			
-		}).catch(function(err){
-			//if something bad happens inside googlesheet promise
-			console.log("Error occurred inside googlesheet promise");
+		resolve({
+			obstacles: obstacles,
+			messageBar: googleSheet.data.messageBar
 		});
+			
 	});
 }
 
