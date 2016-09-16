@@ -174,7 +174,8 @@ function getPrices() {
 				}
 
 			}).catch(function(err){
-				console.log("Error with Uber surge request.");
+				console.log("Error with Uber surge request.", err);
+				setTimeout(getPricesInterval, 60000);
 			});
 
 		});

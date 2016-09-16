@@ -213,6 +213,8 @@ function getWeather() {
 						inDisplayWindow: status.inDisplayWindow,
 						status: status.type,
 						statusRank: c1functions.statusOrder.indexOf(status.type),
+						eventType: "daily-forecast",
+						eventRank: c1functions.eventOrder.indexOf("daily-forecast"),
 						start: startDate,
 						end: startDate,
 						slug: c1functions.convertToSlug_withDate("forecast", startDate),
@@ -239,7 +241,8 @@ function getWeather() {
 			}
 			
 		}).catch(function(err) {
-			console.log("Error with ForecastIO request.");
+			console.log("Error with ForecastIO request. Trying again in 5 minutes", err);
+			setTimeout(getWeatherInterval, 300000);
 		});
 	});
 }

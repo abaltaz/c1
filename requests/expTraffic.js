@@ -154,7 +154,8 @@ function getExpTraffic() {
 				}
 
 			}).catch(function(err){
-				console.log("Error with Traffic request. Trying again in 5 minutes.")
+				console.log("Error with Traffic request. Trying again in 5 minutes.", err);
+				setTimeout(getExpTrafficInterval, 300000);
 			});
 
 		});

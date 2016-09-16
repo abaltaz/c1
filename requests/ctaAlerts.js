@@ -137,7 +137,8 @@ function getCtaStatus() {
 				});
 			}
 		}).catch(function(err){
-			console.log("Error with CTA request. Trying again in 5 minutes.", err)
+			console.log("Error with CTA request. Trying again in 5 minutes.", err);
+			setTimeout(getCtaInterval, 30000);
 		});
 	});
 }

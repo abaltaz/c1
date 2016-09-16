@@ -120,6 +120,9 @@ function assembleObstacles() {
 		obstacles.today.events = underscore.sortBy(obstacles.today.events, 'eventRank');
 		obstacles.today.events = underscore.sortBy(obstacles.today.events, 'statusRank');
 
+		underscore.each(obstacles.nextDays, function(nextDay){
+			nextDay.events = underscore.sortBy(nextDay.events, 'eventRank');
+		});
 
 
 		resolve({
