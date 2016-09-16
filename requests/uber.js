@@ -154,7 +154,7 @@ function getPrices() {
 
 						surgeObstacle.push({
 							eventType: eventType,
-							title: "Uber surge in effect",
+							title: "Possible ride-share surge in effect",
 							description: `Fare increase around <strong>${priceAvg}x</strong>.`,
 							start: moment(),
 							end: moment(),

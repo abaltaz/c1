@@ -22,61 +22,6 @@ var trafficRoutes = {
 		roads: ["SB Lake Shore Drive"],
 		roadName: "Southbound Lake Shore Drive",
 		showRoadDetail: true
-	},
-	i90_wb: {
-		name: "I-90 Westbound",
-		endpoint: "http://www.travelmidwest.com/lmiga/travelTime.json?path=GATEWAY.IL.I-90.I-90+WB",
-		roads: ["WB Kennedy Expy", "NB Dan Ryan Expy"],
-		roadName: "Kennedy Expressway Westbound",
-		showRoadDetail: false
-	},
-	i90_eb: {
-		name: "I-90 Eastbound",
-		endpoint: "http://www.travelmidwest.com/lmiga/travelTime.json?path=GATEWAY.IL.I-90.I-90+EB",
-		roads: ["EB Kennedy Expy", "SB Dan Ryan Expy"],
-		roadName: "Kennedy Expressway Eastbound",
-		showRoadDetail: false
-	},
-	danryan_nb: {
-		name: "Dan Ryan Northbound",
-		endpoint: "http://www.travelmidwest.com/lmiga/travelTime.json?path=GATEWAY.IL.I-90.I-90+WB",
-		roads: ["NB Dan Ryan Expy"],
-		roadName: "Dan Ryan Northbound",
-		showRoadDetail: false
-	},
-	danryan_sb: {
-		name: "Dan Ryan Southbound",
-		endpoint: "http://www.travelmidwest.com/lmiga/travelTime.json?path=GATEWAY.IL.I-90.I-90+EB",
-		roads: ["SB Dan Ryan Expy"],
-		roadName: "Dan Ryan Southbound",
-		showRoadDetail: false
-	},
-	i55_nb: {
-		name: "I-55 Northbound",
-		endpoint: "http://www.travelmidwest.com/lmiga/travelTime.json?path=GATEWAY.IL.I-55.I-55%20NB",
-		roads: ["NB Stevenson Expy"],
-		roadName: "Stevenson Expressway Northbound",
-		showRoadDetail: false
-	},
-	i55_sb: {
-		name: "I-55 Southbound",
-		endpoint: "http://www.travelmidwest.com/lmiga/travelTime.json?path=GATEWAY.IL.I-55.I-55%20SB",
-		roadName: "Stevenson Expressway Southbound",
-		showRoadDetail: false
-	},
-	i290_eb: {
-		name: "I-290 Eastbound",
-		endpoint: "http://www.travelmidwest.com/lmiga/travelTime.json?path=GATEWAY.IL.I-290.I-290%20EB",
-		roads: ["EB I-290"],
-		roadName: "Eisenhower Expressway Eastbound",
-		showRoadDetail: false
-	},
-	i290_wb: {
-		name: "I-290 Westbound",
-		endpoint: "http://www.travelmidwest.com/lmiga/travelTime.json?path=GATEWAY.IL.I-290.I-290%20WB",
-		roads: ["WB I-290"],
-		roadName: "Eisenhower Expressway Westbound",
-		showRoadDetail: false
 	}
 };
 
@@ -186,7 +131,6 @@ function getTraffic() {
 						attribution: "Gateway traffic information courtesy of the Illinois Department of Transportation"
 					};
 
-
 					
 					alert["classNames"] = `${eventType} ${c1functions.convertToSlug(routeMeta.name)} ${alert.slug}`;
 
@@ -194,7 +138,7 @@ function getTraffic() {
 				}
 
 			}).catch(function(err){
-				console.log("Error with Traffic request. Trying again in 5 minutes.")
+				console.log("Error with Traffic request. Trying again in 5 minutes.", err)
 			});
 
 		});

@@ -8,6 +8,7 @@ var marked = require('marked');
 var googleSheet = require('../requests/googleSheet');
 var mlbSchedule = require('../requests/mlbSchedule');
 var trafficAlerts = require('../requests/trafficAlerts');
+var expTraffic = require('../requests/expTraffic');
 var ctaAlerts = require('../requests/ctaAlerts');
 var uber = require('../requests/uber');
 var weather = require('../requests/weather');
@@ -90,9 +91,12 @@ function assembleObstacles() {
 		assignToADay(uber.data);
 		//});
 		assignToADay(trafficAlerts.data);
+		assignToADay(expTraffic.data);
 		assignToADay(mlbSchedule.cubs);
 		assignToADay(mlbSchedule.sox);
 		assignToADay(ctaAlerts.data);
+
+
 
 
 		if (obstacles.today.events.length === 1) {
@@ -123,93 +127,6 @@ function assembleObstacles() {
 			messageBar: googleSheet.data.messageBar
 		});
 			
-	});
-}
-
-
-
-function getGoogleSheet() {
-	
-	return new Promise(function(resolve,reject) {
-
-		var eventType = "custom-update";
-	
-		// spreadsheet key is the long id in the sheets URL 
-		var my_sheet = new GoogleSpreadsheet(process.env.GSHEET_EVENTS);
-
-
-		my_sheet.getRows(1, function(err, row_data){
-
-			if (err) {
-				reject(new Error("Bad response from Google Sheets"));
-			}
-			
-			else {
-				var customUpdates = [];
-				var messages = [];
-
-				underscore.each(row_data, function(row_json, index) {
-					
-					var startDate = moment(row_json.startdate, "YYYY-MM-DD HH:mm")
-					var endDate = moment(row_json.enddate, "YYYY-MM-DD HH:mm")				
-					status = c1functions.determineEventStatus(startDate, endDate, 3);
-
-					
-					if (status && status.inDisplayWindow == true) {
-					
-						var customUpdate = {					
-							eventType: eventType,
-							title: row_json.title,
-							description: marked(row_json.description),
-							start: startDate,
-							end: endDate,
-							severity: row_json.severity,
-							source: row_json.source,
-							slug: c1functions.convertToSlug_withDate(row_json.title, startDate),
-							status: status.type,
-							statusRank: statusOrder.indexOf(status.type),
-							eventRank: c1functions.eventOrder.indexOf(eventType),
-							inDisplayWindow: status.inDisplayWindow,
-							hoursUntil: status.hoursUntil
-						};
-
-						customUpdate["classNames"] = `${eventType} customUpdate.slug`;
-
-						if (row_json.icon !== "") { customUpdate["icon"] = row_json.icon; } /*"&#x" + customUpdate.icon*/
-						if (row_json.morelink !== "") { customUpdate["moreLink"] = row_json.morelink; }
-						
-						customUpdates.push(customUpdate);				
-					}
-
-				});
-				
-				my_sheet.getRows(2, function(err, row_data){
-					
-					underscore.each(row_data, function(value,index) {
-						
-						var slug = c1functions.convertToSlug(value.description);
-						var slugTruncated = slug.substring(0, 40);
-
-						messages.push({
-							description: marked(value.description),
-							dismisscta: value.dismisscta,
-							slug: slugTruncated,
-							className: slugTruncated
-						});
-
-					});
-
-					//console.log(messages);
-
-					resolve({
-						customUpdates: customUpdates,
-						messageBar: messages
-					});
-
-				});
-			}
-		});
-	
 	});
 }
 
@@ -265,12 +182,12 @@ function obstaclesInterval() {
 
 		setTimeout(obstaclesInterval, 60000);
 	}).catch(function(err) {
-		console.log("An error occurred in assembleObstacles(). Executing function again in 60 seconds.");
+		console.log("An error occurred in assembleObstacles(). Executing function again in 60 seconds.", err);
 		setTimeout(obstaclesInterval, 60000);
 	});	
 }
 
-setTimeout(obstaclesInterval, 2000);
+setTimeout(obstaclesInterval, 8000);
 
 
 router.get('/', function(req, res, next) {

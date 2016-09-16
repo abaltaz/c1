@@ -18,7 +18,7 @@ body {
 }
 
 .content-wrapper {
-  margin-bottom: -75px;
+  margin-bottom: 0px;
   min-height: 100%;
 }
 
@@ -271,23 +271,6 @@ b {
 }
 
 
-.sources {
-  margin: 50px 0 0;
-  padding: 10px 0;
-  display: block;
-  font-size: 11px;
-  color: #999;
-  text-align:center;
-  background: #e8e8e8;
-  color: #555;
-}
-
-.sources ul {
-
-
-}
-
-
 .uber .icon:before {
     content: "n";
     font-family: C1;
@@ -368,7 +351,7 @@ b {
 
 
 .push-footers {
-  height: 75px;
+  height: 0px;
 }
 
 .hide-button {
@@ -407,7 +390,7 @@ b {
   position: fixed;
   left: 0;
   bottom: -90px;
-  padding: 15px 0;
+  padding: 10px 0;
   background-color: rgba(0,0,0,0.85);
   -webkit-transition: all 0.2s;
 }
@@ -494,62 +477,81 @@ ul.options .op-about .icon-c1-logo {
 }
 
 
-ul.footer {
-  padding: 0;
+.footer {
+  padding: 30px 10px 90px;
+  margin: 60px 0 0 0;
   list-style: none;
   text-align: center;
   font-size: 12px;
-  padding: 40px 0;
-  background-color: #f5f5f5;
-  font-family: Roboto Slab;
+  background-color: #777;
   position: relative;
+  color: #eee;
 }
 
-ul.footer li {
+.footer h3 {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+
+.footer .sources-text {
+  max-width: 500px;
+  display: block;
+  margin: 0 auto 30px;
+  font-family: Open Sans, sans-serif;
+  border-bottom: 1px solid #999;
+  padding: 0 0 30px 0;
+}
+
+.footer ul {
+  padding: 0;
+}
+
+.footer ul li {
   display: inline-block;
-  color: #777;
-  text-transform: lowercase;
+  color: #eee;
+
   font-weight: 400;
 }
 
-ul.footer li:not(:first-child):before {
+.footer ul li:not(:first-child):before {
   content: "-";
   margin: 0 5px;
   font-size: 16px;
 }
 
-ul.footer a:link {
+.footer a:link {
   text-decoration: none;
-  color: #777;
+  color: #eee;
 }
 
-ul.footer .c1built {
-  margin: 10px 0 5px 0;
-  color: #777;
+.footer .c1built {
+  margin: 10px 0;
+  color: #eee;
 }
 
-ul.footer .c1built-icons i {
+.footer .c1built-icons i {
   vertical-align: middle;
   margin: 0 4px
 }
 
 
-ul.footer .c1built-icons .icon-laptop {
-  color: #b5b5f9;
+.footer .c1built-icons .icon-laptop {
+  color: #3939d4;
   font-size: 18px;
   position: relative;
   top: 2px
 }
 
-ul.footer .c1built-icons .icon-coffee {
-  color: #cacaca;
+.footer .c1built-icons .icon-coffee {
+  color: #afafaf;
   font-size: 20px;
   position: relative;
   left: 2px;
 }
 
-ul.footer .c1built-icons .icon-chicago-star {
-  color: #ffa5a5;
+.footer .c1built-icons .icon-chicago-star {
+  color: #8e0404;
   font-size: 17px;
   position: relative;
   top: 2px;
@@ -592,7 +594,20 @@ body .buorg {
   background-color: #fff;
 }
 
-@media (max-width: 420px) {
+@media (max-width: 450px) {
+
+  .updates .icon {
+    left: 22px;
+  }
+
+  .updates > li .title, .updates > li .msg, .updates > li .label-status{
+    padding-left: 80px;
+  }
+
+}
+
+
+@media (max-width: 360px) {
   .weather {
     top: 18px;
   }
