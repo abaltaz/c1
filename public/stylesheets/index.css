@@ -116,6 +116,11 @@ b {
   padding: 0 10px;
 }
 
+.updates a {
+  text-decoration: underline;
+  color: inherit;
+}
+
 .updates:after {
   content: "••••";
   font-size: 24px;
@@ -600,7 +605,7 @@ body .buorg {
     left: 22px;
   }
 
-  .updates > li .title, .updates > li .msg, .updates > li .label-status{
+  .updates > li .title, .updates > li .msg, .updates > li .label-status, .updates > li .date-info {
     padding-left: 80px;
   }
 
