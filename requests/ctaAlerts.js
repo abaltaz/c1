@@ -15,10 +15,10 @@ function getCtaInterval() {
 
 	getCtaStatus().then(function(data) {
 		module.exports.data = data;
-		setTimeout(getCtaInterval, 30000);
+		setTimeout(getCtaInterval, 300000);
 	}).catch(function(err){
 		console.log(err, "Error in getCtaStatus()");
-		setTimeout(getCtaInterval, 30000);
+		setTimeout(getCtaInterval, 300000);
 	});
 
 }
@@ -138,7 +138,7 @@ function getCtaStatus() {
 			}
 		}).catch(function(err){
 			console.log("Error with CTA request. Trying again in 5 minutes.", err);
-			setTimeout(getCtaInterval, 30000);
+			setTimeout(getCtaInterval, 300000);
 		});
 	});
 }

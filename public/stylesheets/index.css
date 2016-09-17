@@ -57,7 +57,7 @@ a {
 
 .current-weather {
   font-size: 13px;
-  color: #777;
+  color: #444;
   height: 20px;
   overflow: hidden;
   max-width: 380px;
@@ -68,7 +68,6 @@ a {
 
 .current-weather .inner {
   font-size: 14px;
-  color: #555;
   height: 20px;
   transition: all 0.5s ease;
   position: relative;
@@ -210,7 +209,7 @@ b {
 .updates > li .date-info {
   font-size: 12px;
   margin: 15px 0 0 0;
-  color: #777;
+  color: #555;
 }
 
 .updates > li .label-status {
@@ -231,6 +230,10 @@ b {
   font-size: 11px;
   margin-top: 20px;
   color: #b3b3b3;
+}
+
+.update.severity-high .icon{
+  color: #E65252;
 }
 
 .weather-alert .icon:before {
@@ -309,7 +312,7 @@ b {
     width: 90%;
     display: block;
     margin: 10px auto 10px;
-    padding: 20px 20px;
+    padding: 22px 20px 10px;
     border-radius: 4px;
     color: #555;
     border: 1px dashed #b7b6b6;
@@ -345,6 +348,7 @@ b {
 }
 
 .next-days ul {
+    margin-top: 10px;
     padding-left: 20px;
     font-size: 14px;
     text-transform: none;
@@ -507,6 +511,17 @@ ul.options .op-about .icon-c1-logo {
   border-bottom: 1px solid #999;
   padding: 0 0 30px 0;
 }
+
+.footer .sources-text p {
+  max-width: 300px;
+  display: block;
+  margin: 10px auto;
+}
+
+.footer .sources-text a {
+  color: inherit;
+}
+
 
 .footer ul {
   padding: 0;

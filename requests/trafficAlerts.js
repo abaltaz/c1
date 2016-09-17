@@ -46,11 +46,12 @@ function getTraffic() {
 	return new Promise(function(resolve,reject) {
 
 		var lsd_trafficAlerts=[];
-		var expressway_trafficAlerts=[];
+		var iteration = 0;
 
 		//Iterate through each Traffic Route endpoint
 		underscore.each(trafficRoutes, function(routeMeta, index) {
 
+			iteration++;
 			var validRoads;
 
 			//Make the request for each route
@@ -139,7 +140,10 @@ function getTraffic() {
 
 			}).catch(function(err){
 				console.log("Error with Traffic request. Trying again in 5 minutes.", err);
-				setTimeout(getTrafficInterval, 300000);
+				
+				if (iteration === underscore.size(trafficRoutes)) {
+					setTimeout(getTrafficInterval, 300000);
+				}
 			});
 
 		});
