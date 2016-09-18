@@ -110,6 +110,8 @@ function getPricesInterval() {
 
 function getPrices() {
 
+	console.log("Uber getPrices()");
+
 	return new Promise(function(resolve, reject) {
 
 		var prices = [];
@@ -140,7 +142,7 @@ function getPrices() {
 				prices.push(uberx[0].surge_multiplier);
 				routeSurges.push(`<li>${route[0].name} to ${route[1].name}: ${uberx[0].surge_multiplier}x</li>`);
 
-				console.log("HI, UBER", sum, uberx[0].surge_multiplier, iteration);
+				//console.log("HI, UBER", sum, uberx[0].surge_multiplier, iteration);
 
 				//If this is the final iteration of the routes object
 				if (iteration === underscore.size(routes)) {
@@ -152,7 +154,7 @@ function getPrices() {
 
 						surgeObstacle.push({
 							eventType: eventType,
-							title: "Uber surge in effect",
+							title: "Possible ride-share surge in effect",
 							description: `Fare increase around <strong>${priceAvg}x</strong>.`,
 							start: moment(),
 							end: moment(),
@@ -172,7 +174,12 @@ function getPrices() {
 				}
 
 			}).catch(function(err){
-				console.log("Error with Uber surge request.");
+				console.log("Error with Uber surge request. Trying again in 1 minutes", err);
+
+				//Execute getPricesInterval in 1 minute only if we're at the end of the route loop 
+				if (iteration === underscore.size(routes)) {
+					setTimeout(getPricesInterval, 60000);
+				}
 			});
 
 		});

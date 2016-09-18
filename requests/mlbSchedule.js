@@ -99,6 +99,9 @@ function getGameStatusInterval(teamParams, teamName) {
 
 
 function getGameStatus(teamParams) {
+
+	console.log("getGameStatus()");
+
 	return new Promise(function(resolve,reject) {
         
         //Set the current day

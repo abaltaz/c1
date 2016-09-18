@@ -8,13 +8,13 @@ var parseString = require('xml2js').parseString;
 
 
 module.exports.statusOrder = ["current", "soon", "later", "recent", "past"];
-module.exports.eventOrder = ["weather-alert", "rain", "transit", "uber", "game", "traffic", "custom-update"];
+module.exports.eventOrder = ["daily-forecast", "weather-alert", "rain", "transit", "uber", "game", "traffic", "custom-update"];
 
 module.exports.doRequest = function(endpoint, endpointFormat){
 	return new Promise(function(resolve,reject) {
 		request(endpoint, function(error, response, body) {
 			
-			console.log(`Request made to ${endpoint} at ${moment().format('hh:mm:ss')}`);
+			//console.log(`Request made to ${endpoint} at ${moment().format('hh:mm:ss')}`);
 			
 			if (!error && response.statusCode == 200) {
 			

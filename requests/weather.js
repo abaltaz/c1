@@ -25,6 +25,9 @@ function getWeatherInterval() {
 
 
 function getWeather() {
+	
+	console.log("getWeather()");
+
 	return new Promise(function(resolve,reject) {
 		c1functions.doRequest(weatherEndpoint, "json").then(function(forecast){
 			
@@ -57,20 +60,22 @@ function getWeather() {
 		          if (forecastTime.isAfter(currentTime) && forecastTime.isBefore(tomorrowDate)) {
                       
 		            //Determine likelihood of rain
-		            if (forecast.precipProbability > 0.24) {
+		            if (forecast.precipProbability > 0.5) {
 
 		              rainStatus.rainToday = true;
 
 		              //function to set string based on probability of rain
 		              var probablity = function() {
 
-		              	   console.log("HI", forecast.precipProbability, forecastTime.format("MM/DD HH:mm"), forecast.time);
+		              	   //console.log("HI", forecast.precipProbability, forecastTime.format("MM/DD HH:mm"), forecast.time);
 
+		              	  /* 
 			              if (forecast.precipProbability > 0.24 && forecast.precipProbability <= 0.5) {
 			                    return "Slight chance"
 			              }
+						  */	
 			                  
-		                  else if (forecast.precipProbability > 0.5 && forecast.precipProbability <= 0.75) {
+		                  if (forecast.precipProbability > 0.5 && forecast.precipProbability <= 0.75) {
 		                    	return "Good chance"
 		                  }
 		                  
@@ -208,6 +213,8 @@ function getWeather() {
 						inDisplayWindow: status.inDisplayWindow,
 						status: status.type,
 						statusRank: c1functions.statusOrder.indexOf(status.type),
+						eventType: "daily-forecast",
+						eventRank: c1functions.eventOrder.indexOf("daily-forecast"),
 						start: startDate,
 						end: startDate,
 						slug: c1functions.convertToSlug_withDate("forecast", startDate),
@@ -234,7 +241,8 @@ function getWeather() {
 			}
 			
 		}).catch(function(err) {
-			console.log("Error with ForecastIO request.");
+			console.log("Error with ForecastIO request. Trying again in 5 minutes", err);
+			setTimeout(getWeatherInterval, 300000);
 		});
 	});
 }

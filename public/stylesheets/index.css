@@ -14,20 +14,18 @@ body {
   font-weight: 300;
   color: #444;
   height: 100%;
+  background-color: #fff;
 }
 
 .content-wrapper {
-  margin-bottom: -75px;
+  margin-bottom: 0px;
   min-height: 100%;
 }
 
 .header {
   padding: 0 0 10px 0;
   width: 100%;
-  max-width: 500px;
-  display: block;
-  position: relative;
-  margin: 20px auto 20px;
+  margin: 0 0 15px;
   color: #757575;
   text-align: center;
 }
@@ -35,19 +33,22 @@ body {
 
 h1 {
   font-family: Roboto Slab;
-  font-weight: 400;
-  padding: 0;
+  font-weight: 300;
+  font-size: 18px;
+  padding: 12px 0;
   margin: 0 0 5px;
   color: #888;
+  background-color: #fbfbfb;
+  text-transform: uppercase;
+  border-bottom: 1px solid #eaeaea;
 }
 
 h1 span {
-  font-size: 25px;
   margin-left: 5px;
 }
 
 h1 a:link, h1 a:visited, h1 a:active {
-  color: #888;
+  color: #555;
 }
 
 a {
@@ -56,23 +57,23 @@ a {
 
 .current-weather {
   font-size: 13px;
-  color: #777;
+  color: #444;
   height: 20px;
   overflow: hidden;
   max-width: 380px;
   display: block;
-  margin: 0 auto;
+  margin: 25px auto 0;
   line-height: 20px;
 }
 
 .current-weather .inner {
-  font-size: 13px;
-  color: #777;
+  font-size: 14px;
   height: 20px;
   transition: all 0.5s ease;
   position: relative;
   top: 0px;
   cursor: pointer;
+  margin: 0 10px;
 }
 
 p {
@@ -90,12 +91,10 @@ b {
 
 .all-clear i {
   font-size: 50px;
-  color: green;
-  margin: 0 0 10px;
+  color: #069e06;
 }
 
 .all-clear .title {
-  margin-bottom: 5px;
   font-size: 18px;
   font-weight: 500;
 }
@@ -103,6 +102,7 @@ b {
 .all-clear .details {
   font-size: 16px;
   color: #555;
+  margin-top: -10px;
 }
 
 .updates {
@@ -112,7 +112,12 @@ b {
   margin: 0 auto;
   text-align: left;
   list-style: none;
-  padding: 0 5px;
+  padding: 0 10px;
+}
+
+.updates a {
+  text-decoration: underline;
+  color: inherit;
 }
 
 .updates:after {
@@ -127,15 +132,15 @@ b {
 
 
 .updates > li {
-    color: #555;
-    border: 1px solid #e8e8e8;
+    color: #6da4d6;
+    border: 1px solid #e2e2e2;
     border-radius: 4px;
     margin: 10px 0;
     padding: 20px 0 20px 0;
-    background-color: #f9f9f9;
+    background-color: #fbfbfb;
     font-size: 14px;
     position: relative;
-    box-shadow: 2px 2px 2px #d2d2d2
+    /*box-shadow: 2px 2px 2px #d2d2d2*/
 }
 
 .updates > li:last-child {
@@ -162,12 +167,12 @@ b {
   font-weight: 600;
 }
 
-.updates > li .title, .updates > li .msg, .updates > li .label-status{
+.updates > li .title, .updates > li .msg, .updates > li .label-status, .updates > li .date-info {
   padding: 0 25px 0 90px;
 }
 
 
-.updates > li.later .title, .updates > li.later .msg, .updates > li.later .icon {
+.updates > li.later .title, .updates > li.later .msg, .updates > li.later .icon, .updates > li .date-info {
   color: #afafaf;
 }
 
@@ -175,7 +180,7 @@ b {
   /*border-top: 1px solid #eee;
   margin: 20px 0 0 0;
   padding: 20px 0 0 0;*/
-  color: #555;
+  color: #444;
   font-weight:400;
   line-height: 22px;
 }
@@ -202,10 +207,9 @@ b {
 }
 
 .updates > li .date-info {
-
   font-size: 12px;
   margin: 15px 0 0 0;
-  color: #777;
+  color: #555;
 }
 
 .updates > li .label-status {
@@ -226,6 +230,10 @@ b {
   font-size: 11px;
   margin-top: 20px;
   color: #b3b3b3;
+}
+
+.update.severity-high .icon{
+  color: #E65252;
 }
 
 .weather-alert .icon:before {
@@ -254,27 +262,20 @@ b {
     font-family: C1;
 }
 
-
 .traffic .icon:before {
     content: "h";
     font-family: C1;
 }
 
 
-.sources {
-  margin: 50px 0 0;
-  padding: 10px 0;
-  display: block;
-  font-size: 11px;
-  color: #999;
-  text-align:center;
-  background: #e8e8e8;
-  color: #555;
+.traffic.lake-shore-drive-southbound .icon:before {
+    content: "w";
+    font-family: C1;
 }
 
-.sources ul {
-
-
+.traffic.lake-shore-drive-northbound .icon:before {
+    content: "v";
+    font-family: C1;
 }
 
 
@@ -311,10 +312,11 @@ b {
     width: 90%;
     display: block;
     margin: 10px auto 10px;
-    padding: 20px 20px;
+    padding: 22px 20px 10px;
     border-radius: 4px;
     color: #555;
     border: 1px dashed #b7b6b6;
+    background-color: #fff
 }
 
 
@@ -346,6 +348,7 @@ b {
 }
 
 .next-days ul {
+    margin-top: 10px;
     padding-left: 20px;
     font-size: 14px;
     text-transform: none;
@@ -357,7 +360,7 @@ b {
 
 
 .push-footers {
-  height: 75px;
+  height: 0px;
 }
 
 .hide-button {
@@ -396,7 +399,7 @@ b {
   position: fixed;
   left: 0;
   bottom: -90px;
-  padding: 15px 0;
+  padding: 10px 0;
   background-color: rgba(0,0,0,0.85);
   -webkit-transition: all 0.2s;
 }
@@ -483,62 +486,92 @@ ul.options .op-about .icon-c1-logo {
 }
 
 
-ul.footer {
-  padding: 0;
+.footer {
+  padding: 30px 10px 90px;
+  margin: 60px 0 0 0;
   list-style: none;
   text-align: center;
   font-size: 12px;
-  padding: 40px 0;
-  background-color: #f5f5f5;
-  font-family: Roboto Slab;
+  background-color: #777;
   position: relative;
+  color: #eee;
 }
 
-ul.footer li {
+.footer h3 {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+
+.footer .sources-text {
+  max-width: 500px;
+  display: block;
+  margin: 0 auto 30px;
+  font-family: Open Sans, sans-serif;
+  border-bottom: 1px solid #999;
+  padding: 0 0 30px 0;
+}
+
+.footer .sources-text p {
+  max-width: 300px;
+  display: block;
+  margin: 10px auto;
+}
+
+.footer .sources-text a {
+  color: inherit;
+}
+
+
+.footer ul {
+  padding: 0;
+}
+
+.footer ul li {
   display: inline-block;
-  color: #777;
-  text-transform: lowercase;
+  color: #eee;
+
   font-weight: 400;
 }
 
-ul.footer li:not(:first-child):before {
+.footer ul li:not(:first-child):before {
   content: "-";
   margin: 0 5px;
   font-size: 16px;
 }
 
-ul.footer a:link {
+.footer a:link {
   text-decoration: none;
-  color: #777;
+  color: #eee;
 }
 
-ul.footer .c1built {
-  margin: 10px 0 5px 0;
-  color: #777;
+.footer .c1built {
+  margin: 10px 0;
+  color: #eee;
 }
 
-ul.footer .c1built-icons i {
+.footer .c1built-icons i {
   vertical-align: middle;
   margin: 0 4px
 }
 
 
-ul.footer .c1built-icons .icon-laptop {
-  color: #b5b5f9;
+.footer .c1built-icons .icon-laptop {
+  color: #3939d4;
   font-size: 18px;
   position: relative;
   top: 2px
 }
 
-ul.footer .c1built-icons .icon-coffee {
-  color: #cacaca;
+.footer .c1built-icons .icon-coffee {
+  color: #afafaf;
   font-size: 20px;
   position: relative;
   left: 2px;
 }
 
-ul.footer .c1built-icons .icon-chicago-star {
-  color: #ffa5a5;
+.footer .c1built-icons .icon-chicago-star {
+  color: #8e0404;
   font-size: 17px;
   position: relative;
   top: 2px;
@@ -581,7 +614,20 @@ body .buorg {
   background-color: #fff;
 }
 
-@media (max-width: 420px) {
+@media (max-width: 450px) {
+
+  .updates .icon {
+    left: 22px;
+  }
+
+  .updates > li .title, .updates > li .msg, .updates > li .label-status, .updates > li .date-info {
+    padding-left: 80px;
+  }
+
+}
+
+
+@media (max-width: 360px) {
   .weather {
     top: 18px;
   }

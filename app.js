@@ -55,6 +55,7 @@ app.use(minifyHTML({
 }));
 
 
+
 app.use('/', getData);
 
 //router for /blog
