@@ -15,6 +15,7 @@
 
 	<body>
 
+		<% if (obstaclesIteration > 0) { %>
 
 		<div class="content-wrapper">
 
@@ -311,7 +312,27 @@
 				callback("updateBrowser is ready");
 			}
 
-		</script> 
+		</script>
+
+		<% } else { %>
+
+			<div class="content-wrapper">
+				<div class="getting-data">
+					<div class="message"></div>
+				</div>
+			</div>
+
+			<script>
+
+				var countdown = 10;
+
+				setTimeout(function() {
+					location.reload();
+				},10000)
+			</script>
+
+		<% } %>
+
 
 	</body>
 </html>

@@ -610,6 +610,22 @@ ul.options .op-about .icon-c1-logo {
   overflow: auto;
 }
 
+.getting-data {
+  position: absolute;
+  margin: auto;
+  height: 20px;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  color: #4444;
+  text-align: center;
+}
+
+.getting-data .message:before {
+  content: 'Fetching data for you...';
+}
+
 body .buorg {
   background-color: #fff;
 }

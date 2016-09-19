@@ -16,6 +16,8 @@ var c1functions = require('../core/functions');
 //var Promise = require('promise');
 
 
+var obstaclesIteration = 0;
+
 var days = [
       "Sunday", 
       "Monday", 
@@ -25,7 +27,6 @@ var days = [
       "Friday", 
       "Saturday"
     ];  
-
 
 var obstaclesData;
 var currentWeather;
@@ -183,6 +184,8 @@ function obstaclesInterval() {
 		obstaclesData = data.obstacles;
 		messageBar = data.messageBar;
 
+		obstaclesIteration++;
+
 		setTimeout(obstaclesInterval, 60000);
 	}).catch(function(err) {
 		console.log("An error occurred in assembleObstacles(). Executing function again in 60 seconds.", err);
@@ -201,7 +204,8 @@ router.get('/', function(req, res, next) {
 		currentWeather: weather.data.currentWeather,
 		todayWeather: weather.data.todayWeather,
 		messageBar: messageBar,
-		env: process.env.NODE_ENV
+		env: process.env.NODE_ENV,
+		obstaclesIteration: obstaclesIteration
 	});
 });
 
