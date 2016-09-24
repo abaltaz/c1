@@ -70,6 +70,31 @@ function getGoogleSheet() {
 
 						customUpdate["classNames"] = `${eventType} customUpdate.slug`;
 
+						if (status.type === "later") {
+							customUpdate["dateString"] = "Starts at " + customUpdate.start.format("h:mm A");
+						}
+
+						else if (status.type === "soon") {
+							customUpdate["dateString"] = "Starts " + moment().to(customUpdate.start);
+						}
+
+						else if (status.type === "current") {
+							customUpdate["dateString"] = "Started at " + customUpdate.start.format("h:mm A");
+						}
+						
+						else if (status.type === "recent") {
+							customUpdate["dateString"] = "Started at " + customUpdate.start.format("h:mm A");
+						}
+
+						/*
+						
+						else if (status.type === "future") {
+							customUpdate["title"] = teamParams.name + " at home, starts at " + gameDate.format("h:mm A");
+						}
+
+						*/
+
+
 						if (row_json.icon !== "") { customUpdate["icon"] = row_json.icon; } /*"&#x" + customUpdate.icon*/
 						if (row_json.morelink !== "") { customUpdate["moreLink"] = row_json.morelink; }
 						

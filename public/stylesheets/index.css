@@ -40,7 +40,7 @@ h1 {
   color: #888;
   background-color: #fbfbfb;
   text-transform: uppercase;
-  border-bottom: 1px solid #eaeaea;
+  border-bottom: 1px solid #e2e2e2;
 }
 
 h1 span {
@@ -618,7 +618,8 @@ ul.options .op-about .icon-c1-logo {
   bottom: 0px;
   left: 0px;
   right: 0px;
-  color: #4444;
+  color: #444;
+  font-weight:400;
   text-align: center;
 }
 
