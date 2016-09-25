@@ -106,7 +106,7 @@ function getGameStatus(teamParams) {
         
         //Set the current day
         var today = moment();
-        //("05/29/16 3:00pm", "MM/DD/YY h:mma");
+        //("05/29/16 3:00pm", "MM/DD/YY h:mm a");
 		
 		var games = [];
 
@@ -122,7 +122,7 @@ function getGameStatus(teamParams) {
 
 
           //Create a Moment from the games date and time
-          var gameDate = moment(gameDatePretty, "MM/DD/YY hh:mm A");
+          var gameDate = moment(gameDatePretty, "MM/DD/YY hh:mm a");
 		  
 		  //Create a Moment 5 hours after a game's start time
 		  var gameEnd = gameDate.clone().add(3, "hours");
@@ -149,7 +149,7 @@ function getGameStatus(teamParams) {
 			game["classNames"] = `${eventType} ${teamParams.name.toLowerCase()} ${game.slug}`;
 			
 			if (status.type === "later") {
-				game["description"] = "Starts at " + gameDate.format("h:mm A");
+				game["description"] = "Starts at " + gameDate.format("h:mm a");
 			}
 
 			else if (status.type === "soon") {
@@ -157,15 +157,15 @@ function getGameStatus(teamParams) {
 			}
 
 			else if (status.type === "current") {
-				game["description"] = "Started at " + gameDate.format("h:mm A");
+				game["description"] = "Started at " + gameDate.format("h:mm a");
 			}
 			
 			else if (status.type === "recent") {
-				game["description"] = "Started at " + gameDate.format("h:mm A");
+				game["description"] = "Started at " + gameDate.format("h:mm a");
 			}
 			
 			else if (status.type === "future") {
-				game["title"] = teamParams.name + " at home, starts at " + gameDate.format("h:mm A");
+				game["title"] = teamParams.name + " at home, starts at " + gameDate.format("h:mm a");
 			}
 			  
 			games.push(game);

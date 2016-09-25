@@ -545,9 +545,17 @@ ul.options .op-about .icon-c1-logo {
   color: #eee;
 }
 
-.footer .c1built {
+.footer .c1disclaimer {
   margin: 10px 0;
-  color: #eee;
+}
+
+.footer .c1disclaimer:before {
+  content: 'This website may have inaccurate information at times. Always check multiple sources.';
+  margin: 10px 0;
+}
+
+.footer .c1built {
+  margin: 30px 0 5px;
 }
 
 .footer .c1built-icons i {

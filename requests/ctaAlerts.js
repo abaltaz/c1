@@ -86,15 +86,15 @@ function getCtaStatus() {
 								majorAlert["classNames"] = "cta transit " + majorAlert.slug;
 
 								if (now.isBefore(alertStart)) {
-									majorAlert["dateString"] = "Starts at " + alertStart.format("h:mma")
+									majorAlert["dateString"] = "Starts at " + alertStart.format("h:mm a")
 								}
 
 								else if (now.isSame(alertEnd, "day") && alertStart !== alertEnd) {
-									majorAlert["dateString"] = "Ends at " + alertEnd.format("h:mma [today]");
+									majorAlert["dateString"] = "Ends at " + alertEnd.format("h:mm a [today]");
 								}
 
 								else if (alertStart !== alertEnd) {
-									majorAlert["dateString"] = "Ends on " + alertEnd.format("MMMM D [at] h:mma");
+									majorAlert["dateString"] = "Ends on " + alertEnd.format("MMMM D [at] h:mm a");
 								}
 
 								majorAlerts.push(majorAlert);
