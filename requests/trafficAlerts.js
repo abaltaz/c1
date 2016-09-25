@@ -93,7 +93,7 @@ function getTraffic() {
 
 					//If only 1 item in the traffic alerts array, remove the <li> elements
 					if (segmentAlertsHtml.length === 1 && routeMeta.showRoadDetail === true) {
-						description = `Traffic near: ${segmentAlertsHtml[0]}`;
+						description = `Traffic near ${segmentAlertsHtml[0]}`;
 					}
 
 					//Otherwise, add <ul> around the list elements
