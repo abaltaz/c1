@@ -202,8 +202,8 @@ b {
 }
 
 .updates > li .more a {
-  text-decoration: none;
-  color: #8585ef;
+  text-decoration: underline;
+  color: #444;
 }
 
 .updates > li .date-info {

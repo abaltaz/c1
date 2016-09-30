@@ -147,7 +147,8 @@ function getWeather() {
 					underscore.each(forecast.alerts, function(alert, index) {
 
 						if (alert.title.indexOf("Air Quality") === -1 && 
-							alert.title.indexOf("Statement") === -1) {
+							alert.title.indexOf("Statement") === -1 && 
+							alert.title.indexOf("Advisory") === -1) {
 
 							var startDate = moment(alert.time * 1000);
 							var endDate = moment(alert.expires * 1000);
