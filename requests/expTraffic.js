@@ -13,28 +13,28 @@ var trafficRoutes = {
 		name: "I-90 Westbound",
 		endpoint: "http://www.travelmidwest.com/lmiga/travelTime.json?path=GATEWAY.IL.I-90.I-90+WB",
 		roads: ["WB Kennedy Expy", "NB Dan Ryan Expy"],
-		roadName: "Outbound Kennedy I-90/94",
+		roadName: "Outbound Kennedy I-90",
 		showRoadDetail: false
 	},
 	i90_eb: {
 		name: "I-90 Eastbound",
 		endpoint: "http://www.travelmidwest.com/lmiga/travelTime.json?path=GATEWAY.IL.I-90.I-90+EB",
 		roads: ["EB Kennedy Expy", "SB Dan Ryan Expy"],
-		roadName: "Inbound Kennedy I-90/94",
+		roadName: "Inbound Kennedy I-90",
 		showRoadDetail: false
 	},
 	danryan_nb: {
 		name: "Dan Ryan Northbound",
 		endpoint: "http://www.travelmidwest.com/lmiga/travelTime.json?path=GATEWAY.IL.I-90.I-90+WB",
 		roads: ["NB Dan Ryan Expy"],
-		roadName: "Inbound Dan Ryan I-90/94",
+		roadName: "Inbound Dan Ryan I-90",
 		showRoadDetail: false
 	},
 	danryan_sb: {
 		name: "Dan Ryan Southbound",
 		endpoint: "http://www.travelmidwest.com/lmiga/travelTime.json?path=GATEWAY.IL.I-90.I-90+EB",
 		roads: ["SB Dan Ryan Expy"],
-		roadName: "Outbound Dan Ryan I-90/94",
+		roadName: "Outbound Dan Ryan I-90",
 		showRoadDetail: false
 	},
 	i55_nb: {
