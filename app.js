@@ -38,6 +38,7 @@ app.use(cookieParser());
 //Set cache-control headers to the /public directory with a max-age of 1 day
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 86400000 }));
 
+
 // compress all requests
 //app.use(compression());
 

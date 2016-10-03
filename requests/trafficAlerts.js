@@ -139,7 +139,7 @@ function getTraffic() {
 				}
 
 			}).catch(function(err){
-				console.log("Error with Traffic request. Trying again in 5 minutes.", err);
+				console.log("Error with LSDTraffic request. Trying again in 5 minutes.", err);
 				
 				if (iteration === underscore.size(trafficRoutes)) {
 					setTimeout(getTrafficInterval, 300000);

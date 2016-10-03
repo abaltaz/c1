@@ -172,7 +172,7 @@ b {
 }
 
 
-.updates > li.later .title, .updates > li.later .msg, .updates > li.later .icon, .updates > li .date-info {
+.updates > li.later .title, .updates > li.later .msg, .updates > li.later .icon, .updates > li.later .date-info {
   color: #afafaf;
 }
 
@@ -302,9 +302,20 @@ b {
 }
 
 
+
 .custom-update .icon:before {
     content: attr(data-icons);
     font-family: 'C1';
+}
+
+.game-bulls .icon:before {
+  display: block;
+  content: ' ';
+  background-image: url(/images/bulls.svg);
+  width: 40px;
+  height: 40px;
+  background-size: 40px 40px;
+  font-family: Open Sans
 }
 
 .next-days {

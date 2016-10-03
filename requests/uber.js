@@ -165,7 +165,7 @@ function getPrices() {
 							slug: c1functions.convertToSlug_withDate("uber-surge", moment())
 						});
 
-						surgeObstacle[0]["classNames"] = `${eventType} ${surgeObstacle.slug}`;
+						surgeObstacle[0]["classNames"] = `${eventType} ${surgeObstacle[0].slug}`;
 
 					}
 

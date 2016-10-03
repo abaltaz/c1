@@ -168,7 +168,7 @@ function getExpTraffic() {
 				}
 
 			}).catch(function(err){
-				console.log("Error with Traffic request. Trying again in 5 minutes.", err);
+				console.log("Error with ExpTraffic request. Trying again in 5 minutes.", err);
 				if (trafficRouteIndex === underscore.size(trafficRoutes)) {
 					setTimeout(getExpTrafficInterval, 300000);
 				}

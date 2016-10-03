@@ -68,7 +68,7 @@ function getGoogleSheet() {
 							hoursUntil: status.hoursUntil
 						};
 
-						customUpdate["classNames"] = `${eventType} customUpdate.slug`;
+						customUpdate["classNames"] = `${eventType} ${row_json.eventtype} ${customUpdate.slug}`;
 
 						if (status.type === "later") {
 							customUpdate["dateString"] = "Starts at " + customUpdate.start.format("h:mm a");

@@ -110,3 +110,15 @@
 .icon-note-beamed:before {
   content: "\78";
 }
+.icon-chicago-bulls-logo:before {
+  content: "\79";
+}
+.icon-beer:before {
+  content: "\7a";
+}
+.icon-pitch:before {
+  content: "\41";
+}
+.icon-flag:before {
+  content: "\42";
+}
