@@ -29,12 +29,12 @@ var soxParams = {
 
 //Download game schedules once per day
 getScheduleInterval(cubsParams, "cubs");
-getScheduleInterval(soxParams, "sox");
+//getScheduleInterval(soxParams, "sox");
 
 //Process game schedules once per minute
 setTimeout(function() {
 	getGameStatusInterval(cubsParams, "cubs");
-	getGameStatusInterval(soxParams, "sox");
+	//getGameStatusInterval(soxParams, "sox");
 }, 2000);
 
 
@@ -113,64 +113,67 @@ function getGameStatus(teamParams) {
         //Iterate through each game in the schedule
         underscore.each(teamParams.storedSchedule, function(value, index) {    
 
-          //Assemble a game's date and time like so
-          var gameDatePretty = 
-              value[teamParams.dateIdentifier]
-              + " "
-              + value[teamParams.timeIdentifier];
+			if (value[teamParams.timeIdentifier] !== "") {
+
+				//Assemble a game's date and time like so
+				var gameDatePretty = 
+				  value[teamParams.dateIdentifier]
+				  + " "
+				  + value[teamParams.timeIdentifier];
 
 
+				//Create a Moment from the games date and time
+				var gameDate = moment(gameDatePretty, "MM/DD/YY hh:mm a");
 
-          //Create a Moment from the games date and time
-          var gameDate = moment(gameDatePretty, "MM/DD/YY hh:mm a");
-		  
-		  //Create a Moment 5 hours after a game's start time
-		  var gameEnd = gameDate.clone().add(3, "hours");
+				//Create a Moment 5 hours after a game's start time
+				var gameEnd = gameDate.clone().add(3, "hours");
 
-		  
-		  var status = c1functions.determineEventStatus(gameDate, gameEnd, 3);
-		  //console.log("MLB Game Status", teamParams.name, gameDatePretty, status);
 
-		  
-		  if (status && status.inDisplayWindow == true) {
+				var status = c1functions.determineEventStatus(gameDate, gameEnd, 3);
+				//console.log("MLB Game Status", teamParams.name, gameDatePretty, status);
 
-			var game = {
-		  		eventType: eventType,
-		  		inDisplayWindow: status.inDisplayWindow,
-				status: status.type,
-				statusRank: c1functions.statusOrder.indexOf(status.type),
-				eventRank: c1functions.eventOrder.indexOf(eventType),
-				start: gameDate,
-				end: gameEnd,
-				title: `${teamParams.name} game in Chicago`,
-				slug: c1functions.convertToSlug_withDate(teamParams.name, gameDate)
-			};
 
-			game["classNames"] = `${eventType} ${teamParams.name.toLowerCase()} ${game.slug}`;
-			
-			if (status.type === "later") {
-				game["description"] = "Starts at " + gameDate.format("h:mm a");
+				if (status && status.inDisplayWindow == true) {
+
+				var game = {
+						eventType: eventType,
+						inDisplayWindow: status.inDisplayWindow,
+					status: status.type,
+					statusRank: c1functions.statusOrder.indexOf(status.type),
+					eventRank: c1functions.eventOrder.indexOf(eventType),
+					start: gameDate,
+					end: gameEnd,
+					title: `${teamParams.name} game in Chicago`,
+					slug: c1functions.convertToSlug_withDate(teamParams.name, gameDate)
+				};
+
+				game["classNames"] = `${eventType} ${teamParams.name.toLowerCase()} ${game.slug}`;
+
+				if (status.type === "later") {
+					game["description"] = "Starts at " + gameDate.format("h:mm a");
+				}
+
+				else if (status.type === "soon") {
+					game["description"] = "Starts " + moment().to(gameDate);
+				}
+
+				else if (status.type === "current") {
+					game["description"] = "Started at " + gameDate.format("h:mm a");
+				}
+
+				else if (status.type === "recent") {
+					game["description"] = "Started at " + gameDate.format("h:mm a");
+				}
+
+				else if (status.type === "future") {
+					game["title"] = teamParams.name + " at home, starts at " + gameDate.format("h:mm a");
+				}
+				  
+				games.push(game);
+
 			}
 
-			else if (status.type === "soon") {
-				game["description"] = "Starts " + moment().to(gameDate);
 			}
-
-			else if (status.type === "current") {
-				game["description"] = "Started at " + gameDate.format("h:mm a");
-			}
-			
-			else if (status.type === "recent") {
-				game["description"] = "Started at " + gameDate.format("h:mm a");
-			}
-			
-			else if (status.type === "future") {
-				game["title"] = teamParams.name + " at home, starts at " + gameDate.format("h:mm a");
-			}
-			  
-			games.push(game);
-			
-		  }
 
         });
 

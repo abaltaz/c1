@@ -149,7 +149,6 @@ b {
 
 
 .updates .icon {
-  //margin: 8px 0 0 0;
   color: #999;
   margin: 0 0 5px 0;
   position: absolute;
@@ -561,7 +560,7 @@ ul.options .op-about .icon-c1-logo {
 }
 
 .footer .c1disclaimer:before {
-  content: 'This website may have inaccurate information at times. Always check multiple sources.';
+  content: 'This website may display inaccurate information at times. Always check multiple sources.';
   margin: 10px 0;
 }
 
