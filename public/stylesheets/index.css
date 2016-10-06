@@ -10,7 +10,7 @@ html {
 }
 
 body {
-  font-family: Open Sans;
+  font-family: 'Open Sans', sans-serif;
   font-weight: 300;
   color: #444;
   height: 100%;
@@ -32,7 +32,7 @@ body {
 
 
 h1 {
-  font-family: Roboto Slab;
+  font-family: 'Roboto Slab', sans-serif;
   font-weight: 400;
   font-size: 18px;
   padding: 10px 0;
@@ -315,7 +315,6 @@ b {
   width: 40px;
   height: 40px;
   background-size: 40px 40px;
-  font-family: Open Sans
 }
 
 .game-bulls.later .icon:before {
@@ -503,7 +502,7 @@ ul.options .op-about .icon-c1-logo {
 
 .footer {
   padding: 30px 10px 90px;
-  margin: 60px 0 0 0;
+  margin: 35px 0 0 0;
   list-style: none;
   text-align: center;
   font-size: 12px;
