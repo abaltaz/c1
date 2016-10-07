@@ -5,7 +5,7 @@
   "description": "A short feed of weather updates, transit delays, large events and other things in Chicago that slow you down.",
   "icons": [
     { 
-      "src": "images/c1_192.png",
+      "src": "/images/c1_192.png",
       "sizes": "192x192",
       "type": "image/png"
     }

@@ -87,12 +87,12 @@ function getWeather() {
 
 
   		              if (rainStatus.rainTodayString === "") {
-		              	rainStatus.rainTodayString = probablity() + " of rain at " + forecastTime.format("ha");
+		              	rainStatus.rainTodayString = probablity() + " of rain at " + forecastTime.format("h a");
 		          	  }
 
 
 		              rainStatus.rainTodayDetails.push({
-		                time: forecastTime.format("ha"),
+		                time: forecastTime.format("h a"),
 		                startDate: forecastTime,
 		                endDate: forecastTime.clone().add(1, "hours"),
 		                intensity: forecast.precipIntensity,
@@ -106,6 +106,8 @@ function getWeather() {
 		          }
           
 		        });
+
+		        //if (forecast.currently.summary.toLowerCase().indexOf("rain") > -1 ) {}
 
 		        if (rainStatus.rainToday) {
 				
