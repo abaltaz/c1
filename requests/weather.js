@@ -18,9 +18,6 @@ function getWeatherInterval() {
 		setTimeout(getWeatherInterval, 300000);
 		console.log("Error processing Weather data. Trying again in 5 minutes");
 	});
-
-	
-
 };
 
 
@@ -107,14 +104,41 @@ function getWeather() {
           
 		        });
 
-		        //if (forecast.currently.summary.toLowerCase().indexOf("rain") > -1 ) {}
+		        //Create card if it's raining right now
+		        if (forecast.currently.summary.toLowerCase().indexOf("rain") > -1 ||
+		        	forecast.currently.summary.toLowerCase().indexOf("drizzle") > -1) {
 
-		        if (rainStatus.rainToday) {
+		        	var status = c1functions.determineEventStatus(currentTime, currentTime, 1);
+
+		     		var rainEvent = {
+		     			occurence: true,
+						title: "Rain likely right now",
+						description: rainStatus.rainTodayTitle,
+						start: currentTime,
+						end: currentTime,
+						category: "weather",
+						eventType: "rain",
+						inDisplayWindow: status.inDisplayWindow,
+						status: status.type,
+						statusRank: c1functions.statusOrder.indexOf(status.type),
+						eventRank: c1functions.eventOrder.indexOf("rain"),
+						slug: c1functions.convertToSlug_withDate("rain", currentTime)
+		     		}
+
+		     		rainEvent["classNames"] = `rain ${rainEvent.slug}`;
+
+		     		nextRainEvent = rainEvent;
+
+		     		//console.log(rainEvent);
+
+		        }
+
+		        //Create card if it'll rain later today
+		        else if (rainStatus.rainToday) {
 				
 					var status = c1functions.determineEventStatus(rainStatus.rainTodayDetails[0].startDate, 
 										 			  			  rainStatus.rainTodayDetails[0].endDate,
 										 			  			  1);
-					
 
 					var rainEvent = {
 						occurence: rainStatus.rainToday,
