@@ -21,7 +21,7 @@ module.exports.doRequest = function(endpoint, endpointFormat){
 				if (endpointFormat === "json") {
 					resolve(JSON.parse(body));
 				}
-				else if (endpointFormat === "xml") {
+				else if (endpointFormat === "xml" || endpointFormat === "otherFileType") {
 					resolve(body);
 				}
 			}
