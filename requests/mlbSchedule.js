@@ -136,33 +136,34 @@ function getGameStatus(teamParams) {
 				if (status && status.inDisplayWindow == true) {
 
 				var game = {
-						eventType: eventType,
-						inDisplayWindow: status.inDisplayWindow,
+					eventType: eventType,
+					inDisplayWindow: status.inDisplayWindow,
 					status: status.type,
 					statusRank: c1functions.statusOrder.indexOf(status.type),
 					eventRank: c1functions.eventOrder.indexOf(eventType),
 					start: gameDate,
 					end: gameEnd,
 					title: `${teamParams.name} game in Chicago`,
+					description: '',
 					slug: c1functions.convertToSlug_withDate(teamParams.name, gameDate)
 				};
 
 				game["classNames"] = `${eventType} ${teamParams.name.toLowerCase()} ${game.slug}`;
 
 				if (status.type === "later") {
-					game["description"] = "Starts at " + gameDate.format("h:mm a");
+					game["dateString"] = "Starts at " + gameDate.format("h:mm a");
 				}
 
 				else if (status.type === "soon") {
-					game["description"] = "Starts " + moment().to(gameDate);
+					game["dateString"] = "Starts " + moment().to(gameDate);
 				}
 
 				else if (status.type === "current") {
-					game["description"] = "Started at " + gameDate.format("h:mm a");
+					game["dateString"] = "Started at " + gameDate.format("h:mm a");
 				}
 
 				else if (status.type === "recent") {
-					game["description"] = "Started at " + gameDate.format("h:mm a");
+					game["dateString"] = "Started at " + gameDate.format("h:mm a");
 				}
 
 				else if (status.type === "future") {
