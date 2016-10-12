@@ -112,7 +112,7 @@ function getWeather() {
 
 		     		var rainEvent = {
 		     			occurence: true,
-						title: "Rain likely right now",
+						title: "Good chance of rain now",
 						description: rainStatus.rainTodayTitle,
 						start: currentTime,
 						end: currentTime,
