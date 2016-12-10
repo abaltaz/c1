@@ -122,12 +122,18 @@
 .icon-flag:before {
   content: "\42";
 }
-.icon-noun-582830:before {
-  content: "\43";
-}
 .icon-noun-524141:before {
   content: "\44";
 }
 .icon-noun-338604:before {
   content: "\45";
+}
+.icon-close:before {
+  content: "\46";
+}
+.icon-snow-4:before {
+  content: "\43";
+}
+.icon-hail:before {
+  content: "\48";
 }

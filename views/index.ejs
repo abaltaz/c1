@@ -59,6 +59,7 @@
 		  </ul>
 
 
+
 		  <% for (var day in obstacles.nextDays) { %>
 
 		  	<% if (obstacles.nextDays[day].events.length > 0) { %>
@@ -205,13 +206,14 @@
 				
 				if (availableMessages.length > 0) {
 
-					var message = availableMessages[0];	
+					var message = availableMessages[0];
 
 					var messageBarOuter = $('<div class="message-bar"></div>');
 					var messageBarInner = $('<div></div>');
-					var messageBarDismiss = $('<div class="dismiss-btn">' + message.dismisscta + '</div>');
+					var messageBarDismiss = $('<div class="dismiss-btn" data-dismiss-cta="' + message.dismisscta + '"></div>');
 					var messageText = message.description;
 					var messageClass = message.className;
+					var messageType = message.type;
 
 					messageBarInner = messageBarInner.addClass(messageClass).append(messageText).append(messageBarDismiss);
 
@@ -219,6 +221,7 @@
 
 					$("body").append(messageBar);
 
+				
 					setTimeout(function() {
 						$(".message-bar").css({"bottom": "0px"});
 					},500);

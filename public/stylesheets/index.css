@@ -242,8 +242,18 @@ b {
 
 }
 
-.rain .icon:before {
+.precip.rain .icon:before {
   content: "i";
+  font-family: "c1";
+}
+
+.precip.snow .icon:before {
+  content: "C";
+  font-family: "c1";
+}
+
+.precip.hail .icon:before, .precip.sleet .icon:before {
+  content: "H";
   font-family: "c1";
 }
 
@@ -424,8 +434,11 @@ b {
   font-size: 13px;
   display: block;
   margin: 0 auto;
-  padding: 0 60px 0 10px;
   position: relative;
+}
+
+.message-bar div:first-child p {
+  padding: 0 60px 0 10px;
 }
 
 .message-bar .dismiss-btn {
@@ -448,10 +461,27 @@ b {
   cursor: pointer;
 }
 
+.message-bar .dismiss-btn:before {
+  content: attr(data-dismiss-cta);
+}
+
 .message-bar a {
   color: #fff;
   font-weight: 400;
   text-decoration: underline;
+}
+
+.message-bar .fb-like-container {
+  position: absolute;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  left: 10px;
+  height: 28px;
+}
+
+.message-bar .fb-like-message {
+  padding: 10px 60px 10px 82px;
 }
 
 
@@ -559,6 +589,14 @@ ul.options .op-about .icon-c1-logo {
   color: #eee;
 }
 
+.footer .email-signup {
+  max-width: 500px;
+  display: block;
+  margin: 0 auto 30px;
+  border-bottom: 1px solid #999;
+  padding: 0 0 30px;
+}
+
 .footer .c1disclaimer {
   margin: 10px 0;
 }
@@ -648,6 +686,13 @@ ul.options .op-about .icon-c1-logo {
 .getting-data .message:before {
   content: 'Fetching data for you...';
 }
+
+
+
+
+
+
+
 
 body .buorg {
   background-color: #fff;

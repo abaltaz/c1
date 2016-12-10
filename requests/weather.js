@@ -84,7 +84,28 @@ function getWeather() {
 
 
   		              if (rainStatus.rainTodayString === "") {
-		              	rainStatus.rainTodayString = probablity() + " of rain at " + forecastTime.format("h a");
+
+  		              	if (forecast.icon === "rain") {
+		              		rainStatus.rainTodayString = probablity() + " of rain at " + forecastTime.format("h a");
+		              	}
+
+		              	else if (forecast.icon === "snow") {
+		              		rainStatus.rainTodayString = probablity() + " of snow at " + forecastTime.format("h a");
+		              	}
+
+		              	else if (forecast.icon === "sleet") {
+		              		rainStatus.rainTodayString = probablity() + " of sleet at " + forecastTime.format("h a");
+		              	}
+
+		              	else if (forecast.icon === "hail") {
+		              		rainStatus.rainTodayString = probablity() + " of hail at " + forecastTime.format("h a");
+		              	}
+
+		              	else {
+		              		rainStatus.rainTodayString = probablity() + " of precipitation at " + forecastTime.format("h a");
+		              	}
+		          	  
+
 		          	  }
 
 
@@ -95,7 +116,8 @@ function getWeather() {
 		                intensity: forecast.precipIntensity,
 		                summary: forecast.summary,
 		                probablity: probablity(),
-		                occurence: rainStatus.rainToday
+		                occurence: rainStatus.rainToday,
+		                precipType: forecast.icon
 		              });
             
 		            }
@@ -106,26 +128,29 @@ function getWeather() {
 
 		        //Create card if it's raining right now
 		        if (forecast.currently.summary.toLowerCase().indexOf("rain") > -1 ||
-		        	forecast.currently.summary.toLowerCase().indexOf("drizzle") > -1) {
+		        	forecast.currently.summary.toLowerCase().indexOf("drizzle") > -1 ||
+		        	forecast.currently.summary.toLowerCase().indexOf("sleet") > -1 ||
+		        	forecast.currently.summary.toLowerCase().indexOf("hail") > -1
+		        	) {
 
 		        	var status = c1functions.determineEventStatus(currentTime, currentTime, 1);
 
 		     		var rainEvent = {
 		     			occurence: true,
-						title: "Good chance of rain now",
+						title: `Good chance of ${rainStatus.rainTodayDetails[0].precipType} now`,
 						description: rainStatus.rainTodayTitle,
 						start: currentTime,
 						end: currentTime,
 						category: "weather",
-						eventType: "rain",
+						eventType: "precip",
 						inDisplayWindow: status.inDisplayWindow,
 						status: status.type,
 						statusRank: c1functions.statusOrder.indexOf(status.type),
-						eventRank: c1functions.eventOrder.indexOf("rain"),
-						slug: c1functions.convertToSlug_withDate("rain", currentTime)
+						eventRank: c1functions.eventOrder.indexOf("precip"),
+						slug: c1functions.convertToSlug_withDate("precip", currentTime)
 		     		}
 
-		     		rainEvent["classNames"] = `rain ${rainEvent.slug}`;
+		     		rainEvent["classNames"] = `precip ${rainStatus.rainTodayDetails[0].precipType} ${rainEvent.slug}`;
 
 		     		nextRainEvent = rainEvent;
 
@@ -155,7 +180,7 @@ function getWeather() {
 						slug: c1functions.convertToSlug_withDate("rain", rainStatus.rainTodayDetails[0].startDate)
 					}
 
-					rainEvent["classNames"] = `rain ${rainEvent.slug}`;
+					rainEvent["classNames"] = `precip ${rainStatus.rainTodayDetails[0].precipType} ${rainEvent.slug}`;
 					nextRainEvent = rainEvent;
 				
 				}

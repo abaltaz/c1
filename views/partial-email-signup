@@ -1,0 +1,62 @@
+<!--	
+	<div class="email-signup">
+
+		<link rel="stylesheet" href="https://emailoctopus.com/bundles/emailoctopuslist/css/formEmbed.css">
+		<div class="email-octopus-form-wrapper">
+		<h2 class="email-octopus-heading" style="display: none;">Subscribe to Updates and alerts</h2>
+		<p class="email-octopus-success-message"></p>
+		<p class="email-octopus-error-message"></p>
+		<form method="post" action="https://emailoctopus.com/lists/618db1c1-994a-11e6-90cc-06ead731d453/members/external-add" class="email-octopus-form">
+		<div class="email-octopus-form-row">
+		<label>Email address (required)</label>
+		<input type="email" name="emailAddress" class="email-octopus-email-address">
+		</div>
+		<div class="email-octopus-form-row" style="display: none;">
+		<label>First name</label>
+		<input type="text" name="firstName" class="email-octopus-first-name" value="">
+		</div>
+		<div class="email-octopus-form-row" style="display: none;">
+		<label>Last name</label>
+		<input type="text" name="lastName" class="email-octopus-last-name" value="">
+		</div>
+		<div class="email-octopus-form-row-hp">
+		 
+		<input type="text" name="hp618db1c1-994a-11e6-90cc-06ead731d453" autocomplete="off" value="">
+		</div>
+		<div class="email-octopus-form-row-subscribe">
+		<input type="hidden" name="successRedirectUrl" class="email-octopus-success-redirect-url" value="">
+		<button type="submit">Subscribe</button>
+		</div>
+		</form>
+		<div class="email-octopus-referral">
+		Powered by <a href="https://emailoctopus.com/">EmailOctopus</a>
+		</div>
+		</div>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+		<script src="https://emailoctopus.com/bundles/emailoctopuslist/js/formEmbed.js"></script>
+
+-->
+		
+		<link href="//cdn-images.mailchimp.com/embedcode/horizontal-slim-10_7.css" rel="stylesheet" type="text/css">
+		<style type="text/css">
+			#mc_embed_signup{background:#777; clear:left; width:100%; font-family: 'Open Sans', sans-serif}
+			#mc_embed_signup_scroll label {font-size:12px;font-weight: 400;}
+			#mc_embed_signup input.email {margin: 0 3px 3px 0}
+			#mc_embed_signup .button:hover {background-color:green}
+		</style>
+		<div id="mc_embed_signup">
+			<form action="//chicago1.us14.list-manage.com/subscribe/post?u=ab65abfacd20f9afa839661df&amp;id=389ccf369e" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+			    <div id="mc_embed_signup_scroll">
+				<label for="mce-EMAIL">Get updates when Chicago starts to slow down</label>
+				<input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="email address" required>
+			    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+			    <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_ab65abfacd20f9afa839661df_389ccf369e" tabindex="-1" value=""></div>
+			    <div class="clear"><input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button"></div>
+			    </div>
+			</form>
+		</div>
+		
+
+	</div>
+
+<!--End mc_embed_signup-->

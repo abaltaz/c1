@@ -109,13 +109,25 @@ function getGoogleSheet() {
 						
 						var slug = c1functions.convertToSlug(value.description);
 						var slugTruncated = slug.substring(0, 40);
-
-						messages.push({
+						
+						var message = {
 							description: marked(value.description),
 							dismisscta: value.dismisscta,
 							slug: slugTruncated,
-							className: slugTruncated
-						});
+							className: slugTruncated,
+							type: value.type
+						};
+
+						if (value.type === "facebook-like") {
+
+							message.description = 
+								`<div class="fb-like-message">${value.description}</div>
+								 <div class='fb-like-container'>
+									<iframe src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Ffacebook.com%2Fchicago1.org&width=63&layout=button&action=like&size=large&show_faces=false&share=false&height=65&appId=1568628726775307" width="63" height="65" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+    							 </div>`;
+						}
+
+						messages.push(message);
 
 					});
 

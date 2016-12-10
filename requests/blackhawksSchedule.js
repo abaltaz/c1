@@ -6,14 +6,38 @@ var ical2json = require("ical2json");
 var EventEmitter = require('events');
 var c1functions = require('../core/functions');
 
-var scheduleUrl = "https://www.stanza.co/api/schedules/nhl-blackhawks/nhl-blackhawks.ics";
+var blackhawksScheduleUrl = "https://www.stanza.co/api/schedules/nhl-blackhawks/nhl-blackhawks.ics";
+var bullsScheduleUrl = "https://www.stanza.co/api/schedules/nba-bulls/nba-bulls.ics"
 
 
+var bullsParams = {
+	name: "Bulls",
+	schedule: "https://www.stanza.co/api/schedules/nba-bulls/nba-bulls.ics"
+}
 
-c1functions.doRequest(scheduleUrl, "otherFileType").then(function(data){
+var blackhawksParams = {
+	name: "Blackhawks",
+	schedule: "https://www.stanza.co/api/schedules/nhl-blackhawks/nhl-blackhawks.ics"
+}
 
-	var scheduleJson = ical2json.convert(data);
 
-	console.log(scheduleJson.VCALENDAR[0].VEVENT);
+function getSchedule(teamParams) {
 
-});
+	c1functions.doRequest(teamParams.schedule, "otherFileType").then(function(data){
+
+		var scheduleJson = ical2json.convert(data);
+
+		underscore.each(scheduleJson.VCALENDAR[0].VEVENT, function(game, index) {
+
+			var start = moment(game.DTSTART).utcOffset(-600);
+			
+			//20161028T000000Z
+
+			console.log(start.format("MM/DD/YY HH:mma"));
+		});
+
+	});
+
+}
+
+getSchedule(bullsParams);

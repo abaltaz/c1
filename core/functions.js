@@ -8,7 +8,7 @@ var parseString = require('xml2js').parseString;
 
 
 module.exports.statusOrder = ["current", "soon", "later", "recent", "past"];
-module.exports.eventOrder = ["daily-forecast", "weather-alert", "rain", "transit", "uber", "game", "traffic", "custom-update"];
+module.exports.eventOrder = ["daily-forecast", "weather-alert", "precip", "transit", "uber", "game", "traffic", "custom-update"];
 
 module.exports.doRequest = function(endpoint, endpointFormat){
 	return new Promise(function(resolve,reject) {
