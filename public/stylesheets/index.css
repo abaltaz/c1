@@ -684,7 +684,7 @@ ul.options .op-about .icon-c1-logo {
 }
 
 .getting-data .message:before {
-  content: 'Fetching data for you...';
+  content: 'Fetching data...';
 }
 
 

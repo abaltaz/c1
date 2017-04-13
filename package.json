@@ -23,6 +23,6 @@
     "underscore": "",
     "xml2js": "~0.4.16",
     "compression": "~1.6.2",
-    "ical2json": "~0.3.0"
+    "ical-parser": "~1.2.0"
   }
 }
