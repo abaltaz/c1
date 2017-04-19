@@ -29,12 +29,12 @@ var soxParams = {
 
 //Download game schedules once per day
 getScheduleInterval(cubsParams, "cubs");
-//getScheduleInterval(soxParams, "sox");
+getScheduleInterval(soxParams, "sox");
 
 //Process game schedules once per minute
 setTimeout(function() {
 	getGameStatusInterval(cubsParams, "cubs");
-	//getGameStatusInterval(soxParams, "sox");
+	getGameStatusInterval(soxParams, "sox");
 }, 2000);
 
 
@@ -75,6 +75,8 @@ function getSchedule(endpoint) {
 
 	});
 }
+
+
 
 /* --------------------- */
 
@@ -160,6 +162,7 @@ function getGameStatus(teamParams) {
 
 				else if (status.type === "current") {
 					game["dateString"] = "Started at " + gameDate.format("h:mm a");
+					//getScore();
 				}
 
 				else if (status.type === "recent") {
@@ -182,4 +185,15 @@ function getGameStatus(teamParams) {
 	});
 }
 
+function getScore() {
 
+	var scoreUrl = `http://gd2.mlb.com/components/game/mlb/year_${moment().format('YYYY')}/month_${moment().format('MM')}/day_${moment().format('DD')}/miniscoreboard.json`;
+
+	return new Promise(function(resolve, reject) {
+
+		c1functions.doRequest(scoreUrl, "json").then(function(data){
+			console.log(data);
+		});
+
+	});
+}
