@@ -55,7 +55,7 @@ function assembleObstacles() {
 			today: {
 				dayName: days[now.day()],
 				dayNum: now.date(),
-				currentTime: now.format("h:mm a"),
+				currentTime: now.format("h:mma"),
 				hasCurrentEvent: false,
 				events: []
 			},
