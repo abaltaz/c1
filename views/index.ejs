@@ -4,11 +4,15 @@
 		<%- include partial-html-head.ejs %>
 
 		<style>
+
+			<%- include partial-styles.ejs %>
+
 			.current-weather .inner:after {
 				content: '\A <%= todayWeather %>';
 				display: block;
 				cursor: default;
 			}
+
 		</style>
 
 	</head>
