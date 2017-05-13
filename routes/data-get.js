@@ -57,7 +57,11 @@ function assembleObstacles() {
 				dayNum: now.date(),
 				currentTime: now.format("h:mma"),
 				hasCurrentEvent: false,
-				events: []
+				events: []//,
+				//summary: {
+				//	title: `It's ${now.format("h:mma")} on ${now.format("MMM DD")}. Here's what's happening in Chicago.`
+				//	description: 
+				}
 			},
 			nextDays: {
 				inOneDay: {

@@ -210,16 +210,16 @@ function getWeather() {
 								var endDateString;
 
 								if (moment().isSame(endDate, 'day')) {
-									endDateString = endDate.format("h:mm a");
+									endDateString = endDate.format("h:mma");
 								}
 
 								else if (moment().isBefore(endDate, 'day')) {
-									endDateString = endDate.format("h:mm a on MMMM D");
+									endDateString = endDate.format("h:mma on MMMM D");
 								}
 
 								var alert = {
-										string: alert.title + ". Starts at " + startDate.format("h:mm a on M/D")
-											    + " and is expected to end at " + endDate.format("h:mm a on M/D"),
+										string: alert.title + ". Starts at " + startDate.format("h:mma on M/D")
+											    + " and is expected to end at " + endDate.format("h:mma on M/D"),
 										alertNow: true,
 										inDisplayWindow: status.inDisplayWindow,
 										status: status.type,

@@ -71,7 +71,7 @@ function getGoogleSheet() {
 						customUpdate["classNames"] = `${eventType} ${row_json.eventtype} ${customUpdate.slug}`;
 
 						if (status.type === "later") {
-							customUpdate["dateString"] = "Starts at " + customUpdate.start.format("h:mm a");
+							customUpdate["dateString"] = "Starts at " + customUpdate.start.format("h:mma");
 						}
 
 						else if (status.type === "soon") {
@@ -79,17 +79,17 @@ function getGoogleSheet() {
 						}
 
 						else if (status.type === "current") {
-							customUpdate["dateString"] = "Started at " + customUpdate.start.format("h:mm a");
+							customUpdate["dateString"] = "Started at " + customUpdate.start.format("h:mma");
 						}
 						
 						else if (status.type === "recent") {
-							customUpdate["dateString"] = "Started at " + customUpdate.start.format("h:mm a");
+							customUpdate["dateString"] = "Started at " + customUpdate.start.format("h:mma");
 						}
 
 						/*
 						
 						else if (status.type === "future") {
-							customUpdate["title"] = teamParams.name + " at home, starts at " + gameDate.format("h:mm a");
+							customUpdate["title"] = teamParams.name + " at home, starts at " + gameDate.format("h:mma");
 						}
 
 						*/
