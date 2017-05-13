@@ -5,7 +5,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var minifyHTML = require('express-minify-html');
+//var minifyHTML = require('express-minify-html');
 
 //Check if we're using the local environment; if so, load the env file
 if (process.env.NODE_ENV === "local") {
@@ -42,7 +42,7 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: 86400000 }));
 // compress all requests
 //app.use(compression());
 
-
+/*
 app.use(minifyHTML({
     override:      true,
     htmlMinifier: {
@@ -54,7 +54,7 @@ app.use(minifyHTML({
         minifyJS:                  true
     }
 }));
-
+*/
 
 
 app.use('/', getData);
