@@ -61,7 +61,7 @@ function assembleObstacles() {
 				//summary: {
 				//	title: `It's ${now.format("h:mma")} on ${now.format("MMM DD")}. Here's what's happening in Chicago.`
 				//	description: 
-				}
+				//}
 			},
 			nextDays: {
 				inOneDay: {
