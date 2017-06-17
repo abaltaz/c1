@@ -7,7 +7,7 @@ var underscore = require('underscore');
 var marked = require('marked');
 var googleSheet = require('../requests/googleSheet');
 var mlbSchedule = require('../requests/mlbSchedule');
-var blackhawksSchedule = require('../requests/blackhawksSchedule');
+//var blackhawksSchedule = require('../requests/blackhawksSchedule');
 var trafficAlerts = require('../requests/trafficAlerts');
 var expTraffic = require('../requests/expTraffic');
 var ctaAlerts = require('../requests/ctaAlerts');
@@ -39,7 +39,6 @@ var inOneDay;
 var inTwoDays;
 var inThreeDays;
 
-
 function assembleObstacles() {
 
 	return new Promise(function(resolve,reject) {
@@ -56,6 +55,9 @@ function assembleObstacles() {
 				dayName: days[now.day()],
 				dayNum: now.date(),
 				currentTime: now.format("h:mma"),
+				currentHour: now.format("ha"),
+				currentDate: now.format("MMMM D, YYYY"),
+				dateID: now.format("YYYYMMDD"),
 				hasCurrentEvent: false,
 				events: []//,
 				//summary: {
@@ -105,6 +107,7 @@ function assembleObstacles() {
 
 
 
+
 		if (obstacles.today.events.length === 1) {
 			obstacles.numString = "(1 obstacle)"
 		}
@@ -129,6 +132,19 @@ function assembleObstacles() {
 		underscore.each(obstacles.nextDays, function(nextDay){
 			nextDay.events = underscore.sortBy(nextDay.events, 'eventRank');
 		});
+
+
+		//Remove the start and end properties (which are moments) from the event array items (they don't work with Firebase)
+		obstacles.today.events.forEach(function(event) {
+			delete event['start'];
+			delete event['end'];
+		});
+
+
+		//At the top of the hour, save events to the database
+		if (now.minute() === 0) {
+			c1functions.firebaseSave(now, obstacles.today);
+		}
 
 
 		resolve({
