@@ -115,7 +115,8 @@ function getGameStatus(teamParams) {
         //Iterate through each game in the schedule
         underscore.each(teamParams.storedSchedule, function(value, index) {    
 
-			if (value[teamParams.timeIdentifier] !== "") {
+			if (value[teamParams.timeIdentifier] !== "" &&
+				value["LOCATION"].indexOf("Chicago") > -1) {
 
 				//Assemble a game's date and time like so
 				var gameDatePretty = 
