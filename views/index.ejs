@@ -4,15 +4,14 @@
 		<%- include partial-html-head.ejs %>
 
 		<style>
-
-			<%- include partial-styles.ejs %>
+		<%- include partial-css-styles.ejs %>
+		<%- include partial-css-icons.ejs %>
 
 			.current-weather .inner:after {
 				content: '\A <%= todayWeather %>';
 				display: block;
 				cursor: default;
 			}
-
 		</style>
 
 	</head>
@@ -21,279 +20,246 @@
 
 		<% if (obstaclesIteration > 0) { %>
 
-		<div class="content-wrapper">
+			<div class="content-wrapper">
 
-		  <%- include partial-header.ejs %>
+			  <%- include partial-header.ejs %>
+			  <%- include partial-updates.ejs %>
+			  <%- include partial-social.ejs %>
 
-		  <% if (obstacles.today.hasCurrentEvent === false) { %>
-			  <div class="all-clear">
-			    <i class="icon-check-circle"></i>
-			    <div class="details">
-			      <div class="title">How nice</div>
-			      <div class="msg">No rain, games or train delays to get in your way</div>  
-			    </div>
-			  </div>
-		  <% } %>
+			  <%- include partial-next-days.ejs %>
 
-		  <ul class="updates">
-			
-		  	<% for (var i=0; i < obstacles.today.events.length; i++ ) { %>
 
-		  		<li class="update <%= obstacles.today.events[i].status %> <%= obstacles.today.events[i].classNames %>">
-		  			<% if (obstacles.today.events[i].status === "later") { %>
-		  				<div class="label-status"><i class="icon-clock"></i> Later</div>
-		  			<% } %>
-		  			<div class="icon" data-icons="<%- obstacles.today.events[i].icon %>"></div>
-			  		<div class="title"><%= obstacles.today.events[i].title %></div>
-			  		<div class="msg"><%- obstacles.today.events[i].description %></div>
-			  		<% if (typeof obstacles.today.events[i].moreLink != "undefined") { %>
-						<div class="more">
-							<a href="<%= obstacles.today.events[i].moreLink %>" target="_blank">More</a>
-						</div>
-			  		<% } %>	
-			  		<% if (typeof obstacles.today.events[i].dateString != "undefined") { %>
-						<div class="date-info"><%= obstacles.today.events[i].dateString %></div>
-			  		<% } %>	
-		  		</li>
+
+
+			  
+			<%- include partial-sources.ejs %>  
+			<%- include partial-footer.ejs %>
+				
+
+			  <div class="push-footers"></div>
+			</div>
+
+			<!--
+			<div class="hide-button">
+				<div class="icon"></div>
+				<div class="label"></div>
+			</div>
+			-->
 
 				
 
-		  	<% } %>
-
-		  </ul>
-
-
-
-		  <% for (var day in obstacles.nextDays) { %>
-
-		  	<% if (obstacles.nextDays[day].events.length > 0) { %>
-
-			  <div class="next-days <%= obstacles.nextDays[day].slug %>">
-
-				  <h3 data-date-num="<%= obstacles.nextDays[day].dayNum %>"><%= obstacles.nextDays[day].dayName %></h2>
-
-				  <ul>
-
-				  	<% for (var i=0; i < obstacles.nextDays[day].events.length; i++ ) { %>
-
-				  		<li><%- obstacles.nextDays[day].events[i].title %></li>
-
-				  	<% } %>
-
-				  </ul>
-
-			  </div>
-
-			<% } %>
-
-		  <% } %>
-		  
-		<%- include partial-sources.ejs %>  
-		<%- include partial-footer.ejs %>
-			
-
-		  <div class="push-footers"></div>
-		</div>
-
-		<!--
-		<div class="hide-button">
-			<div class="icon"></div>
-			<div class="label"></div>
-		</div>
-		-->
-
-			
-
-		<!--
-		<div class="message-bar">
-			<div class="<%- messageBar[0].classNames %>">
-			  <%- messageBar[0].description %>
-			  <div class="close-btn"></div>
+			<!--
+			<div class="message-bar">
+				<div class="<%- messageBar[0].classNames %>">
+				  <%- messageBar[0].description %>
+				  <div class="close-btn"></div>
+				</div>
 			</div>
-		</div>
-		-->
+			-->
 
-		<div class="modal">
-		  <div class="background"></div>
-		  <div class="inner">
-			  <div class="preferences">Suspendisse enim turpis, dictum sed, iaculis a, condimentum nec, nisi. Curabitur at lacus ac velit ornare lobortis. Proin viverra, ligula sit amet ultrices semper, ligula arcu tristique sapien, a accumsan nisi mauris ac eros. Duis leo. Praesent congue erat at massa.
+			<div class="modal">
+			  <div class="background"></div>
+			  <div class="inner">
+				  <div class="preferences">Suspendisse enim turpis, dictum sed, iaculis a, condimentum nec, nisi. Curabitur at lacus ac velit ornare lobortis. Proin viverra, ligula sit amet ultrices semper, ligula arcu tristique sapien, a accumsan nisi mauris ac eros. Duis leo. Praesent congue erat at massa.
 
-		Praesent vestibulum dapibus nibh. Donec sodales sagittis magna. Donec venenatis vulputate lorem. Fusce vulputate eleifend sapien. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; In ac dui quis mi consectetuer lacinia.
+			Praesent vestibulum dapibus nibh. Donec sodales sagittis magna. Donec venenatis vulputate lorem. Fusce vulputate eleifend sapien. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; In ac dui quis mi consectetuer lacinia.
 
-		Nam commodo suscipit quam. Proin magna. Etiam sit amet orci eget eros faucibus tincidunt. Sed magna purus, fermentum eu, tincidunt eu, varius ut, felis. Aliquam lobortis.
+			Nam commodo suscipit quam. Proin magna. Etiam sit amet orci eget eros faucibus tincidunt. Sed magna purus, fermentum eu, tincidunt eu, varius ut, felis. Aliquam lobortis.
 
-		Aenean ut eros et nisl sagittis vestibulum. Suspendisse eu ligula. In consectetuer turpis ut velit. Phasellus leo dolor, tempus non, auctor et, hendrerit quis, nisi. Pellentesque posuere.
+			Aenean ut eros et nisl sagittis vestibulum. Suspendisse eu ligula. In consectetuer turpis ut velit. Phasellus leo dolor, tempus non, auctor et, hendrerit quis, nisi. Pellentesque posuere.
 
-		Curabitur suscipit suscipit tellus. Praesent adipiscing. Phasellus volutpat, metus eget egestas mollis, lacus lacus blandit dui, id egestas quam mauris ut lacus.. Suspendisse potenti.</div>
-		  </div>
-		</div>
+			Curabitur suscipit suscipit tellus. Praesent adipiscing. Phasellus volutpat, metus eget egestas mollis, lacus lacus blandit dui, id egestas quam mauris ut lacus.. Suspendisse potenti.</div>
+			  </div>
+			</div>
 
-		<script>
+			<script>
 
-			setTimeout(function() {
-				slideCurrentWeather();
-			},3000);
-
-			$('.current-weather .inner').on('click', function() {
-				slideCurrentWeather();
-			});
-
-			function slideCurrentWeather() {
-				$('.current-weather .inner').css('top','-20px');
-				$('.current-weather .inner').one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(e) {
-					$('.current-weather').css({'height': '40px', 'margin-bottom': '-20px'});
-				});
 				setTimeout(function() {
+					slideCurrentWeather();
+				},3000);
 
-					$('.current-weather .inner').css('top','0px');
-					$('.current-weather').css({'height': '20px', 'margin-bottom': '0px'});
-					$('.current-weather .inner').off('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend');
-				},5000);
-			}
+				$('.current-weather .inner').on('click', function() {
+					slideCurrentWeather();
+				});
 
-			$('.updates > li .msg a').attr('target', '_blank');
+				function slideCurrentWeather() {
+					$('.current-weather .inner').css('top','-20px');
+					$('.current-weather .inner').one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(e) {
+						$('.current-weather').css({'height': '40px', 'margin-bottom': '-20px'});
+					});
+					setTimeout(function() {
 
+						$('.current-weather .inner').css('top','0px');
+						$('.current-weather').css({'height': '20px', 'margin-bottom': '0px'});
+						$('.current-weather .inner').off('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend');
+					},5000);
+				}
 
-
-			//Message Bar script
-
-			if (window.location.href.indexOf('showcurrenttime') > -1) {
-				$(".footer").append('<div style="text-align:center;font-size:10px;margin-top:10px;position:absolute;bottom:25px;left:0px;right:0px"><%= obstacles.today.currentTime %></div>');
-			}
-
-			if (window.location.href.indexOf('clearmsghistory') > -1) {
-				localStorage.setItem("userMsgHistory", null);
-			}
-
+				$('.updates > li .msg a').attr('target', '_blank');
 
 
-			var availableMessages = [];
 
-			getAvailableMessages();
-			displayMessage();
+				//Message Bar script
 
-			
-			function getAvailableMessages() {
+				if (window.location.href.indexOf('showcurrenttime') > -1) {
+					$(".footer").append('<div style="text-align:center;font-size:10px;margin-top:10px;position:absolute;bottom:25px;left:0px;right:0px"><%= obstacles.today.currentTime %></div>');
+				}
 
-				var appMessages = <%- JSON.stringify(messageBar) %>;
-				var userMessages = JSON.parse(localStorage.getItem("userMsgHistory"));			
+				if (window.location.href.indexOf('clearmsghistory') > -1) {
+					localStorage.setItem("userMsgHistory", null);
+				}
 
-				//If the user dismissed messages, compare each app message against the user messages.
-				//If no match is found for a given app message, add the app message to the availableMessages array
-				if (appMessages.length > 0 && (userMessages !== null && userMessages.length > 0)) {
-					$.each(appMessages, function(index, appMessage) {
 
-						var foundMatch;
 
-						$.each(userMessages, function(index, userMessage) {
-							if (appMessage.className === userMessage.className) {
-								foundMatch = true;
+				var availableMessages = [];
+
+				getAvailableMessages();
+				displayMessage();
+
+				var disqus_config = function () {
+						this.page.url = "https://www.chicago1.org/comments/<%- obstacles.today.dateID %>";  // Replace PAGE_URL with your page's canonical URL variable
+						this.page.identifier = "comments-<%- obstacles.today.dateID %>"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+						this.page.title = "<%- obstacles.today.currentDate %>";
+					};
+
+					$(".btn-comments").on('click', function() {
+						loadDisqus();
+						$(".btn-comments").remove();
+				});
+
+
+
+				
+				function getAvailableMessages() {
+
+					var appMessages = <%- JSON.stringify(messageBar) %>;
+					var userMessages = JSON.parse(localStorage.getItem("userMsgHistory"));			
+
+					//If the user dismissed messages, compare each app message against the user messages.
+					//If no match is found for a given app message, add the app message to the availableMessages array
+					if (appMessages.length > 0 && (userMessages !== null && userMessages.length > 0)) {
+						$.each(appMessages, function(index, appMessage) {
+
+							var foundMatch;
+
+							$.each(userMessages, function(index, userMessage) {
+								if (appMessage.className === userMessage.className) {
+									foundMatch = true;
+								}
+							});
+
+							if (!foundMatch) {
+								availableMessages.push(appMessage);
 							}
+
+						});
+					}
+
+					else if (appMessages.length > 0 && (userMessages === null || userMessages.length === 0)) {
+						availableMessages = appMessages;
+					}
+
+				}
+
+				function displayMessage() {
+
+					
+					
+					if (availableMessages.length > 0) {
+
+						var message = availableMessages[0];
+
+						var messageBarOuter = $('<div class="message-bar"></div>');
+						var messageBarInner = $('<div></div>');
+						var messageBarDismiss = $('<div class="dismiss-btn" data-dismiss-cta="' + message.dismisscta + '"></div>');
+						var messageText = message.description;
+						var messageClass = message.className;
+						var messageType = message.type;
+
+						messageBarInner = messageBarInner.addClass(messageClass).append(messageText).append(messageBarDismiss);
+
+						var messageBar = $(messageBarOuter).append(messageBarInner);
+
+						$("body").append(messageBar);
+
+					
+						setTimeout(function() {
+							$(".message-bar").css({"bottom": "0px"});
+						},500);
+
+						$(".message-bar .dismiss-btn").on("click", function(){
+							
+							var className = $(this).parent().attr('class');
+
+							dismissMessage(className);
+
 						});
 
-						if (!foundMatch) {
-							availableMessages.push(appMessage);
-						}
-
-					});
+					}
 				}
 
-				else if (appMessages.length > 0 && (userMessages === null || userMessages.length === 0)) {
-					availableMessages = appMessages;
-				}
+				function dismissMessage(className) {
 
-			}
+					var userMsgHistory = JSON.parse(localStorage.getItem("userMsgHistory"));
 
-			function displayMessage() {
+					if (userMsgHistory === null ) {
+					  userMsgHistory = [];
+					  userMsgHistory.push({
+					    className: className,
+					    isDismissed: true
+					  });
+					}
 
-				
-				
-				if (availableMessages.length > 0) {
+					else {
+					  userMsgHistory.push({
+					    className: className,
+					    isDismissed: true
+					  });
+					}
 
-					var message = availableMessages[0];
+					userMsgHistory = JSON.stringify(userMsgHistory);
+					localStorage.setItem("userMsgHistory", userMsgHistory);
+					availableMessages.splice(0,1);
 
-					var messageBarOuter = $('<div class="message-bar"></div>');
-					var messageBarInner = $('<div></div>');
-					var messageBarDismiss = $('<div class="dismiss-btn" data-dismiss-cta="' + message.dismisscta + '"></div>');
-					var messageText = message.description;
-					var messageClass = message.className;
-					var messageType = message.type;
+					$("." + className).parent().remove();
 
-					messageBarInner = messageBarInner.addClass(messageClass).append(messageText).append(messageBarDismiss);
-
-					var messageBar = $(messageBarOuter).append(messageBarInner);
-
-					$("body").append(messageBar);
-
-				
-					setTimeout(function() {
-						$(".message-bar").css({"bottom": "0px"});
-					},500);
-
-					$(".message-bar .dismiss-btn").on("click", function(){
-						
-						var className = $(this).parent().attr('class');
-
-						dismissMessage(className);
-
-					});
+					displayMessage();
 
 				}
-			}
 
-			  function dismissMessage(className) {
-
-			  	var userMsgHistory = JSON.parse(localStorage.getItem("userMsgHistory"));
-	    
-			    if (userMsgHistory === null ) {
-			      userMsgHistory = [];
-			      userMsgHistory.push({
-			        className: className,
-			        isDismissed: true
-			      });
-			    }
-
-			    else {
-			      userMsgHistory.push({
-			        className: className,
-			        isDismissed: true
-			      });
-			    }
-
-			    userMsgHistory = JSON.stringify(userMsgHistory);
-			    localStorage.setItem("userMsgHistory", userMsgHistory);
-			    availableMessages.splice(0,1);
-
-			    $("." + className).parent().remove();
-
-			    displayMessage();
-			  
-			  }
+				function loadDisqus() {
+					(function() { // DON'T EDIT BELOW THIS LINE
+					var d = document, s = d.createElement('script');
+					s.src = "<%- thirdPartyConfig.disqus.src %>";
+					s.setAttribute('data-timestamp', +new Date());
+					(d.head || d.body).appendChild(s);
+					})();
+				}
 
 
 
-		  	//Update Your Browser script
+			  	//Update Your Browser script
 
-			updateBrowser(function(ready) {
-				//console.log(ready);
-			});
+				updateBrowser(function(ready) {
+					//console.log(ready);
+				});
 
-			function updateBrowser(callback) {
-				var $buoop = {c:2,text: ""}; 
-				function $buo_f(){ 
-				 var e = document.createElement("script"); 
-				 e.src = "//browser-update.org/update.min.js"; 
-				 document.body.appendChild(e);
-				};
-				try {document.addEventListener("DOMContentLoaded", $buo_f,false)}
-				catch(e){window.attachEvent("onload", $buo_f)}
+				function updateBrowser(callback) {
+					var $buoop = {c:2,text: ""}; 
+					function $buo_f(){ 
+					 var e = document.createElement("script"); 
+					 e.src = "//browser-update.org/update.min.js"; 
+					 document.body.appendChild(e);
+					};
+					try {document.addEventListener("DOMContentLoaded", $buo_f,false)}
+					catch(e){window.attachEvent("onload", $buo_f)}
 
-				callback("updateBrowser is ready");
-			}
+					callback("updateBrowser is ready");
+				}
 
-			console.log("Hello Chicago!");
+				console.log("Hello Chicago!");
 
-			</script>
+				</script>
 
 			<% } else { %>
 
