@@ -1,0 +1,12 @@
+<% for (var day in obstacles.nextDays) { %>
+	<% if (obstacles.nextDays[day].events.length > 0) { %>
+  		<div class="next-days <%= obstacles.nextDays[day].slug %>">
+	  		<h3 data-date-num="<%= obstacles.nextDays[day].dayNum %>"><%= obstacles.nextDays[day].dayName %></h2>
+	  		<ul>
+			  	<% for (var i=0; i < obstacles.nextDays[day].events.length; i++ ) { %>
+			  		<li><%- obstacles.nextDays[day].events[i].title %></li>
+			  	<% } %>
+	  		</ul>
+  		</div>
+	<% } %>
+<% } %>

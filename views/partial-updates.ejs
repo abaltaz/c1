@@ -1,0 +1,36 @@
+			  <% if (obstacles.today.hasCurrentEvent === false) { %>
+				  <div class="all-clear">
+				    <i class="icon-check-circle"></i>
+				    <div class="details">
+				      <div class="title">How nice</div>
+				      <div class="msg">No rain, games or train delays to get in your way</div>  
+				    </div>
+				  </div>
+			  <% } %>
+
+			  <ul class="updates">
+				
+			  	<% for (var i=0; i < obstacles.today.events.length; i++ ) { %>
+
+			  		<li class="update <%= obstacles.today.events[i].status %> <%= obstacles.today.events[i].classNames %>">
+			  			<% if (obstacles.today.events[i].status === "later") { %>
+			  				<div class="label-status"><i class="icon-clock"></i> Later</div>
+			  			<% } %>
+			  			<div class="icon" data-icons="<%- obstacles.today.events[i].icon %>"></div>
+				  		<div class="title"><%= obstacles.today.events[i].title %></div>
+				  		<div class="msg"><%- obstacles.today.events[i].description %></div>
+				  		<% if (typeof obstacles.today.events[i].moreLink != "undefined") { %>
+							<div class="more">
+								<a href="<%= obstacles.today.events[i].moreLink %>" target="_blank">More</a>
+							</div>
+				  		<% } %>	
+				  		<% if (typeof obstacles.today.events[i].dateString != "undefined") { %>
+							<div class="date-info"><%= obstacles.today.events[i].dateString %></div>
+				  		<% } %>	
+			  		</li>
+
+					
+
+			  	<% } %>
+
+			  </ul>

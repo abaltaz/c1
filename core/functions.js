@@ -5,6 +5,49 @@ var GoogleSpreadsheet = require("google-spreadsheet");
 var moment = require('moment');
 var underscore = require('underscore');
 var parseString = require('xml2js').parseString;
+var admin = require("firebase-admin");
+
+
+//FIREBASE CONFIGURATION:
+var serviceAccount = require("../exp16-cf8620f22772.json");
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://project-8614330592105978928.firebaseio.com"
+});
+var db = admin.database();
+
+module.exports.firebaseSave = function (currentTime, events) {
+	
+	var ref = db.ref("server");
+	var archive = db.ref("server/archive")
+
+	var date = currentTime.format('YYYYMMDD');
+
+	archive.child(date).update({
+		[currentTime.minute()]: events
+	});
+
+	archive.once("value", function(snapshot) {
+	  console.log("archive", snapshot.val());
+	});
+
+}
+
+module.exports.firebaseGet = function(date,time) {
+	return new Promise(function(resolve,reject) {
+		var ref = db.ref("server");
+		var archive = db.ref(`server/archive/${date}/${time}`);
+
+		//console.log(archive.val());
+
+		//TO DO: NEED TO RETURN DATE AND TIME OBJECTS vvvvv
+
+		archive.on("value", function(data) {
+			console.log("Archive Data", data.val());
+			resolve(data.val());
+		});
+	});
+}
 
 
 module.exports.statusOrder = ["current", "soon", "later", "recent", "past"];

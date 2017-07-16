@@ -137,3 +137,6 @@
 .icon-hail:before {
   content: "\48";
 }
+.icon-comment:before {
+  content: "\47";
+}

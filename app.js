@@ -15,6 +15,7 @@ if (process.env.NODE_ENV === "local") {
 var routes = require('./routes/');
 //var users = require('./routes/users');
 var getData = require('./routes/data-get');
+var getPast = require('./routes/getPast');
 var blog = require('./routes/blog');
 
 
@@ -42,19 +43,19 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: 86400000 }));
 // compress all requests
 //app.use(compression());
 
-
-app.use(minifyHTML({
-    override:      true,
-    htmlMinifier: {
-        removeComments:            true,
-        collapseWhitespace:        true,
-        collapseBooleanAttributes: true,
-        removeAttributeQuotes:     true,
-        removeEmptyAttributes:     true,
-        minifyJS:                  true
-    }
-}));
-
+if (process.env.NODE_ENV !== "local") {
+  app.use(minifyHTML({
+      override:      true,
+      htmlMinifier: {
+          removeComments:            true,
+          collapseWhitespace:        true,
+          collapseBooleanAttributes: true,
+          removeAttributeQuotes:     true,
+          removeEmptyAttributes:     true,
+          minifyJS:                  true
+      }
+  }));
+}
 
 
 app.use('/', getData);
@@ -65,6 +66,16 @@ app.use('/', blog.blogRouter);
 //router for /blog/:slug
 app.use('/', blog.blogPostRouter);
 
+//app.use('/date/:year/:month/:day/:time', getPast);
+
+app.use('/', getPast);
+
+/*
+app.get('/date/:year/:date', function(req,res,next){
+  console.log("hi",req.params);
+  next();
+});
+*/
 
 //app.use('/users', users);
 

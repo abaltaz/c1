@@ -226,7 +226,12 @@ router.get('/', function(req, res, next) {
 		todayWeather: weather.data.todayWeather,
 		messageBar: messageBar,
 		env: process.env.NODE_ENV,
-		obstaclesIteration: obstaclesIteration
+		obstaclesIteration: obstaclesIteration,
+		thirdPartyConfig: {
+			disqus: {
+				src: process.env.DISQUS_SRC
+			}
+		}
 	});
 });
 
