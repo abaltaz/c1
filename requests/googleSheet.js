@@ -42,6 +42,7 @@ function getGoogleSheet() {
 			else {
 				var customUpdates = [];
 				var messages = [];
+				var suppressedEvents = [];
 
 				underscore.each(row_data, function(row_json, index) {
 					
@@ -131,11 +132,22 @@ function getGoogleSheet() {
 
 					});
 
-					//console.log(messages);
+					my_sheet.getRows(3, function(err, row_data){
+					
+						underscore.each(row_data, function(value,index) {
 
-					resolve({
-						customUpdates: customUpdates,
-						messageBar: messages
+							suppressedEvents.push(value.slug);
+
+							//console.log("SUPPRESS", suppressedEvents);
+
+							resolve({
+								customUpdates: customUpdates,
+								messageBar: messages,
+								suppressedEvents: suppressedEvents
+							});
+
+						});
+
 					});
 
 				});

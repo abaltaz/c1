@@ -140,12 +140,12 @@ function assembleObstacles() {
 			delete event['end'];
 		});
 
-
+		/*
 		//At the top of the hour, save events to the database
 		if (now.minute() === 0) {
 			c1functions.firebaseSave(now, obstacles.today);
 		}
-
+		*/
 
 		resolve({
 			obstacles: obstacles,
@@ -161,33 +161,40 @@ function assignToADay(data) {
 
 	underscore.each(data, function(event,index) {
 
+		//If event is suppressed via Google Sheet, do not assign the event
+		var isSuppressed = false;
+		underscore.each(googleSheet.data.suppressedEvents, function(suppressedEvent, index) {
+			if (event.slug.indexOf(suppressedEvent) > -1 ) {
+				isSuppressed = true;
+			}
+
+		});
+
 		obstacles.all.push(event);
 
 		//Rules for displaying an event for Today
-		if (event.status === "current" || event.status === "soon" || event.status === "later") {
+		if ((event.status === "current" || event.status === "soon" || event.status === "later") && isSuppressed === false) {
+			console.log(isSuppressed);
 			obstacles.today.events.push(event);
 		}
 		
 		//Rules for displaying an event for 1 day from now
-		if (inOneDay.isSame(event.start, "day") || 
-			inOneDay.isBetween(event.start, event.end)) {
+		if ((inOneDay.isSame(event.start, "day") || inOneDay.isBetween(event.start, event.end)) && isSuppressed === false) {
 			obstacles.nextDays.inOneDay.events.push(event);
 		}
 
 		//Rules for displaying an event for 2 days from now
-		if (inTwoDays.isSame(event.start, "day") || 
-			inTwoDays.isBetween(event.start, event.end)) {
+		if ((inTwoDays.isSame(event.start, "day") || inTwoDays.isBetween(event.start, event.end))  && isSuppressed === false) {
 			obstacles.nextDays.inTwoDays.events.push(event);
 		}
 	
 		//Rules for displaying an event for 3 days from now
-		if (inThreeDays.isSame(event.start, "day") || 
-			inThreeDays.isBetween(event.start, event.end)) {
+		if ((inThreeDays.isSame(event.start, "day") || inThreeDays.isBetween(event.start, event.end)) && isSuppressed === false) {
 			obstacles.nextDays.inThreeDays.events.push(event);
 		}
 
 		//If the event is current, set hasCurrentEvent to true -- use for "All Clear" message 
-		if (event.status === "current" || event.status === "soon") {
+		if ((event.status === "current" || event.status === "soon") && isSuppressed === false) {
 			obstacles.today.hasCurrentEvent = true;
 		}
 

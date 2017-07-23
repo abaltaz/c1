@@ -15,10 +15,8 @@ if (process.env.NODE_ENV === "local") {
 var routes = require('./routes/');
 //var users = require('./routes/users');
 var getData = require('./routes/data-get');
-var getPast = require('./routes/getPast');
-var blog = require('./routes/blog');
-
-
+//var getPast = require('./routes/getPast');
+//var blog = require('./routes/blog');
 
 //var mlbSchedule = require('./routes/mlbSchedule');
 
@@ -61,14 +59,14 @@ if (process.env.NODE_ENV !== "local") {
 app.use('/', getData);
 
 //router for /blog
-app.use('/', blog.blogRouter);
+//app.use('/', blog.blogRouter);
   
 //router for /blog/:slug
-app.use('/', blog.blogPostRouter);
+//app.use('/', blog.blogPostRouter);
 
 //app.use('/date/:year/:month/:day/:time', getPast);
 
-app.use('/', getPast);
+//app.use('/', getPast);
 
 /*
 app.get('/date/:year/:date', function(req,res,next){

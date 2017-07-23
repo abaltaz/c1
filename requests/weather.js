@@ -283,7 +283,11 @@ function getWeather() {
 				dailyForecast.splice(0,1);
 			
 		        resolve({
-					nextRainEvent: [nextRainEvent],
+					nextRainEvent: function() {
+						if (nextRainEvent !== false) {
+							return [nextRainEvent]
+						}
+					},
 					weatherAlerts: weatherAlerts,
 					dailyForecast: dailyForecast,
 					currentWeather: `${Math.round(forecast.currently.temperature)}° ${forecast.currently.summary}`,
