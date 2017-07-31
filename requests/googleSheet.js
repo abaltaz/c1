@@ -71,20 +71,24 @@ function getGoogleSheet() {
 
 						customUpdate["classNames"] = `${eventType} ${row_json.eventtype} ${customUpdate.slug}`;
 
-						if (status.type === "later") {
-							customUpdate["dateString"] = "Starts at " + customUpdate.start.format("h:mma");
-						}
+						if (row_json.category !== "festival") {
 
-						else if (status.type === "soon") {
-							customUpdate["dateString"] = "Starts " + moment().to(customUpdate.start);
-						}
+							if (status.type === "later") {
+								customUpdate["dateString"] = "Starts at " + customUpdate.start.format("h:mma");
+							}
 
-						else if (status.type === "current") {
-							customUpdate["dateString"] = "Started at " + customUpdate.start.format("h:mma");
-						}
-						
-						else if (status.type === "recent") {
-							customUpdate["dateString"] = "Started at " + customUpdate.start.format("h:mma");
+							else if (status.type === "soon") {
+								customUpdate["dateString"] = "Starts " + moment().to(customUpdate.start);
+							}
+
+							else if (status.type === "current") {
+								customUpdate["dateString"] = `Started at ${customUpdate.start.format("h:mma")}<br>Ends at ${customUpdate.end.format("h:mma")}`;
+							}
+							
+							else if (status.type === "recent") {
+								customUpdate["dateString"] = "Ended at " + customUpdate.end.format("h:mma");
+							}
+
 						}
 
 						/*
